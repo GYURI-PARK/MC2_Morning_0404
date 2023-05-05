@@ -28,6 +28,7 @@
 		68F7D2712A0390EA00D7B874 /* FirebaseStorageCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = 68F7D2702A0390EA00D7B874 /* FirebaseStorageCombine-Community */; };
 		68F7D2732A0393E500D7B874 /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68F7D2722A0393E500D7B874 /* SplashView.swift */; };
 		68F7D2752A0393FE00D7B874 /* MatchingCodeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68F7D2742A0393FE00D7B874 /* MatchingCodeViewModel.swift */; };
+		8AB30F9E2A04F78800AB274E /* MatchingCodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB30F9D2A04F78800AB274E /* MatchingCodeView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,6 +41,7 @@
 		68F7D2552A038D5300D7B874 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		68F7D2722A0393E500D7B874 /* SplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
 		68F7D2742A0393FE00D7B874 /* MatchingCodeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchingCodeViewModel.swift; sourceTree = "<group>"; };
+		8AB30F9D2A04F78800AB274E /* MatchingCodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchingCodeView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -117,6 +119,7 @@
 			isa = PBXGroup;
 			children = (
 				68F7D2722A0393E500D7B874 /* SplashView.swift */,
+				8AB30F9D2A04F78800AB274E /* MatchingCodeView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -220,6 +223,7 @@
 			files = (
 				68F7D2452A038B3700D7B874 /* ContentView.swift in Sources */,
 				68F7D2732A0393E500D7B874 /* SplashView.swift in Sources */,
+				8AB30F9E2A04F78800AB274E /* MatchingCodeView.swift in Sources */,
 				68F7D2752A0393FE00D7B874 /* MatchingCodeViewModel.swift in Sources */,
 				68F7D2432A038B3700D7B874 /* YomangApp.swift in Sources */,
 				68F7D2542A038B7100D7B874 /* User.swift in Sources */,
