@@ -10,9 +10,9 @@
 import SwiftUI
 import PhotosUI
 
-// 요망 사진 로딩
+// MARK: - 요망 사진 상태뷰
 struct YomangImage: View {
-    let imageState: YomangModel.ImageState
+    let imageState: YomangViewModel.ImageState
     
     var body: some View {
         switch imageState {
@@ -32,9 +32,9 @@ struct YomangImage: View {
     }
 }
 
-// 요망 테두리 포함
+// MARK: - 요망 테두리 포함뷰
 struct FrameYomangImage: View {
-    let imageState: YomangModel.ImageState
+    let imageState: YomangViewModel.ImageState
     
     var body: some View {
         YomangImage(imageState: imageState)
@@ -47,19 +47,19 @@ struct FrameYomangImage: View {
     }
 }
 
+// MARK: - 요망 선택하기
 struct EditableYomangImage: View {
-    @ObservedObject var viewModel: YomangModel
+    @ObservedObject var viewModel: YomangViewModel
     
     var body: some View {
         
         VStack(){
-            // 요망 사진 보여주기
             FrameYomangImage(imageState: viewModel.imageState)
             Spacer()
             PhotosPicker(selection: $viewModel.imageSelection,
                          matching: .images,
                          photoLibrary: .shared()) {
-            // 요망 선택하기 버튼
+            //TODO: 요망 선택하기 버튼
                 Text("요망 선택하기")
                     .symbolRenderingMode(.multicolor)
                     .font(.system(size: 15))

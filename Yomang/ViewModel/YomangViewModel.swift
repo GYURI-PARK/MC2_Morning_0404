@@ -12,7 +12,7 @@ import PhotosUI
 import CoreTransferable
 
 @MainActor
-class YomangModel: ObservableObject {
+class YomangViewModel: ObservableObject {
         
     enum ImageState {
         case empty
