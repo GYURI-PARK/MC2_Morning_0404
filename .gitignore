@@ -136,5 +136,8 @@ xcuserdata
 
 ### SwiftPM ###
 
+### TestView ###
+Yomang/TestView/
+
 
 # End of https://www.toptal.com/developers/gitignore/api/macos,swift,swiftpackagemanager,swiftpm,firebase
