@@ -84,6 +84,11 @@ struct MatchingCodeView: View {
                                 .padding(EdgeInsets(top: 20, leading: 20, bottom: 20, trailing: 0))
                                 .background(.white.opacity(0.1))//추후 CustomColor로 변경할 것
                                 .cornerRadius(20)
+                                .onReceive(yourCode.publisher.collect()) { characters in
+                                    if characters.count == 12 {
+                                        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to:nil, from:nil, for:nil)
+                                    }
+                                }
                             Spacer().frame(height: proxy.size.height * 0.08)
                             //TextField에 yourCode값이 없거나, 실수로 myCode를 입력했을 경우 경고
                             if yourCode.count == 0 || yourCode == myCode {
