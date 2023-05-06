@@ -7,9 +7,9 @@ import FirebaseAuth
 //FirebaseModel 에서 제공하는 함수를 그대로 사용할 수 있습니다.
 class MatchingCodeViewModel: FirebaseModel{
     
-    func savePartnerID(partnerID: String){
-        UserDefaults.standard.set(partnerID, forKey:"partnerID")
-        self.user.partnerID = partnerID
+    func savePartnerId(partnerId: String){
+        UserDefaults.standard.set(partnerId, forKey:"partnerId")
+        self.user.partnerId = partnerId
     }
     
     override init(){

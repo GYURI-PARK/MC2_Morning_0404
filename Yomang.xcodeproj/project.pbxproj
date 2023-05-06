@@ -7,11 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		2FD8C99D2A04F16D00666609 /* MatchingCodeViewTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FD8C99C2A04F16D00666609 /* MatchingCodeViewTest.swift */; };
 		2FD8C9A02A04F4ED00666609 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 2FD8C99F2A04F4ED00666609 /* FirebaseFirestore */; };
 		2FD8C9A22A052C3F00666609 /* FirebaseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FD8C9A12A052C3F00666609 /* FirebaseModel.swift */; };
 		2FD8C9A42A05F33600666609 /* MatchingLoadingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FD8C9A32A05F33600666609 /* MatchingLoadingViewModel.swift */; };
-		2FD8C9A62A05FC5B00666609 /* MatchingViewTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FD8C9A52A05FC5B00666609 /* MatchingViewTest.swift */; };
 		68F7D2432A038B3700D7B874 /* YomangApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68F7D2422A038B3700D7B874 /* YomangApp.swift */; };
 		68F7D2452A038B3700D7B874 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68F7D2442A038B3700D7B874 /* ContentView.swift */; };
 		68F7D2472A038B3800D7B874 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 68F7D2462A038B3800D7B874 /* Assets.xcassets */; };
@@ -32,13 +30,13 @@
 		68F7D2712A0390EA00D7B874 /* FirebaseStorageCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = 68F7D2702A0390EA00D7B874 /* FirebaseStorageCombine-Community */; };
 		68F7D2732A0393E500D7B874 /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68F7D2722A0393E500D7B874 /* SplashView.swift */; };
 		68F7D2752A0393FE00D7B874 /* MatchingCodeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68F7D2742A0393FE00D7B874 /* MatchingCodeViewModel.swift */; };
+		AD0920052A06330600D35E7F /* MatchingCodeViewTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD0920042A06330600D35E7F /* MatchingCodeViewTest.swift */; };
+		AD0920072A06330C00D35E7F /* MatchingViewTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD0920062A06330C00D35E7F /* MatchingViewTest.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		2FD8C99C2A04F16D00666609 /* MatchingCodeViewTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchingCodeViewTest.swift; sourceTree = "<group>"; };
 		2FD8C9A12A052C3F00666609 /* FirebaseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseModel.swift; sourceTree = "<group>"; };
 		2FD8C9A32A05F33600666609 /* MatchingLoadingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchingLoadingViewModel.swift; sourceTree = "<group>"; };
-		2FD8C9A52A05FC5B00666609 /* MatchingViewTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchingViewTest.swift; sourceTree = "<group>"; };
 		68F7D23F2A038B3700D7B874 /* Yomang.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Yomang.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		68F7D2422A038B3700D7B874 /* YomangApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YomangApp.swift; sourceTree = "<group>"; };
 		68F7D2442A038B3700D7B874 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -48,6 +46,8 @@
 		68F7D2552A038D5300D7B874 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		68F7D2722A0393E500D7B874 /* SplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
 		68F7D2742A0393FE00D7B874 /* MatchingCodeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchingCodeViewModel.swift; sourceTree = "<group>"; };
+		AD0920042A06330600D35E7F /* MatchingCodeViewTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchingCodeViewTest.swift; sourceTree = "<group>"; };
+		AD0920062A06330C00D35E7F /* MatchingViewTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchingViewTest.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -77,8 +77,8 @@
 		2FD8C99B2A04F08F00666609 /* TestView */ = {
 			isa = PBXGroup;
 			children = (
-				2FD8C99C2A04F16D00666609 /* MatchingCodeViewTest.swift */,
-				2FD8C9A52A05FC5B00666609 /* MatchingViewTest.swift */,
+				AD0920042A06330600D35E7F /* MatchingCodeViewTest.swift */,
+				AD0920062A06330C00D35E7F /* MatchingViewTest.swift */,
 			);
 			path = TestView;
 			sourceTree = "<group>";
@@ -248,13 +248,13 @@
 			files = (
 				68F7D2452A038B3700D7B874 /* ContentView.swift in Sources */,
 				68F7D2732A0393E500D7B874 /* SplashView.swift in Sources */,
-				2FD8C99D2A04F16D00666609 /* MatchingCodeViewTest.swift in Sources */,
+				AD0920052A06330600D35E7F /* MatchingCodeViewTest.swift in Sources */,
 				68F7D2752A0393FE00D7B874 /* MatchingCodeViewModel.swift in Sources */,
 				68F7D2432A038B3700D7B874 /* YomangApp.swift in Sources */,
 				68F7D2542A038B7100D7B874 /* User.swift in Sources */,
 				2FD8C9A42A05F33600666609 /* MatchingLoadingViewModel.swift in Sources */,
 				2FD8C9A22A052C3F00666609 /* FirebaseModel.swift in Sources */,
-				2FD8C9A62A05FC5B00666609 /* MatchingViewTest.swift in Sources */,
+				AD0920072A06330C00D35E7F /* MatchingViewTest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -383,7 +383,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Yomang/Preview Content\"";
-				DEVELOPMENT_TEAM = D97KNF9M4D;
+				DEVELOPMENT_TEAM = 7D5PZJWQ9T;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Get access to User Photo Library.";
@@ -413,7 +413,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Yomang/Preview Content\"";
-				DEVELOPMENT_TEAM = D97KNF9M4D;
+				DEVELOPMENT_TEAM = 7D5PZJWQ9T;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Get access to User Photo Library.";
