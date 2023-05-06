@@ -1,10 +1,11 @@
 import SwiftUI
 import FirebaseCore
+import FirebaseFirestore
 import FirebaseFirestoreSwift
 import FirebaseAuth
 
 //Firebase와 User 간의 통신을 담당
-class FirebaseModel{
+class FirebaseModel: ObservableObject{
     
     @Published var user: User = User()
     
@@ -26,8 +27,57 @@ class FirebaseModel{
             //받아온 유저 고유 id를 저장
             UserDefaults.standard.set(user.uid, forKey:"userID")
             self.user.userID = user.uid
+            
+            let db = Firestore.firestore()
+            let docref = db.collection("TestCollection").document(self.user.userID)
+            
+            docref.setData([
+                "userID": self.user.userID,
+            ])
         }
     }
+    
+    //유저와 매칭!
+    func matchingUser(){
+        let db = Firestore.firestore()
+        let docref = db.collection("TestCollection").document(user.userID)
+        
+        docref.setData([
+                "partnerID": self.user.partnerID,
+                ])
+
+        db.collection("TestCollection").document(user.partnerID)
+            .addSnapshotListener { documentSnapshot, error in
+                guard let document = documentSnapshot else {
+                    print("Error fetching document: \(error!)")
+                    return
+                }
+                let data = document.data()
+                
+                print(data?["partnerID"] as? String ?? "sans")
+                                
+                if(self.user.userID == (data?["partnerID"] as? String ?? "")){
+                    self.user.connected = true
+                    UserDefaults.standard.set(true, forKey: "connected")
+                    return
+                }
+            }
+    }
+    
+    //매칭을 취소하고, 상대방 코드를 날림
+    func matchingCancel(){
+        let db = Firestore.firestore()
+        let docref = db.collection("TestCollection").document(user.userID)
+        
+        docref.setData([
+                "partnerID": "",
+                ])
+        
+        UserDefaults.standard.set("", forKey: "partnerID")
+        
+        return
+    }
+    
     
     //만들어두긴 했는데, 이건 쓰지 않는게 나을 것 같습니다.
     //이걸 사용하면 State 어노테이션을 사용하는 것과 다르게
