@@ -25,10 +25,10 @@ struct MatchingCodeView: View {
     @State private var isMyCodeActive: Bool = false
     
     //추후 뷰모델와 모델, 그리고 서버에서 받아와서 처리하도록 변경/이동해야하는 변수들
-    @State var myCodeServer: String = "sdfs12iso09f"
+    @State var myCodeServer: String = "sdfs12iso09fsdfs12iso09f9283"
     @State var myCode: String = "이곳을 클릭하여 코드를 생성"
     @State var yourCode: String = ""
-    @State var gradiant1: LinearGradient = LinearGradient(
+    @State var gradient1: LinearGradient = LinearGradient(
         gradient: Gradient(colors: [Color(red: 118/255, green: 56/255, blue: 249/255), Color(red: 0/255, green: 139/255, blue: 255/255)]),
         startPoint: .top,
         endPoint: .bottom)
@@ -39,7 +39,7 @@ struct MatchingCodeView: View {
             NavigationView {
                 ZStack {
                     //추후 배경이 생길 수 있으므로 배경은 뷰를 분리해놓음
-                    BackgroundView()
+                    MatchingCodeBackgroundView()
                     VStack(alignment: .center) {
                         Spacer()
                         //YOMANG텍스트_추후 로고로 변경
@@ -107,9 +107,9 @@ struct MatchingCodeView: View {
                                             .opacity(yourCode.count != 0 ? 1 : 0)
                                         }//HStack
                                     )//overlay
-                                //상대방 코드 입력 12자리 달성 시 키보드 자동 종료
+                                //상대방 코드 입력 28자리 달성 시 키보드 자동 종료
                                     .onReceive(yourCode.publisher.collect()) { characters in
-                                        if characters.count == 12 {
+                                        if characters.count == 28 {
                                             UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to:nil, from:nil, for:nil)
                                         }
                                     }
@@ -154,8 +154,8 @@ struct MatchingCodeView: View {
                                 }
                             }
                             
-                            //TextField에 yourCode값이 12자리 이외일 경우 경고
-                            else if yourCode.count != 12 {
+                            //TextField에 yourCode값이 28자리 이외일 경우 경고
+                            else if yourCode.count != 28 {
                                 Button(action: {
                                     showAlertYourCodeWrong = true
                                 }) {
@@ -170,7 +170,7 @@ struct MatchingCodeView: View {
                                         )
                                 }
                                 .alert(isPresented: $showAlertYourCodeWrong) {
-                                    Alert(title: Text("연결 실패"), message: Text("코드는 12자리 영문과 숫자로 구성되어 있습니다."), dismissButton: .default(Text("OK")))
+                                    Alert(title: Text("연결 실패"), message: Text("코드는 28자리 영문과 숫자로 구성되어 있습니다."), dismissButton: .default(Text("OK")))
                                 }
                             }
                             
@@ -178,7 +178,7 @@ struct MatchingCodeView: View {
                             else {
                                 NavigationLink(destination: MatchingLoadingView()) {
                                     RoundedRectangle(cornerRadius: 20)
-                                        .fill(gradiant1)
+                                        .fill(gradient1)
                                         .frame(height: 80)
                                         .overlay(
                                             Text("연결하기")
@@ -202,11 +202,20 @@ struct MatchingCodeView_Previews: PreviewProvider {
     }
 }
 
-struct BackgroundView: View {
+struct MatchingCodeBackgroundView: View {
+    
+    //나중에 뷰모델에서 선언해서 불러오기
+    @State var gradient2: LinearGradient = LinearGradient(
+        gradient: Gradient(colors: [Color(red: 118/255, green: 56/255, blue: 249/255), Color(red: 0/255, green: 0/255, blue: 0/255)]),
+        startPoint: .top,
+        endPoint: .bottom)
+    
     var body: some View {
         GeometryReader { proxy in
             Rectangle()
-                .fill(.black)
+                .fill(gradient2)
+                .opacity(0.6)
+                .background(Color.black)
                 .ignoresSafeArea()
         }
     }
