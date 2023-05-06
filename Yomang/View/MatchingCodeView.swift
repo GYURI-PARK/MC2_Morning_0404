@@ -28,11 +28,11 @@ struct MatchingCodeView: View {
     @State var myCodeServer: String = "sdfs12iso09fsdfs12iso09f9283"
     @State var myCode: String = "이곳을 클릭하여 코드를 생성"
     @State var yourCode: String = ""
-    @State var gradient1: LinearGradient = LinearGradient(
+    @State var colorGradient1: LinearGradient = LinearGradient(
         gradient: Gradient(colors: [Color(red: 118/255, green: 56/255, blue: 249/255), Color(red: 0/255, green: 139/255, blue: 255/255)]),
         startPoint: .top,
         endPoint: .bottom)
-    
+    @State var colorButtonDisabled = LinearGradient(colors: [.white.opacity(0.3)], startPoint: .top, endPoint: .bottom)
     
     var body: some View {
         GeometryReader { proxy in
@@ -121,7 +121,7 @@ struct MatchingCodeView: View {
                                     showAlertYourCodeNil = true
                                 }) {
                                     RoundedRectangle(cornerRadius: 20)
-                                        .fill(.white.opacity(0.3))
+                                        .fill(colorButtonDisabled)
                                         .frame(height: 80)
                                         .overlay(
                                             Text("연결하기")
@@ -140,7 +140,7 @@ struct MatchingCodeView: View {
                                     showAlertYourCodeNil = true
                                 }) {
                                     RoundedRectangle(cornerRadius: 20)
-                                        .fill(.white.opacity(0.3))
+                                        .fill(colorButtonDisabled)
                                         .frame(height: 80)
                                         .overlay(
                                             Text("연결하기")
@@ -160,7 +160,7 @@ struct MatchingCodeView: View {
                                     showAlertYourCodeWrong = true
                                 }) {
                                     RoundedRectangle(cornerRadius: 20)
-                                        .fill(.white.opacity(0.3))
+                                        .fill(colorButtonDisabled)
                                         .frame(height: 80)
                                         .overlay(
                                             Text("연결하기")
@@ -178,7 +178,7 @@ struct MatchingCodeView: View {
                             else {
                                 NavigationLink(destination: MatchingLoadingView()) {
                                     RoundedRectangle(cornerRadius: 20)
-                                        .fill(gradient1)
+                                        .fill(colorGradient1)
                                         .frame(height: 80)
                                         .overlay(
                                             Text("연결하기")
