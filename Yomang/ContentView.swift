@@ -8,14 +8,23 @@
 import SwiftUI
 
 struct ContentView: View {
+    @EnvironmentObject var viewModel: AuthViewModel
+    @State private var connected: Bool = false
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundColor(.accentColor)
-            Text("Hello, world!")
+        if viewModel.userSession == nil {
+            MatchingViewTest(user: User(uuid: "", userId: "", isConnected: false))
+        } else {
+            if let user = viewModel.user {
+                if !connected {
+                    MatchingViewTest(user: user)
+                        .onChange(of: user.isConnected) { _ in
+                            connected = true
+                        }
+                } else {
+                    Text("Connected!")
+                }
+            }
         }
-        .padding()
     }
 }
 
