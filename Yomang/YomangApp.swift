@@ -16,8 +16,7 @@ struct YomangApp: App {
     
     var body: some Scene {
         WindowGroup {
-            MatchingCodeViewTest()
-            //ContentView()
+            ContentView()
         }
     }
 }
