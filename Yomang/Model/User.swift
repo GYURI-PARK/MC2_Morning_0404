@@ -10,6 +10,7 @@ import Foundation
 
 struct User: Decodable {
     // 개인 정보
+    let uuid: String
     var userId: String
     var partnerId: String?
 

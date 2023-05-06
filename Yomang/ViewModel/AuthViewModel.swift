@@ -32,8 +32,14 @@ class AuthViewModel: ObservableObject{
         }
     }
     
+    private func getDeviceUUID() -> String? {
+        return UIDevice.current.identifierForVendor?.uuidString
+    }
+    
     //유저를 서버에 등록하고 (회원가입) 각 유저에게 부여되는 고유한 코드를 생성함
     func registerUser() {
+        let uuid = getDeviceUUID()
+        
         Auth.auth().signInAnonymously() { result, error in
             
             //서버에서 데이터를 받아오지 못했을 경우 별도의 작업 수행 없이 return
@@ -51,7 +57,8 @@ class AuthViewModel: ObservableObject{
             let data = ["userId": user.uid,
                         "partnerId": "",
                         "isConnected": false,
-                        "imageUrl": ""]
+                        "imageUrl": "",
+                        "uuid": uuid]
             
             db.document(user.uid).setData(data) { _ in
                 print("=== DEBUG: 회원 등록 완료 \n\(data) ")
