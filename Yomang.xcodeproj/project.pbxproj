@@ -29,7 +29,6 @@
 		68F7D2712A0390EA00D7B874 /* FirebaseStorageCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = 68F7D2702A0390EA00D7B874 /* FirebaseStorageCombine-Community */; };
 		68F7D2732A0393E500D7B874 /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68F7D2722A0393E500D7B874 /* SplashView.swift */; };
 		68F7D2752A0393FE00D7B874 /* MatchingCodeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68F7D2742A0393FE00D7B874 /* MatchingCodeViewModel.swift */; };
-		AD0920052A06330600D35E7F /* MatchingCodeViewTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD0920042A06330600D35E7F /* MatchingCodeViewTest.swift */; };
 		AD0920072A06330C00D35E7F /* MatchingViewTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD0920062A06330C00D35E7F /* MatchingViewTest.swift */; };
 /* End PBXBuildFile section */
 
@@ -44,7 +43,6 @@
 		68F7D2552A038D5300D7B874 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		68F7D2722A0393E500D7B874 /* SplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
 		68F7D2742A0393FE00D7B874 /* MatchingCodeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchingCodeViewModel.swift; sourceTree = "<group>"; };
-		AD0920042A06330600D35E7F /* MatchingCodeViewTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchingCodeViewTest.swift; sourceTree = "<group>"; };
 		AD0920062A06330C00D35E7F /* MatchingViewTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchingViewTest.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -75,7 +73,6 @@
 		2FD8C99B2A04F08F00666609 /* TestView */ = {
 			isa = PBXGroup;
 			children = (
-				AD0920042A06330600D35E7F /* MatchingCodeViewTest.swift */,
 				AD0920062A06330C00D35E7F /* MatchingViewTest.swift */,
 			);
 			path = TestView;
@@ -245,7 +242,6 @@
 			files = (
 				68F7D2452A038B3700D7B874 /* ContentView.swift in Sources */,
 				68F7D2732A0393E500D7B874 /* SplashView.swift in Sources */,
-				AD0920052A06330600D35E7F /* MatchingCodeViewTest.swift in Sources */,
 				68F7D2752A0393FE00D7B874 /* MatchingCodeViewModel.swift in Sources */,
 				68F7D2432A038B3700D7B874 /* YomangApp.swift in Sources */,
 				68F7D2542A038B7100D7B874 /* User.swift in Sources */,
