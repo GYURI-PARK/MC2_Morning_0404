@@ -19,12 +19,13 @@ struct MatchingLoadingView: View {
     var body: some View {
         GeometryReader { proxy in
                 ZStack(alignment: .center) {
-                MatchingLoadingBackgroundView()
+                    MatchingLoadingBackgroundView()
                     VStack(alignment: .center) {
                         Spacer()
-                        LoadingAnimationView()
+                        LoadingAnimationView().border(Color.red)
                         Image("Image_Partners_White")
                             .opacity(0.8)
+                            .border(Color.green)
                         Spacer().frame(height: proxy.size.height * 0.08)
                         VStack(alignment: .center) {
                             if isLinkComplete != true {
@@ -40,6 +41,7 @@ struct MatchingLoadingView: View {
                                                 .bold()
                                                 .foregroundColor(.white.opacity(0.5))
                                         )
+                                        .border(Color.yellow)
                                 }
                             } else {
                                 Button(action: {
@@ -85,6 +87,26 @@ struct LoadingAnimationView: View {
     
     var body: some View {
             ZStack(alignment: .center) {
+                Rectangle()
+                    .fill(Color.clear)
+                    .frame(width: 350, height: 350)
+                    .border(Color.white)
+                    .position(x: 0, y: 0)
+                Rectangle()
+                    .fill(Color.clear)
+                    .frame(width: 350, height: 350)
+                    .border(Color.white)
+                    .position(x: 0, y: 350)
+                Rectangle()
+                    .fill(Color.clear)
+                    .frame(width: 350, height: 350)
+                    .border(Color.white)
+                    .position(x: 350, y: 350)
+                Rectangle()
+                    .fill(Color.clear)
+                    .frame(width: 350, height: 350)
+                    .border(Color.white)
+                    .position(x: 350, y: 0)
                 //Circle1
                 Circle()
                     .scaleEffect(circleSizeToggle1 ? 1.2 : 0)
@@ -96,11 +118,15 @@ struct LoadingAnimationView: View {
                             .scaleEffect(circleSizeToggle1 ? 1.2 : 0)
                             .opacity(circleOpacityToggle1 ? 0 : 1)
                     )//overlay
+                    .overlay(
+                        Circle()
+                            .stroke(Color.green, lineWidth: 1)
+                            .frame(width: 10, height: 10)
+                    )//overlay
                     .onAppear() {
                         circleOpacityToggle1 = true
                         circleSizeToggle1 = true
                     }.animation(Animation.easeOut(duration: 3).repeatForever(autoreverses: false))
-                    .position(x: 175, y: 175)
                 //Circle2
                 Circle()
                     .scaleEffect(circleSizeToggle2 ? 1.2 : 0)
@@ -118,7 +144,6 @@ struct LoadingAnimationView: View {
                             circleSizeToggle2 = true
                         }
                     }.animation(Animation.easeOut(duration: 3).repeatForever(autoreverses: false))
-                    .position(x: 175, y: 175)
                 //Circle3
                 Circle()
                     .scaleEffect(circleSizeToggle3 ? 1.2 : 0)
@@ -136,7 +161,6 @@ struct LoadingAnimationView: View {
                             circleSizeToggle3 = true
                         }
                     }.animation(Animation.easeOut(duration: 3).repeatForever(autoreverses: false))
-                    .position(x: 175, y: 175)
                 //Circle4
                 Circle()
                     .scaleEffect(circleSizeToggle4 ? 1.2 : 0)
@@ -154,7 +178,6 @@ struct LoadingAnimationView: View {
                             circleSizeToggle4 = true
                         }
                     }.animation(Animation.easeOut(duration: 3).repeatForever(autoreverses: false))
-                    .position(x: 175, y: 175)
                 //Circle5
                 Circle()
                     .scaleEffect(circleSizeToggle5 ? 1.2 : 0)
@@ -172,7 +195,6 @@ struct LoadingAnimationView: View {
                             circleSizeToggle5 = true
                         }
                     }.animation(Animation.easeOut(duration: 3).repeatForever(autoreverses: false))
-                    .position(x: 175, y: 175)
             }//ZStack
             .frame(width: 350, height: 350)
     }

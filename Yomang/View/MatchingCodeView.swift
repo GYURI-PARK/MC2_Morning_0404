@@ -83,11 +83,11 @@ struct MatchingCodeView: View {
                             //내 코드 생성되고나면 상대방 코드 입력칸이 나옴
                             if isMyCodeActive {
                                 Spacer().frame(height: proxy.size.height * 0.04)
-                                Text("상대방의 코드 입력")
+                                Text("상대방의 코드를 입력하세요")
                                     .font(.title3.bold())
                                     .foregroundColor(.white)
                                     .transition(.push(from: .bottom))
-                                TextField("상대방의 코드를 입력하세요", text: $yourCode)
+                                TextField("이 곳을 클릭하여 코드 입력", text: $yourCode)
                                     .multilineTextAlignment(.leading)
                                     .keyboardType(.asciiCapable)//영문과 숫자만 입력하도록 함
                                     .autocapitalization(.none)
@@ -188,6 +188,7 @@ struct MatchingCodeView: View {
                                 }
                             }
                         }//VStack
+                        
                         .frame(width: proxy.size.width * 0.88)
                     }//VStack
                 }//ZStack
