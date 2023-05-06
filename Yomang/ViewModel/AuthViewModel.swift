@@ -14,10 +14,10 @@ class AuthViewModel: ObservableObject{
     
     init() {
         self.userSession = Auth.auth().currentUser
-        fetchUser()
+        fetchUser() {}
     }
     
-    func fetchUser() {
+    func fetchUser(_ completion: @escaping() -> Void?) {
         guard let uid = userSession?.uid else { return }
         print("=== DEBUG: \(uid)")
         
@@ -29,6 +29,7 @@ class AuthViewModel: ObservableObject{
             
             self.user = user
             print("=== DEBUG: fetch \(self.user)")
+            completion()
         }
     }
     
@@ -37,7 +38,7 @@ class AuthViewModel: ObservableObject{
     }
     
     //유저를 서버에 등록하고 (회원가입) 각 유저에게 부여되는 고유한 코드를 생성함
-    func registerUser() {
+    func registerUser(_ completion: @escaping(String) -> Void?) {
         let uuid = getDeviceUUID()
         
         Auth.auth().signInAnonymously() { result, error in
@@ -62,6 +63,10 @@ class AuthViewModel: ObservableObject{
             
             db.document(user.uid).setData(data) { _ in
                 print("=== DEBUG: 회원 등록 완료 \n\(data) ")
+                self.userSession = Auth.auth().currentUser
+                self.fetchUser() {
+                    completion(user.uid)
+                }
             }
         }
     }
