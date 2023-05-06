@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct User {
+struct User: Decodable {
     // 개인 정보
     var userId: String
     var partnerId: String?
