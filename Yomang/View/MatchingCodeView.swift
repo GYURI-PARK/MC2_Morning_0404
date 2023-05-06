@@ -28,18 +28,22 @@ struct MatchingCodeView: View {
     @State var myCodeServer: String = "sdfs12iso09fsdfs12iso09f9283"
     @State var myCode: String = "이곳을 클릭하여 코드를 생성"
     @State var yourCode: String = ""
-    @State var colorGradient1: LinearGradient = LinearGradient(
+    @State var colorButtonGradient1: LinearGradient = LinearGradient(
         gradient: Gradient(colors: [Color(red: 118/255, green: 56/255, blue: 249/255), Color(red: 0/255, green: 139/255, blue: 255/255)]),
         startPoint: .top,
         endPoint: .bottom)
     @State var colorButtonDisabled = LinearGradient(colors: [.white.opacity(0.3)], startPoint: .top, endPoint: .bottom)
     
     var body: some View {
+        
         GeometryReader { proxy in
+            
             NavigationView {
+            
                 ZStack {
                     //추후 배경이 생길 수 있으므로 배경은 뷰를 분리해놓음
                     MatchingCodeBackgroundView()
+                    
                     VStack(alignment: .center) {
                         Spacer()
                         //YOMANG텍스트_추후 로고로 변경
@@ -47,11 +51,13 @@ struct MatchingCodeView: View {
                             .font(.system(size: proxy.size.width * 0.18).bold())
                             .foregroundColor(.white)
                         Spacer()
+                        
                         VStack(alignment: .leading) {
                             Text(isMyCodeActive ? "내 코드를 공유하세요" : "내 코드를 생성하세요")
                                 .font(.title3.bold())
                                 .foregroundColor(.white)
                             //내 코드 생성 및 공유버튼
+                            
                             HStack {
                                 //버튼을 클릭하면 내 코드를 서버에서 받아온다.
                                 //내 코드가 생성되면서 공유하기 버튼이 활성화가 된다.
@@ -80,6 +86,7 @@ struct MatchingCodeView: View {
                                         )//overlay
                                 }//Button
                             }//HStack
+                            
                             //내 코드 생성되고나면 상대방 코드 입력칸이 나옴
                             if isMyCodeActive {
                                 Spacer().frame(height: proxy.size.height * 0.04)
@@ -114,7 +121,9 @@ struct MatchingCodeView: View {
                                         }
                                     }
                             }
+                            
                             Spacer().frame(height: proxy.size.height * 0.08)
+                            
                             //연결하기 버튼
                             if isMyCodeActive != true {
                                 Button(action: {
@@ -178,7 +187,7 @@ struct MatchingCodeView: View {
                             else {
                                 NavigationLink(destination: MatchingLoadingView()) {
                                     RoundedRectangle(cornerRadius: 20)
-                                        .fill(colorGradient1)
+                                        .fill(colorButtonGradient1)
                                         .frame(height: 80)
                                         .overlay(
                                             Text("연결하기")
@@ -188,7 +197,6 @@ struct MatchingCodeView: View {
                                 }
                             }
                         }//VStack
-                        
                         .frame(width: proxy.size.width * 0.88)
                     }//VStack
                 }//ZStack
@@ -206,7 +214,7 @@ struct MatchingCodeView_Previews: PreviewProvider {
 struct MatchingCodeBackgroundView: View {
     
     //나중에 뷰모델에서 선언해서 불러오기
-    @State var gradient2: LinearGradient = LinearGradient(
+    @State var colorBackgroundGradient1: LinearGradient = LinearGradient(
         gradient: Gradient(colors: [Color(red: 118/255, green: 56/255, blue: 249/255), Color(red: 0/255, green: 0/255, blue: 0/255)]),
         startPoint: .top,
         endPoint: .bottom)
@@ -214,7 +222,7 @@ struct MatchingCodeBackgroundView: View {
     var body: some View {
         GeometryReader { proxy in
             Rectangle()
-                .fill(gradient2)
+                .fill(colorBackgroundGradient1)
                 .opacity(0.6)
                 .background(Color.black)
                 .ignoresSafeArea()
