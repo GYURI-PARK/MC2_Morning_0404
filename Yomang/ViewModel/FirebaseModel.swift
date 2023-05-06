@@ -7,7 +7,7 @@ import FirebaseAuth
 //Firebase와 User 간의 통신을 담당
 class FirebaseModel: ObservableObject{
     
-    @Published var user: User = User()
+    @Published var user: User = User(userID: "", isConnected: false)
     
     //유저를 서버에 등록하고 (회원가입) 각 유저에게 부여되는 고유한 코드를 생성함
     func registerUser() {
@@ -45,8 +45,7 @@ class FirebaseModel: ObservableObject{
         docref.setData([
                 "partnerID": self.user.partnerID,
                 ])
-
-        db.collection("TestCollection").document(user.partnerID)
+        db.collection("TestCollection").document(user.partnerID!)
             .addSnapshotListener { documentSnapshot, error in
                 guard let document = documentSnapshot else {
                     print("Error fetching document: \(error!)")
@@ -57,7 +56,7 @@ class FirebaseModel: ObservableObject{
                 print(data?["partnerID"] as? String ?? "sans")
                                 
                 if(self.user.userID == (data?["partnerID"] as? String ?? "")){
-                    self.user.connected = true
+                    self.user.isConnected = true
                     UserDefaults.standard.set(true, forKey: "connected")
                     return
                 }
