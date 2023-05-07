@@ -39,7 +39,7 @@ struct MatchingCodeView: View {
                 ZStack {
                     //MatchingCode 배경
                     MatchingCodeBackgroundView()
-
+                    
                     VStack(alignment: .center) {
                         Spacer()
                         
@@ -47,7 +47,7 @@ struct MatchingCodeView: View {
                         Text("Yomang")
                             .font(.system(size: proxy.size.width * 0.18).bold())
                             .foregroundColor(.white)
-
+                        
                         Spacer()
                         
                         //코드생성 및 입력 영역_가로폭 proxy * 0.88 frame의 VStack
@@ -94,6 +94,7 @@ struct MatchingCodeView: View {
                                     .multilineTextAlignment(.leading)
                                     .keyboardType(.asciiCapable)//영문과 숫자만 입력하도록 함
                                     .autocapitalization(.none)
+                                    .disableAutocorrection(true)
                                     .foregroundColor(.white)
                                     .padding(EdgeInsets(top: 20, leading: 20, bottom: 20, trailing: 50))
                                     .background(.white.opacity(0.1))
@@ -102,13 +103,24 @@ struct MatchingCodeView: View {
                                     .overlay(
                                         HStack {
                                             Spacer()
-                                            
-                                            //상대방 코드 입력 시작 시 삭제버튼 활성화
-                                            Button(action: { yourCode = "" }) { Image(systemName: "x.circle")
-                                                    .foregroundColor(.white)
-                                                    .padding()
+                                            ZStack {
+                                                
+                                                //상대방 코드 입력 전 붙여넣기 버튼 활성화
+                                                Button(action: {
+                                                    if let clipboardString = UIPasteboard.general.string { yourCode = clipboardString }
+                                                }) { Image(systemName: "doc.on.clipboard")
+                                                        .foregroundColor(.white)
+                                                        .padding()
+                                                }
+                                                .opacity(yourCode.count != 0 ? 0 : 1)
+                                                
+                                                //상대방 코드 입력 시작 시 삭제버튼 활성화
+                                                Button(action: { yourCode = "" }) { Image(systemName: "x.circle")
+                                                        .foregroundColor(.white)
+                                                        .padding()
+                                                }
+                                                .opacity(yourCode.count != 0 ? 1 : 0)
                                             }
-                                            .opacity(yourCode.count != 0 ? 1 : 0)
                                         }//HStack
                                     )//overlay
                                 
@@ -222,11 +234,11 @@ struct MatchingCodeBackgroundView: View {
         endPoint: .bottom)
     
     var body: some View {
-            Rectangle()
-                .fill(colorBackgroundGradient1)
-                .opacity(0.6)
-                .background(Color.black)
-                .ignoresSafeArea()
+        Rectangle()
+            .fill(colorBackgroundGradient1)
+            .opacity(0.6)
+            .background(Color.black)
+            .ignoresSafeArea()
     }
 }
 
