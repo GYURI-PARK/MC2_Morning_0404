@@ -10,7 +10,8 @@ import SwiftUI
 struct ImageMarkUpView: View {
     
     @State private var currentLine = Line()
-    @State private var lines: [Line] = []
+    @State private var deletedLines = [Line]()
+    @State private var lines = [Line]()
     @State private var selectedColor: Color = .red
     @State private var thickness: Double = 5.0
     @State private var opacity: Double = 1.0
@@ -79,8 +80,8 @@ struct ImageMarkUpView: View {
                 
                 HStack{
                     Button {
-                        lines.removeLast()
-                        print(lines)
+                        let last = lines.removeLast()
+                        deletedLines.append(last)
                     } label: {
                         Image(systemName: "arrow.uturn.backward.circle")
                             .resizable()
@@ -89,13 +90,14 @@ struct ImageMarkUpView: View {
                     }.disabled(lines.count == 0)
                     
                     Button {
-                        
+                        let last = deletedLines.removeLast()
+                        lines.append(last)
                     } label: {
                         Image(systemName: "arrow.uturn.forward.circle")
                             .resizable()
                             .frame(width: 30, height: 30)
                             .foregroundColor(Color(hex: 0xEBEBF5))
-                    }
+                    }.disabled(deletedLines.count == 0)
                 }.padding(.vertical, 20).padding(.trailing, 240)
                 
                 // 색깔고르는칸
