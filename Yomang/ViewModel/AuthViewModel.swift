@@ -1,5 +1,6 @@
 import SwiftUI
 import Firebase
+import FirebaseStorage
 
 let db = Firestore.firestore().collection("TestCollection")
 
@@ -100,6 +101,39 @@ class AuthViewModel: ObservableObject{
             }
         }
     }
+    
+    func uploadImage(image: Data?, imageName : String) {
+        let storageRef = Storage.storage().reference().child("TestPhotos/\(imageName)")
+        let data = image
+        let metadata = StorageMetadata()
+        metadata.contentType = "image/jpg"
+        print(data ?? "no data")
+
+        if let data = data{
+            print("Saved?")
+            storageRef.putData(data, metadata: metadata) {(metadata, error) in
+                if let error = error {
+                    print("Error: \(error)")
+                }
+                if let metadata = metadata {
+                    print("metadata: \(metadata)")
+                }
+            }
+        }
+    }
+    
+    @Published var uiImage:UIImage? = nil
+    
+    func downloadImage(imageName: String){
+             let storageRef = Storage.storage().reference()
+             let fileRef = storageRef.child("TestPhotos/\(imageName)")
+                    
+             fileRef.getData(maxSize: 20 * 1024 * 1024) { data, error in
+                  if error == nil && data != nil {
+                      self.uiImage = UIImage(data: data!)!
+                  }
+              }
+        }
     
     /**
      0404에는 로그아웃에 대한 기능 명세가 없습니다. 테스트용으로 구현된 메소드이니 사용하지 마세요.
