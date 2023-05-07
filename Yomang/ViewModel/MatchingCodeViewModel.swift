@@ -10,7 +10,7 @@ class MatchingCodeViewModel: ObservableObject {
     func savePartnerId(partnerId: String){
         UserDefaults.standard.set(partnerId, forKey:"partnerId")
         // TODO: AuthViewModel 싱글톤 구조로 변경 후 아래 코드 해결
-//        self.user.partnerId = partnerId
+        // self.user.partnerId = partnerId
     }
     
     init(){

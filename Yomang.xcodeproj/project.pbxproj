@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2F5FC2752A07670E00CDDC56 /* MatchingLoadingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F5FC2742A07670E00CDDC56 /* MatchingLoadingViewModel.swift */; };
 		2FD8C9A02A04F4ED00666609 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 2FD8C99F2A04F4ED00666609 /* FirebaseFirestore */; };
 		2FD8C9A22A052C3F00666609 /* AuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FD8C9A12A052C3F00666609 /* AuthViewModel.swift */; };
 		68F7D2432A038B3700D7B874 /* YomangApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68F7D2422A038B3700D7B874 /* YomangApp.swift */; };
@@ -33,6 +34,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2F5FC2742A07670E00CDDC56 /* MatchingLoadingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchingLoadingViewModel.swift; sourceTree = "<group>"; };
 		2FD8C9A12A052C3F00666609 /* AuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewModel.swift; sourceTree = "<group>"; };
 		68F7D23F2A038B3700D7B874 /* Yomang.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Yomang.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		68F7D2422A038B3700D7B874 /* YomangApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YomangApp.swift; sourceTree = "<group>"; };
@@ -147,6 +149,7 @@
 			children = (
 				2FD8C9A12A052C3F00666609 /* AuthViewModel.swift */,
 				68F7D2742A0393FE00D7B874 /* MatchingCodeViewModel.swift */,
+				2F5FC2742A07670E00CDDC56 /* MatchingLoadingViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -240,6 +243,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2F5FC2752A07670E00CDDC56 /* MatchingLoadingViewModel.swift in Sources */,
 				68F7D2452A038B3700D7B874 /* ContentView.swift in Sources */,
 				68F7D2732A0393E500D7B874 /* SplashView.swift in Sources */,
 				68F7D2752A0393FE00D7B874 /* MatchingCodeViewModel.swift in Sources */,
