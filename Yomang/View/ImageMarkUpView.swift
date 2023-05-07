@@ -12,7 +12,7 @@ struct ImageMarkUpView: View {
     @State private var currentLine = Line()
     @State private var lines: [Line] = []
     @State private var selectedColor: Color = .red
-    @State private var thickness: Double = 0.0
+    @State private var thickness: Double = 5.0
     @State private var opacity: Double = 1.0
     
     var body: some View {
@@ -20,7 +20,7 @@ struct ImageMarkUpView: View {
         ZStack{
             Color.black
                 .ignoresSafeArea()
-            VStack {
+            VStack(alignment: .center) {
                 HStack {
                     Button(action: {
                         print("취소버튼 -> 모달창 닫힘")
@@ -49,12 +49,7 @@ struct ImageMarkUpView: View {
                     
                 }.padding(.horizontal, 20).padding(.vertical, 30)
                 
-                //Spacer()
-                
-               //  사진
-                
-                //Rectangle().frame(width: 338, height: 354).cornerRadius(22).foregroundColor(.white)
-                
+                //  사진
                 Canvas { context, size in
                     for line in lines {
                         var path = Path()
@@ -63,12 +58,15 @@ struct ImageMarkUpView: View {
                     }
                 }
                 .frame(width: 338, height: 354)
-                //.cornerRadius(22).foregroundColor(.white)
                 .gesture(DragGesture(minimumDistance: 0, coordinateSpace: .local)
                     .onChanged({ value in
                         let newPoint = value.location
-                        currentLine.points.append(newPoint)
-                        self.lines.append(currentLine)
+                        if value.translation.width + value.translation.height == 0 {
+                            lines.append(Line(points: [newPoint], color: selectedColor, lineWidth: thickness, lineOpacity: opacity))
+                        } else {
+                            let index = lines.count - 1
+                            lines[index].points.append(newPoint)
+                        }
                     })
                     .onEnded({ value in
                         self.currentLine = Line(points: [], color: selectedColor, lineWidth: thickness, lineOpacity: opacity)
@@ -76,6 +74,29 @@ struct ImageMarkUpView: View {
                 )
             
                 Spacer()
+                
+                // 뒤로가기 / 앞으로가기 버튼
+                
+                HStack{
+                    Button {
+                        lines.removeLast()
+                        print(lines)
+                    } label: {
+                        Image(systemName: "arrow.uturn.backward.circle")
+                            .resizable()
+                            .frame(width: 30, height: 30)
+                            .foregroundColor(Color(hex: 0xEBEBF5))
+                    }.disabled(lines.count == 0)
+                    
+                    Button {
+                        
+                    } label: {
+                        Image(systemName: "arrow.uturn.forward.circle")
+                            .resizable()
+                            .frame(width: 30, height: 30)
+                            .foregroundColor(Color(hex: 0xEBEBF5))
+                    }
+                }.padding(.vertical, 20).padding(.trailing, 240)
                 
                 // 색깔고르는칸
                 HStack {
@@ -96,7 +117,7 @@ struct ImageMarkUpView: View {
                     }
                     Spacer()
                 }.frame(width: 358, height: 72)
-                Spacer()
+                Spacer(minLength: 30)
                 
                 // 굵기 슬라이드
                 HStack{
@@ -124,7 +145,7 @@ struct ImageMarkUpView: View {
                     }
    
                 }.frame(width: 300)
-                Spacer()
+                Spacer(minLength: 50)
             }
         }
     }
@@ -134,7 +155,7 @@ struct Line {
     var points = [CGPoint]()
     var color: Color = .red
     var lineWidth: Double = 1.0
-    var lineOpacity: Double = 0.0
+    var lineOpacity: Double = 1.0
 }
 
 extension Color {
