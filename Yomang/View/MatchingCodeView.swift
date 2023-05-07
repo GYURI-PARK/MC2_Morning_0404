@@ -90,7 +90,7 @@ struct MatchingCodeView: View {
                                     .font(.title3.bold())
                                     .foregroundColor(.white)
                                     .transition(.push(from: .bottom))
-                                TextField("이 곳을 클릭하여 코드 입력", text: $yourCode)
+                                TextField("클릭하여 입력하거나 붙여넣기", text: $yourCode)
                                     .multilineTextAlignment(.leading)
                                     .keyboardType(.asciiCapable)//영문과 숫자만 입력하도록 함
                                     .autocapitalization(.none)
