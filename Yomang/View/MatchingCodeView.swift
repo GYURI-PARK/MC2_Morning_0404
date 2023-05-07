@@ -7,12 +7,9 @@
 /* 확인 해주세요!!!
  핸드폰에 직접 빌드해서 사용해보시길 권장드립니다!
  디자인 요소는 로고 변경 및 배경 변경 예정
- 내 코드는 Text, 상대방 입력창은 TextField
  공유하기 버튼은 Sharelink 기능 사용함
- 연결하기 버튼은
- 내 코드 생성 전 / 상대방 코드 미입력 시 / 상대방 코드 일정 자리수 도달하지 못하거나 / 내 코드와 같은 코드를 상대 코드에 입력 시
- 위 네 가지 각 케이스에 연결하기 버튼은 회색이며, 클릭 시 각 상황에 맞는 경고메시지가 팝업됨.
- 모드 조건을 충족하면 연결하기 버튼은 NavigationLink가 됨 -> 코드를 잘못입력하였을 때 돌아와야하는 선택지가 있어야하기 때문에 내비게이션 링크 활용
+ "연결하기" 버튼은 AlertCase 3가지이며, 조건 충족 시 Navigation Link 활성화 -> 코드를 잘못입력하였을 때 돌아와야하는 선택지가 있어야하기 때문에 내비게이션 링크 활용
+ 변수 뷰모델로 옮겨서 연동 예정
  */
 
 import SwiftUI
@@ -37,40 +34,39 @@ struct MatchingCodeView: View {
     var body: some View {
         
         GeometryReader { proxy in
-            
             NavigationView {
-            
+                
                 ZStack {
-                    //추후 배경이 생길 수 있으므로 배경은 뷰를 분리해놓음
+                    //MatchingCode 배경
                     MatchingCodeBackgroundView()
-                    
+
                     VStack(alignment: .center) {
                         Spacer()
-                        //YOMANG텍스트_추후 로고로 변경
+                        
+                        //YOMANG 로고_추후 디자인 변경
                         Text("Yomang")
                             .font(.system(size: proxy.size.width * 0.18).bold())
                             .foregroundColor(.white)
+
                         Spacer()
                         
+                        //코드생성 및 입력 영역_가로폭 proxy * 0.88 frame의 VStack
                         VStack(alignment: .leading) {
                             Text(isMyCodeActive ? "내 코드를 공유하세요" : "내 코드를 생성하세요")
                                 .font(.title3.bold())
                                 .foregroundColor(.white)
-                            //내 코드 생성 및 공유버튼
                             
                             HStack {
-                                //버튼을 클릭하면 내 코드를 서버에서 받아온다.
-                                //내 코드가 생성되면서 공유하기 버튼이 활성화가 된다.
+                                //서버에서 받은 코드 표시 및 공유하기 버튼 활성화
                                 Button(action: {
                                     self.myCode = myCodeServer
                                     withAnimation{ isMyCodeActive = true }
                                 }) {
                                     Text(myCode)
                                         .foregroundColor(.white)
-                                    //                                        .bold(isMyCodeActive ? false : true)
-                                        .padding(EdgeInsets(top: 20, leading: 20, bottom: 20, trailing: 0))
-                                        .frame(width: proxy.size.width * 0.88, alignment: .leading)//*고민
-                                        .background(.white.opacity(0.1))//추후 CustomColor로 변경할 것
+                                        .padding(EdgeInsets(top: 20, leading: 20, bottom: 20, trailing: 50))
+                                        .frame(width: proxy.size.width * 0.88, alignment: .leading)
+                                        .background(.white.opacity(0.1))
                                         .cornerRadius(20)
                                         .overlay(
                                             HStack {
@@ -99,13 +95,14 @@ struct MatchingCodeView: View {
                                     .keyboardType(.asciiCapable)//영문과 숫자만 입력하도록 함
                                     .autocapitalization(.none)
                                     .foregroundColor(.white)
-                                    .padding(EdgeInsets(top: 20, leading: 20, bottom: 20, trailing: 0))
-                                    .background(.white.opacity(0.1))//추후 CustomColor로 변경할 것
+                                    .padding(EdgeInsets(top: 20, leading: 20, bottom: 20, trailing: 50))
+                                    .background(.white.opacity(0.1))
                                     .cornerRadius(20)
                                     .transition(.push(from: .bottom))
                                     .overlay(
                                         HStack {
                                             Spacer()
+                                            
                                             //상대방 코드 입력 시작 시 삭제버튼 활성화
                                             Button(action: { yourCode = "" }) { Image(systemName: "x.circle")
                                                     .foregroundColor(.white)
@@ -114,6 +111,7 @@ struct MatchingCodeView: View {
                                             .opacity(yourCode.count != 0 ? 1 : 0)
                                         }//HStack
                                     )//overlay
+                                
                                 //상대방 코드 입력 28자리 달성 시 키보드 자동 종료
                                     .onReceive(yourCode.publisher.collect()) { characters in
                                         if characters.count == 28 {
@@ -124,7 +122,8 @@ struct MatchingCodeView: View {
                             
                             Spacer().frame(height: proxy.size.height * 0.08)
                             
-                            //연결하기 버튼
+                            //연결하기 버튼_조건 미충족 시 Alert, 조건 충족 시 NavigationLink 활성화
+                            //Alert Case1_내 코드 생성하지 않은 경우
                             if isMyCodeActive != true {
                                 Button(action: {
                                     showAlertYourCodeNil = true
@@ -143,7 +142,8 @@ struct MatchingCodeView: View {
                                     Alert(title: Text("연결 실패"), message: Text("내 코드를 먼저 생성하세요"), dismissButton: .default(Text("OK")))
                                 }
                             }
-                            //TextField에 yourCode값이 없거나, 실수로 myCode를 입력했을 경우 경고
+                            
+                            //Alert Case2_상대코드 미입력헀거나 실수로 복사한 내 코드를 그대로 입력했을 경우
                             else if yourCode.count == 0 || yourCode == myCode {
                                 Button(action: {
                                     showAlertYourCodeNil = true
@@ -163,7 +163,7 @@ struct MatchingCodeView: View {
                                 }
                             }
                             
-                            //TextField에 yourCode값이 28자리 이외일 경우 경고
+                            //AlertCase3_상대방 코드값이 28자리가 아닐 경우
                             else if yourCode.count != 28 {
                                 Button(action: {
                                     showAlertYourCodeWrong = true
@@ -183,7 +183,7 @@ struct MatchingCodeView: View {
                                 }
                             }
                             
-                            //TextField에 yourCode값이 정상적으로 들어갈 경우 내비게이션링크 활성화
+                            //NavigationLink_정상 조건 충족 시 활성화
                             else {
                                 NavigationLink(destination: MatchingLoadingView()) {
                                     RoundedRectangle(cornerRadius: 20)
@@ -205,28 +205,28 @@ struct MatchingCodeView: View {
     }
 }
 
+//프리뷰
 struct MatchingCodeView_Previews: PreviewProvider {
     static var previews: some View {
         MatchingCodeView()
     }
 }
 
+//MatchingCode 장면 배경
 struct MatchingCodeBackgroundView: View {
     
-    //나중에 뷰모델에서 선언해서 불러오기
+    //뷰모델에서 선언해서 불러오기
     @State var colorBackgroundGradient1: LinearGradient = LinearGradient(
         gradient: Gradient(colors: [Color(red: 118/255, green: 56/255, blue: 249/255), Color(red: 0/255, green: 0/255, blue: 0/255)]),
         startPoint: .top,
         endPoint: .bottom)
     
     var body: some View {
-        GeometryReader { proxy in
             Rectangle()
                 .fill(colorBackgroundGradient1)
                 .opacity(0.6)
                 .background(Color.black)
                 .ignoresSafeArea()
-        }
     }
 }
 
