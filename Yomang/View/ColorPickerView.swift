@@ -24,7 +24,6 @@ struct ColorPickerView: View {
                 .clipShape(Circle())
                 .onTapGesture {
                     selectedColor = color
-                    print("\(color) + \(selectedColor)")
                 }
             }
         }
@@ -40,9 +39,9 @@ public func switchFontWeight(for font: Font.Weight) -> Double{
     case .medium:
         return 5.0
     case .bold:
-        return 7.0
-    case .heavy:
         return 8.0
+    case .heavy:
+        return 9.0
     default:
         break
     }
@@ -65,8 +64,6 @@ struct PencilWeightView: View {
                     .clipShape(Circle())
                     .onTapGesture {
                         selectedWeight = switchFontWeight(for: font)
-                      //selectedWeight = fontWeight[i]
-                        print("\(font) + \(selectedWeight)")
                     }
             }
         }.background(.black)
