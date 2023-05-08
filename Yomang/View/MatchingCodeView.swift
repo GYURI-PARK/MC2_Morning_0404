@@ -208,6 +208,7 @@ struct MatchingCodeView: View {
                                         )
                                 }
                             }
+                            Spacer().frame(height: proxy.size.height * 0.03)
                         }//VStack
                         .frame(width: proxy.size.width * 0.88)
                     }//VStack
