@@ -59,7 +59,7 @@ class AuthViewModel: ObservableObject{
             self.user?.userId = user.uid
             
             let data = ["userId": user.uid,
-                        "partnerId": "",
+                        "partnerId": "NaN",
                         "isConnected": false,
                         "imageUrl": "",
                         "uuid": uuid]
@@ -99,7 +99,13 @@ class AuthViewModel: ObservableObject{
                 db.document(partnerId).updateData(["isConnected": true])
                 return
             } else if partnersPartnerId.isEmpty {
-                print("=== DEBUG: 대기중... \(data)")
+                print("잘못된 코드를 넣은 것 같습니다! \(data)")
+            } else {
+                if (partnersPartnerId == "NaN"){
+                    print("대기중...")
+                }else{
+                    print("둘 중 누군가는 잘못된 코드를 넣었습니다!")
+                }
             }
         }
     }
