@@ -14,7 +14,7 @@ struct ImageMarkUpView: View {
     @State private var lines = [Line]()
     @State var selectedColor: Color = .white
     @State var selectedWeightDouble: Double = 4.0
-    @State private var offset: CGFloat = 1.0
+    @State private var offset: CGFloat = 205.0
     @State private var pencilOpacity: CGFloat = 1.0
     
     var body: some View {
@@ -22,6 +22,7 @@ struct ImageMarkUpView: View {
         ZStack{
             Color.black
                 .ignoresSafeArea()
+            
             VStack(alignment: .center) {
                 HStack {
                     Button(action: {
@@ -95,27 +96,28 @@ struct ImageMarkUpView: View {
                         context.stroke(path, with: .color(line.color.opacity(line.lineOpacity)), lineWidth: line.fontWeight)
                     }
                 }.background(Color.gray).cornerRadius(20)
-                .frame(width: 338, height: 354)
-                .gesture(DragGesture(minimumDistance: 0, coordinateSpace: .local)
-                    .onChanged({ value in
-                        let newPoint = value.location
-                        if value.translation.width + value.translation.height == 0 {
-                            lines.append(Line(points: [newPoint], color: selectedColor, lineOpacity: pencilOpacity, fontWeight: selectedWeightDouble))
-                        } else {
-                            let index = lines.count - 1
-                            lines[index].points.append(newPoint)
-                        }
-                    })
-                    .onEnded({ value in
-                        self.currentLine = Line(points: [], color: selectedColor, lineOpacity: pencilOpacity, fontWeight: selectedWeightDouble)
-                    })
-                )
-            
-
+                    .frame(width: 338, height: 354)
+                    .gesture(DragGesture(minimumDistance: 0, coordinateSpace: .local)
+                        .onChanged({ value in
+                            let newPoint = value.location
+                            if value.translation.width + value.translation.height == 0 {
+                                lines.append(Line(points: [newPoint], color: selectedColor, lineOpacity: pencilOpacity, fontWeight: selectedWeightDouble))
+                            } else {
+                                let index = lines.count - 1
+                                lines[index].points.append(newPoint)
+                            }
+                        })
+                            .onEnded({ value in
+                                self.currentLine = Line(points: [], color: selectedColor, lineOpacity: pencilOpacity, fontWeight: selectedWeightDouble)
+                            })
+                    )
+                
+                
                 Spacer()
                 
                 
                 // 색깔고르는칸
+                
                 HStack {
                     Spacer()
                     
@@ -127,8 +129,8 @@ struct ImageMarkUpView: View {
                     }
                     Spacer()
                 }.frame(width: 358, height: 72)
-                Spacer(minLength: 30)
                 
+                Spacer(minLength: 30)
                 
                 PencilWeightView(selectedWeight: $selectedWeightDouble)
                     .onChange(of: selectedWeightDouble) { newWeight in
@@ -138,23 +140,10 @@ struct ImageMarkUpView: View {
                     }
                 
                 Spacer()
-                
-                // 투명도 슬라이드
-//                HStack{
-//                    Text("OPACITY").foregroundColor(Color(hex: 0xEBEBF5))
-//
-//                    Spacer()
-//
-//                    Slider(value: $opacity, in: 0.1...1.0) {
-//                    }
-//                    .frame(maxWidth: 130)
-//                    .onChange(of: opacity) { newOpacity in
-//                        currentLine.lineOpacity = newOpacity
-//                    }
-//                }.frame(width: 300)
                 CustomSliderView(offset: $offset, opacity: $pencilOpacity).onChange(of: pencilOpacity) { newOpacity in
                     currentLine.lineOpacity = newOpacity
                 }.padding(.bottom, 20)
+                
             }
         }
     }
@@ -183,7 +172,7 @@ struct CustomSliderView: View {
                 .offset(x: offset)
                 .gesture(DragGesture().onChanged({(value) in
                     if value.location.x > 25 && value.location.x <=
-                        UIScreen.main.bounds.width - 150 {
+                        UIScreen.main.bounds.width - 159 {
                         print("dfsfdf",value.location.x)
                         offset = value.location.x - 26
                         

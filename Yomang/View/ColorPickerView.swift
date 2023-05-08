@@ -17,14 +17,14 @@ struct ColorPickerView: View {
         HStack {
             ForEach(colors, id: \.self) { color in
                 Image(systemName: selectedColor == color ?
-                      Constants.Icons.recordCircleFill :
+                      Constants.Icons.circleCircleFill:
                         Constants.Icons.circleFill)
                 .foregroundColor(color)
                 .font(.system(size: 30))
                 .clipShape(Circle())
                 .onTapGesture {
                     selectedColor = color
-                }
+                }.padding(.horizontal, 10)
             }
         }
     }
