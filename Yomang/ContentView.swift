@@ -8,13 +8,23 @@
 import SwiftUI
 
 struct ContentView: View {
+    @EnvironmentObject var viewModel: AuthViewModel
+    @State private var connected: Bool = false
     var body: some View {
-       MatchingCodeView()
-    }
-}
-
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView()
+//        if viewModel.userSession == nil {
+////            MatchingViewTest(user: User(uuid: "", userId: "", isConnected: false))
+//        } else {
+//            if let user = viewModel.user {
+//                if !connected {
+//                    MatchingViewTest(user: user)
+//                        .onChange(of: user.isConnected) { _ in
+//                            connected = true
+//                        }
+//                } else {
+//                    Text("Connected!")
+//                }
+//            }
+//        }
+        Text("")
     }
 }
