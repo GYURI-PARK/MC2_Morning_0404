@@ -14,7 +14,14 @@
 
 import SwiftUI
 
+
+
 struct MatchingCodeView: View {
+    
+    @State private var isActive = false
+    
+    
+    let user: User
     
     //View 내에서 직접 필요한 변수들
     @State private var showAlertYourCodeNil: Bool = false
@@ -22,7 +29,6 @@ struct MatchingCodeView: View {
     @State private var isMyCodeActive: Bool = false
     
     //추후 뷰모델와 모델, 그리고 서버에서 받아와서 처리하도록 변경/이동해야하는 변수들
-    @State var myCodeServer: String = "sdfs12iso09fsdfs12iso09f9283"
     @State var myCode: String = "이곳을 클릭하여 코드를 생성"
     @State var yourCode: String = ""
     @State var colorButtonGradient1: LinearGradient = LinearGradient(
@@ -59,7 +65,7 @@ struct MatchingCodeView: View {
                             HStack {
                                 //서버에서 받은 코드 표시 및 공유하기 버튼 활성화
                                 Button(action: {
-                                    self.myCode = myCodeServer
+                                    self.myCode = user.userId
                                     withAnimation{ isMyCodeActive = true }
                                 }) {
                                     Text(myCode)
@@ -197,7 +203,11 @@ struct MatchingCodeView: View {
                             
                             //NavigationLink_정상 조건 충족 시 활성화
                             else {
-                                NavigationLink(destination: MatchingLoadingView()) {
+                                NavigationLink(destination: MatchingLoadingView(), isActive: $isActive, label: {EmptyView()})
+                                Button {
+                                    AuthViewModel.shared.matchingUser(partnerId: yourCode)
+                                    isActive = true
+                                } label: {
                                     RoundedRectangle(cornerRadius: 20)
                                         .fill(colorButtonGradient1)
                                         .frame(height: 80)
@@ -221,7 +231,7 @@ struct MatchingCodeView: View {
 //프리뷰
 struct MatchingCodeView_Previews: PreviewProvider {
     static var previews: some View {
-        MatchingCodeView()
+        MatchingCodeView(user: User(uuid: "", userId: "", isConnected: false))
     }
 }
 

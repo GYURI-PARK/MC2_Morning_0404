@@ -11,20 +11,27 @@ struct ContentView: View {
     @EnvironmentObject var viewModel: AuthViewModel
     @State private var connected: Bool = false
     var body: some View {
-//        if viewModel.userSession == nil {
-////            MatchingViewTest(user: User(uuid: "", userId: "", isConnected: false))
-//        } else {
-//            if let user = viewModel.user {
-//                if !connected {
-//                    MatchingViewTest(user: user)
-//                        .onChange(of: user.isConnected) { _ in
-//                            connected = true
-//                        }
-//                } else {
-//                    Text("Connected!")
-//                }
-//            }
-//        }
-        Text("")
+        if viewModel.userSession == nil {
+            MatchingCodeView(user: User(uuid: "", userId: "", isConnected: false))
+                .onAppear {
+                    viewModel.registerUser { _ in
+                        
+                    }
+                }
+        } else {
+            if let user = viewModel.user {
+                if !connected {
+                    MatchingCodeView(user: user)
+                        .onChange(of: user.isConnected) { _ in
+                            connected = true
+                        }
+                } else {
+                    Text("Connected!")
+                }
+            }
+            else {
+                Text("업성")
+            }
+        }
     }
 }
