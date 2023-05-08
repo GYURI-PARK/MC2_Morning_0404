@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4B19E0D42A088E9F00CF3F42 /* Color+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B19E0D32A088E9F00CF3F42 /* Color+Extension.swift */; };
 		68F7D2432A038B3700D7B874 /* YomangApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68F7D2422A038B3700D7B874 /* YomangApp.swift */; };
 		68F7D2452A038B3700D7B874 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68F7D2442A038B3700D7B874 /* ContentView.swift */; };
 		68F7D2472A038B3800D7B874 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 68F7D2462A038B3800D7B874 /* Assets.xcassets */; };
@@ -31,6 +32,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4B19E0D32A088E9F00CF3F42 /* Color+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Extension.swift"; sourceTree = "<group>"; };
 		68F7D23F2A038B3700D7B874 /* Yomang.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Yomang.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		68F7D2422A038B3700D7B874 /* YomangApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YomangApp.swift; sourceTree = "<group>"; };
 		68F7D2442A038B3700D7B874 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -66,6 +68,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4B19E0D22A088E8F00CF3F42 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				4B19E0D32A088E9F00CF3F42 /* Color+Extension.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		68F7D2362A038B3700D7B874 = {
 			isa = PBXGroup;
 			children = (
@@ -85,6 +95,7 @@
 		68F7D2412A038B3700D7B874 /* Yomang */ = {
 			isa = PBXGroup;
 			children = (
+				4B19E0D22A088E8F00CF3F42 /* Extensions */,
 				68F7D2552A038D5300D7B874 /* GoogleService-Info.plist */,
 				68F7D2502A038B4900D7B874 /* Model */,
 				68F7D2512A038B5400D7B874 /* View */,
@@ -219,6 +230,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				68F7D2452A038B3700D7B874 /* ContentView.swift in Sources */,
+				4B19E0D42A088E9F00CF3F42 /* Color+Extension.swift in Sources */,
 				68F7D2732A0393E500D7B874 /* SplashView.swift in Sources */,
 				68F7D2752A0393FE00D7B874 /* MatchingCodeViewModel.swift in Sources */,
 				68F7D2432A038B3700D7B874 /* YomangApp.swift in Sources */,
