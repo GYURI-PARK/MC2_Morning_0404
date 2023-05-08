@@ -17,5 +17,6 @@ struct Constants {
         static let recordCircleFill = "record.circle.fill"
         static let trayCircleFill = "tray.circle.fill"
         static let circleFill = "circle.fill"
+        static let circleCircleFill = "circlecircle.fill"
     }
 }
