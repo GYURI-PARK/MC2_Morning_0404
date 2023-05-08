@@ -13,6 +13,9 @@ import CoreTransferable
 
 @MainActor
 class YomangViewModel: ObservableObject {
+    
+    // navigation cancel
+    @Published var cancel: Bool = false
         
     enum ImageState {
         case empty

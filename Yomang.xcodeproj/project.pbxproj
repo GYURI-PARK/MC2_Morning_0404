@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		683090082A08EDBA004F5663 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 683090072A08EDBA004F5663 /* Constants.swift */; };
+		68EBC3562A078F25006AD5C2 /* MyYomangView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68EBC3552A078F25006AD5C2 /* MyYomangView.swift */; };
 		68F7D2432A038B3700D7B874 /* YomangApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68F7D2422A038B3700D7B874 /* YomangApp.swift */; };
 		68F7D2472A038B3800D7B874 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 68F7D2462A038B3800D7B874 /* Assets.xcassets */; };
 		68F7D24A2A038B3800D7B874 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 68F7D2492A038B3800D7B874 /* Preview Assets.xcassets */; };
@@ -33,6 +35,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		683090072A08EDBA004F5663 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		68EBC3552A078F25006AD5C2 /* MyYomangView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyYomangView.swift; sourceTree = "<group>"; };
 		68F7D23F2A038B3700D7B874 /* Yomang.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Yomang.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		68F7D2422A038B3700D7B874 /* YomangApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YomangApp.swift; sourceTree = "<group>"; };
 		68F7D2462A038B3800D7B874 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -97,6 +101,7 @@
 				68F7D2822A052C2500D7B874 /* ContentView.swift */,
 				68F7D2462A038B3800D7B874 /* Assets.xcassets */,
 				68F7D2482A038B3800D7B874 /* Preview Content */,
+				683090072A08EDBA004F5663 /* Constants.swift */,
 			);
 			path = Yomang;
 			sourceTree = "<group>";
@@ -122,6 +127,7 @@
 			children = (
 				68F7D27E2A05001100D7B874 /* YomangImageView.swift */,
 				68F7D2722A0393E500D7B874 /* SplashView.swift */,
+				68EBC3552A078F25006AD5C2 /* MyYomangView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -225,6 +231,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				68F7D2732A0393E500D7B874 /* SplashView.swift in Sources */,
+				68EBC3562A078F25006AD5C2 /* MyYomangView.swift in Sources */,
+				683090082A08EDBA004F5663 /* Constants.swift in Sources */,
 				68F7D2832A052C2500D7B874 /* ContentView.swift in Sources */,
 				68F7D2752A0393FE00D7B874 /* MatchingCodeViewModel.swift in Sources */,
 				68F7D2432A038B3700D7B874 /* YomangApp.swift in Sources */,
@@ -373,7 +381,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = pos.youngsa.Yomang;
+				PRODUCT_BUNDLE_IDENTIFIER = suvid.HelloAR2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -403,7 +411,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = pos.youngsa.Yomang;
+				PRODUCT_BUNDLE_IDENTIFIER = suvid.HelloAR2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
