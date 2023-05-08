@@ -1,6 +1,8 @@
 import SwiftUI
 import Firebase
+import FirebaseFirestore
 import FirebaseStorage
+import FirebaseAuth
 
 let db = Firestore.firestore().collection("TestCollection")
 
