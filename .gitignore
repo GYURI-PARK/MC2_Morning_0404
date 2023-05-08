@@ -132,6 +132,8 @@ iOSInjectionProject/
 ### SwiftPackageManager ###
 Packages
 xcuserdata
- 
+
+### TestViews ###
+TestView/ 
 
 # End of https://www.toptal.com/developers/gitignore/api/macos,swift,swiftpackagemanager,swiftpm,firebase

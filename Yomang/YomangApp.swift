@@ -20,3 +20,10 @@ struct YomangApp: App {
         }
     }
 }
+
+
+struct YomangApp_Previews: PreviewProvider {
+    static var previews: some View {
+        ContentView().environmentObject(AuthViewModel.shared)
+    }
+}
