@@ -9,21 +9,6 @@ import SwiftUI
 
 struct YourYomangView: View {
     var body: some View {
-        TabView {
-            YourYomang()
-            MyYomangView()
-        }
-        .tabViewStyle(.page(indexDisplayMode:.always))
-        .indexViewStyle(.page(backgroundDisplayMode: .always))
-        .navigationViewStyle(.stack)
-        .navigationBarTitleDisplayMode(.inline)
-        .padding(20)
-    }
-}
-
-
-struct YourYomang: View {
-    var body: some View {
         NavigationView {
             VStack {
                 Rectangle()
@@ -39,15 +24,12 @@ struct YourYomang: View {
 struct MyYomangView: View {
     var body: some View {
         NavigationView {
-
                 Text("dd")
                     .navigationBarTitle("skd")
                     .padding(.leading, 16)
-
         }
     }
 }
-
 
 struct YourYomangView_Previews: PreviewProvider {
     static var previews: some View {
