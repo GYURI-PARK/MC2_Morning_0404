@@ -17,7 +17,7 @@ struct ColorPickerView: View {
         HStack {
             ForEach(colors, id: \.self) { color in
                 Image(systemName: selectedColor == color ?
-                      Constants.Icons.circleCircleFill:
+                      Constants.Icons.circleCircleFill :
                         Constants.Icons.circleFill)
                 .foregroundColor(color)
                 .font(.system(size: 30))
@@ -53,20 +53,42 @@ struct PencilWeightView: View {
     let fonts = [Font.Weight.ultraLight, Font.Weight.light, Font.Weight.medium, Font.Weight.bold, Font.Weight.heavy]
     
     @Binding var selectedWeight: Double
+    @State var selectedIndex: Int?
     
     var body: some View {
         HStack {
-            ForEach(fonts, id: \.self) { font in
-                Image(systemName: "scribble.variable")
-                    .foregroundColor(.white)
-                    .font(.system(size: 30))
-                    .fontWeight(font)
-                    .clipShape(Circle())
-                    .onTapGesture {
-                        selectedWeight = switchFontWeight(for: font)
+            ForEach(Array(fonts.enumerated()), id: \.1) { index, font in
+                ZStack {
+                    // 배경
+                    if index == selectedIndex {
+                        Color.white.opacity(1.0)
+                            .frame(width: 40, height: 40)
+                            .clipShape(Rectangle())
+                            .cornerRadius(10)
+                        
+                        Image(systemName: "scribble.variable")
+                            .foregroundColor(.black)
+                            .font(.system(size: 30))
+                            .fontWeight(font)
+                            .clipShape(Circle())
+                            .onTapGesture {
+                                selectedWeight = switchFontWeight(for: font)
+                                selectedIndex = index
+                            }
+                    } else{
+                        Image(systemName: "scribble.variable")
+                            .foregroundColor(.white)
+                            .font(.system(size: 30))
+                            .fontWeight(font)
+                            .clipShape(Circle())
+                            .onTapGesture {
+                                selectedWeight = switchFontWeight(for: font)
+                                selectedIndex = index
+                            }
                     }
+                }
             }
-        }.background(.black)
+        }
     }
 }
 
