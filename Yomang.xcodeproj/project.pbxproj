@@ -38,6 +38,7 @@
 		AD05EF5C2A0A789E007504C2 /* YomangWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD05EF5B2A0A789E007504C2 /* YomangWidget.swift */; };
 		AD05EF5E2A0A789F007504C2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AD05EF5D2A0A789F007504C2 /* Assets.xcassets */; };
 		AD05EF622A0A789F007504C2 /* YomangWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = AD05EF532A0A789E007504C2 /* YomangWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		AD05EF6B2A0A89B6007504C2 /* UserDefaults+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD05EF6A2A0A89B6007504C2 /* UserDefaults+Extension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -87,6 +88,7 @@
 		AD05EF5F2A0A789F007504C2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		AD05EF672A0A88FD007504C2 /* Yomang.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Yomang.entitlements; sourceTree = "<group>"; };
 		AD05EF682A0A893A007504C2 /* YomangWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = YomangWidgetExtension.entitlements; sourceTree = "<group>"; };
+		AD05EF6A2A0A89B6007504C2 /* UserDefaults+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserDefaults+Extension.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -154,6 +156,7 @@
 		68F7D2412A038B3700D7B874 /* Yomang */ = {
 			isa = PBXGroup;
 			children = (
+				AD05EF692A0A89A2007504C2 /* Extensions */,
 				AD05EF672A0A88FD007504C2 /* Yomang.entitlements */,
 				68F7D2552A038D5300D7B874 /* GoogleService-Info.plist */,
 				68F7D2502A038B4900D7B874 /* Model */,
@@ -212,6 +215,14 @@
 				AD05EF5F2A0A789F007504C2 /* Info.plist */,
 			);
 			path = YomangWidget;
+			sourceTree = "<group>";
+		};
+		AD05EF692A0A89A2007504C2 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				AD05EF6A2A0A89B6007504C2 /* UserDefaults+Extension.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -342,6 +353,7 @@
 				68F7D2432A038B3700D7B874 /* YomangApp.swift in Sources */,
 				68F7D2542A038B7100D7B874 /* User.swift in Sources */,
 				2FD8C9A22A052C3F00666609 /* AuthViewModel.swift in Sources */,
+				AD05EF6B2A0A89B6007504C2 /* UserDefaults+Extension.swift in Sources */,
 				8AB30FA02A053B1400AB274E /* MatchingLoadingView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

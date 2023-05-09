@@ -71,3 +71,11 @@ struct YomangWidget_Previews: PreviewProvider {
             .previewContext(WidgetPreviewContext(family: .systemSmall))
     }
 }
+
+// - MARK: Extension - UserDefaults
+extension UserDefaults {
+    static var shared: UserDefaults {
+            let appGroupID = "group.youngsa.Yomang"
+            return UserDefaults(suiteName: appGroupID)!
+        }
+}
