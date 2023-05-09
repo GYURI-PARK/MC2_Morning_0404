@@ -16,14 +16,14 @@ struct YomangApp: App {
     
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ContentView().environmentObject(AuthViewModel.shared)
         }
     }
 }
 
-
-struct YomangApp_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView()
-    }
-}
+//
+//struct YomangApp_Previews: PreviewProvider {
+//    static var previews: some View {
+//        ContentView()
+//    }
+//}
