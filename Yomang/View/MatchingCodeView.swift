@@ -147,7 +147,7 @@ struct MatchingCodeView: View {
                                 }) {
                                     RoundedRectangle(cornerRadius: 20)
                                         .fill(colorButtonDisabled)
-                                        .frame(height: 80)
+                                        .frame(height: 70)
                                         .overlay(
                                             Text("연결하기")
                                                 .font(.title3)
@@ -167,7 +167,7 @@ struct MatchingCodeView: View {
                                 }) {
                                     RoundedRectangle(cornerRadius: 20)
                                         .fill(colorButtonDisabled)
-                                        .frame(height: 80)
+                                        .frame(height: 70)
                                         .overlay(
                                             Text("연결하기")
                                                 .font(.title3)
@@ -187,7 +187,7 @@ struct MatchingCodeView: View {
                                 }) {
                                     RoundedRectangle(cornerRadius: 20)
                                         .fill(colorButtonDisabled)
-                                        .frame(height: 80)
+                                        .frame(height: 70)
                                         .overlay(
                                             Text("연결하기")
                                                 .font(.title3)
@@ -207,7 +207,7 @@ struct MatchingCodeView: View {
                                 NavigationLink(destination: MatchingLoadingView()) {
                                     RoundedRectangle(cornerRadius: 20)
                                         .fill(colorButtonGradient1)
-                                        .frame(height: 80)
+                                        .frame(height: 70)
                                         .overlay(
                                             Text("연결하기")
                                                 .font(.title3.bold())

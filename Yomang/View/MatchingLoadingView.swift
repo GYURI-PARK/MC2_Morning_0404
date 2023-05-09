@@ -57,7 +57,7 @@ struct MatchingLoadingView: View {
                         }, label: {
                             RoundedRectangle(cornerRadius: 20)
                                 .fill(isMatchingComplete ? colorButtonGradient1 : colorButtonDisabled)
-                                .frame(height: 80)
+                                .frame(height: 70)
                                 .overlay(
                                     Text(isMatchingComplete ? "연결완료" : "연결중…")
                                         .font(.title3)
