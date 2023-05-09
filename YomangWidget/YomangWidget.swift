@@ -10,11 +10,11 @@ import SwiftUI
 
 struct Provider: TimelineProvider {
     func placeholder(in context: Context) -> SimpleEntry {
-        SimpleEntry(date: Date())
+        SimpleEntry(date: Date(), image: UIImage(named: "preview") ?? UIImage())
     }
 
     func getSnapshot(in context: Context, completion: @escaping (SimpleEntry) -> ()) {
-        let entry = SimpleEntry(date: Date())
+        let entry = SimpleEntry(date: Date(), image: UIImage(named: "preview") ?? UIImage())
         completion(entry)
     }
 
@@ -25,7 +25,7 @@ struct Provider: TimelineProvider {
         let currentDate = Date()
         for hourOffset in 0 ..< 5 {
             let entryDate = Calendar.current.date(byAdding: .hour, value: hourOffset, to: currentDate)!
-            let entry = SimpleEntry(date: entryDate)
+            let entry = SimpleEntry(date: entryDate, image: UIImage(named: "preview") ?? UIImage())
             entries.append(entry)
         }
 
@@ -36,13 +36,19 @@ struct Provider: TimelineProvider {
 
 struct SimpleEntry: TimelineEntry {
     let date: Date
+    let image: UIImage
 }
 
 struct YomangWidgetEntryView : View {
     var entry: Provider.Entry
 
     var body: some View {
-        Text(entry.date, style: .time)
+        ZStack {
+            Image(uiImage: entry.image)
+                .resizable()
+                .scaledToFill()
+            Text(entry.date, style: .time)
+        }
     }
 }
 
@@ -53,14 +59,15 @@ struct YomangWidget: Widget {
         StaticConfiguration(kind: kind, provider: Provider()) { entry in
             YomangWidgetEntryView(entry: entry)
         }
-        .configurationDisplayName("My Widget")
-        .description("This is an example widget.")
+        .configurationDisplayName("Yomang Widget")
+        .description("요망이들을 위한 위젯입니다 👀")
+        .supportedFamilies([.systemSmall, .systemLarge])
     }
 }
 
 struct YomangWidget_Previews: PreviewProvider {
     static var previews: some View {
-        YomangWidgetEntryView(entry: SimpleEntry(date: Date()))
+        YomangWidgetEntryView(entry: SimpleEntry(date: Date(), image: UIImage(named: "preview") ?? UIImage()))
             .previewContext(WidgetPreviewContext(family: .systemSmall))
     }
 }
