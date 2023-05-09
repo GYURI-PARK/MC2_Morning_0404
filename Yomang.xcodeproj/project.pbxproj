@@ -85,6 +85,8 @@
 		AD05EF5B2A0A789E007504C2 /* YomangWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YomangWidget.swift; sourceTree = "<group>"; };
 		AD05EF5D2A0A789F007504C2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		AD05EF5F2A0A789F007504C2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		AD05EF672A0A88FD007504C2 /* Yomang.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Yomang.entitlements; sourceTree = "<group>"; };
+		AD05EF682A0A893A007504C2 /* YomangWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = YomangWidgetExtension.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -132,6 +134,7 @@
 		68F7D2362A038B3700D7B874 = {
 			isa = PBXGroup;
 			children = (
+				AD05EF682A0A893A007504C2 /* YomangWidgetExtension.entitlements */,
 				68F7D2412A038B3700D7B874 /* Yomang */,
 				AD05EF582A0A789E007504C2 /* YomangWidget */,
 				68F7D2402A038B3700D7B874 /* Products */,
@@ -151,6 +154,7 @@
 		68F7D2412A038B3700D7B874 /* Yomang */ = {
 			isa = PBXGroup;
 			children = (
+				AD05EF672A0A88FD007504C2 /* Yomang.entitlements */,
 				68F7D2552A038D5300D7B874 /* GoogleService-Info.plist */,
 				68F7D2502A038B4900D7B874 /* Model */,
 				68F7D2512A038B5400D7B874 /* View */,
@@ -482,10 +486,11 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Yomang/Yomang.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Yomang/Preview Content\"";
-				DEVELOPMENT_TEAM = GBQ3ZW8V84;
+				DEVELOPMENT_TEAM = 7D5PZJWQ9T;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Get access to User Photo Library.";
@@ -513,10 +518,11 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Yomang/Yomang.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Yomang/Preview Content\"";
-				DEVELOPMENT_TEAM = GBQ3ZW8V84;
+				DEVELOPMENT_TEAM = 7D5PZJWQ9T;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Get access to User Photo Library.";
@@ -543,9 +549,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = YomangWidgetExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = GBQ3ZW8V84;
+				DEVELOPMENT_TEAM = 7D5PZJWQ9T;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = YomangWidget/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = YomangWidget;
@@ -570,9 +577,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = YomangWidgetExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = GBQ3ZW8V84;
+				DEVELOPMENT_TEAM = 7D5PZJWQ9T;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = YomangWidget/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = YomangWidget;
