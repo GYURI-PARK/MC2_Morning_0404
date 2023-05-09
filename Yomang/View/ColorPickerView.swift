@@ -68,23 +68,23 @@ struct PencilWeightView: View {
                         
                         Image(systemName: "scribble.variable")
                             .foregroundColor(.black)
-                            .font(.system(size: 30))
+                            .font(.system(size: 22))
                             .fontWeight(font)
                             .clipShape(Circle())
-                            .onTapGesture {
+                            .onTapGesture() {
                                 selectedWeight = switchFontWeight(for: font)
                                 selectedIndex = index
-                            }
+                            }.padding(10)
                     } else{
                         Image(systemName: "scribble.variable")
                             .foregroundColor(.white)
-                            .font(.system(size: 30))
+                            .font(.system(size: 22))
                             .fontWeight(font)
                             .clipShape(Circle())
                             .onTapGesture {
                                 selectedWeight = switchFontWeight(for: font)
                                 selectedIndex = index
-                            }
+                            }.padding(10)
                     }
                 }
             }
