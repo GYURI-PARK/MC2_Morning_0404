@@ -8,6 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		2F5FC2752A07670E00CDDC56 /* MatchingLoadingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F5FC2742A07670E00CDDC56 /* MatchingLoadingViewModel.swift */; };
+		2F70F31F2A0A70C900921844 /* YomangImageViewTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F70F31A2A0A70C900921844 /* YomangImageViewTest.swift */; };
+		2F70F3202A0A70C900921844 /* MatchingViewTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F70F31B2A0A70C900921844 /* MatchingViewTest.swift */; };
+		2F70F3212A0A70C900921844 /* YomangViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F70F31C2A0A70C900921844 /* YomangViewModelTest.swift */; };
+		2F70F3242A0A988100921844 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 2F70F3232A0A988100921844 /* Kingfisher */; };
 		2FD8C9A02A04F4ED00666609 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 2FD8C99F2A04F4ED00666609 /* FirebaseFirestore */; };
 		2FD8C9A22A052C3F00666609 /* AuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FD8C9A12A052C3F00666609 /* AuthViewModel.swift */; };
 		68F7D2432A038B3700D7B874 /* YomangApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68F7D2422A038B3700D7B874 /* YomangApp.swift */; };
@@ -36,6 +40,9 @@
 
 /* Begin PBXFileReference section */
 		2F5FC2742A07670E00CDDC56 /* MatchingLoadingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchingLoadingViewModel.swift; sourceTree = "<group>"; };
+		2F70F31A2A0A70C900921844 /* YomangImageViewTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YomangImageViewTest.swift; sourceTree = "<group>"; };
+		2F70F31B2A0A70C900921844 /* MatchingViewTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MatchingViewTest.swift; sourceTree = "<group>"; };
+		2F70F31C2A0A70C900921844 /* YomangViewModelTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YomangViewModelTest.swift; sourceTree = "<group>"; };
 		2FD8C9A12A052C3F00666609 /* AuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewModel.swift; sourceTree = "<group>"; };
 		68F7D23F2A038B3700D7B874 /* Yomang.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Yomang.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		68F7D2422A038B3700D7B874 /* YomangApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YomangApp.swift; sourceTree = "<group>"; };
@@ -57,6 +64,7 @@
 			files = (
 				68F7D2652A0390EA00D7B874 /* FirebaseDatabaseSwift in Frameworks */,
 				2FD8C9A02A04F4ED00666609 /* FirebaseFirestore in Frameworks */,
+				2F70F3242A0A988100921844 /* Kingfisher in Frameworks */,
 				68F7D2632A0390EA00D7B874 /* FirebaseDatabase in Frameworks */,
 				68F7D25B2A0390EA00D7B874 /* FirebaseAnalyticsSwift in Frameworks */,
 				68F7D2712A0390EA00D7B874 /* FirebaseStorageCombine-Community in Frameworks */,
@@ -74,6 +82,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2F70F3172A0A70C900921844 /* TestView */ = {
+			isa = PBXGroup;
+			children = (
+				2F70F31A2A0A70C900921844 /* YomangImageViewTest.swift */,
+				2F70F31B2A0A70C900921844 /* MatchingViewTest.swift */,
+				2F70F31C2A0A70C900921844 /* YomangViewModelTest.swift */,
+			);
+			name = TestView;
+			path = Yomang/TestView;
+			sourceTree = "<group>";
+		};
 		2FD8C99E2A04F4B900666609 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -84,6 +103,7 @@
 		68F7D2362A038B3700D7B874 = {
 			isa = PBXGroup;
 			children = (
+				2F70F3172A0A70C900921844 /* TestView */,
 				68F7D2412A038B3700D7B874 /* Yomang */,
 				68F7D2402A038B3700D7B874 /* Products */,
 				2FD8C99E2A04F4B900666609 /* Frameworks */,
@@ -179,6 +199,7 @@
 				68F7D26E2A0390EA00D7B874 /* FirebaseStorage */,
 				68F7D2702A0390EA00D7B874 /* FirebaseStorageCombine-Community */,
 				2FD8C99F2A04F4ED00666609 /* FirebaseFirestore */,
+				2F70F3232A0A988100921844 /* Kingfisher */,
 			);
 			productName = Yomang;
 			productReference = 68F7D23F2A038B3700D7B874 /* Yomang.app */;
@@ -210,6 +231,7 @@
 			mainGroup = 68F7D2362A038B3700D7B874;
 			packageReferences = (
 				68F7D2572A0390E900D7B874 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				2F70F3222A0A988100921844 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 			);
 			productRefGroup = 68F7D2402A038B3700D7B874 /* Products */;
 			projectDirPath = "";
@@ -239,8 +261,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				2F5FC2752A07670E00CDDC56 /* MatchingLoadingViewModel.swift in Sources */,
+				2F70F31F2A0A70C900921844 /* YomangImageViewTest.swift in Sources */,
+				2F70F3202A0A70C900921844 /* MatchingViewTest.swift in Sources */,
 				68F7D2452A038B3700D7B874 /* ContentView.swift in Sources */,
 				68F7D2732A0393E500D7B874 /* SplashView.swift in Sources */,
+				2F70F3212A0A70C900921844 /* YomangViewModelTest.swift in Sources */,
 				8AB30F9E2A04F78800AB274E /* MatchingCodeView.swift in Sources */,
 				68F7D2752A0393FE00D7B874 /* MatchingCodeViewModel.swift in Sources */,
 				68F7D2432A038B3700D7B874 /* YomangApp.swift in Sources */,
@@ -451,6 +476,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		2F70F3222A0A988100921844 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/onevcat/Kingfisher.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 7.0.0;
+			};
+		};
 		68F7D2572A0390E900D7B874 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
@@ -462,6 +495,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		2F70F3232A0A988100921844 /* Kingfisher */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2F70F3222A0A988100921844 /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			productName = Kingfisher;
+		};
 		2FD8C99F2A04F4ED00666609 /* FirebaseFirestore */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 68F7D2572A0390E900D7B874 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
