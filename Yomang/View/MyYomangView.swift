@@ -1,13 +1,13 @@
 //
-//  YourYomangView.swift
+//  MyYomangView.swift
 //  Yomang
 //
-//  Created by Seohyun Bae on 2023/05/04.
+//  Created by Seohyun Bae on 2023/05/09.
 //
 
 import SwiftUI
 
-struct YourYomangView: View {
+struct MyYomangView: View {
     var body: some View {
         NavigationView {
             VStack {
@@ -16,14 +16,14 @@ struct YourYomangView: View {
                     .frame(width: 338, height: 354)
                     .cornerRadius(22)
             }
-            .navigationTitle("너의 요망")
+            .navigationTitle("나의 요망")
         }
     }
 }
 
 
-struct YourYomangView_Previews: PreviewProvider {
+struct MyYomangView_Previews: PreviewProvider {
     static var previews: some View {
-        YourYomangView()
+        MyYomangView()
     }
 }

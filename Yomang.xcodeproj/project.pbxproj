@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		4B19E0D02A088BFF00CF3F42 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B19E0CF2A088BFF00CF3F42 /* HomeView.swift */; };
+		4B19E0D62A09EEC200CF3F42 /* MyYomangView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B19E0D52A09EEC200CF3F42 /* MyYomangView.swift */; };
 		4BE70B4C2A0398E000D7D588 /* YourYomangView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BE70B4B2A0398E000D7D588 /* YourYomangView.swift */; };
 		68F7D2432A038B3700D7B874 /* YomangApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68F7D2422A038B3700D7B874 /* YomangApp.swift */; };
 		68F7D2452A038B3700D7B874 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68F7D2442A038B3700D7B874 /* ContentView.swift */; };
@@ -34,6 +35,7 @@
 
 /* Begin PBXFileReference section */
 		4B19E0CF2A088BFF00CF3F42 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		4B19E0D52A09EEC200CF3F42 /* MyYomangView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyYomangView.swift; sourceTree = "<group>"; };
 		4BE70B4B2A0398E000D7D588 /* YourYomangView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YourYomangView.swift; sourceTree = "<group>"; };
 		68F7D23F2A038B3700D7B874 /* Yomang.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Yomang.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		68F7D2422A038B3700D7B874 /* YomangApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YomangApp.swift; sourceTree = "<group>"; };
@@ -123,6 +125,7 @@
 				68F7D2722A0393E500D7B874 /* SplashView.swift */,
 				4BE70B4B2A0398E000D7D588 /* YourYomangView.swift */,
 				4B19E0CF2A088BFF00CF3F42 /* HomeView.swift */,
+				4B19E0D52A09EEC200CF3F42 /* MyYomangView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -225,6 +228,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4BE70B4C2A0398E000D7D588 /* YourYomangView.swift in Sources */,
+				4B19E0D62A09EEC200CF3F42 /* MyYomangView.swift in Sources */,
 				4B19E0D02A088BFF00CF3F42 /* HomeView.swift in Sources */,
 				68F7D2452A038B3700D7B874 /* ContentView.swift in Sources */,
 				68F7D2732A0393E500D7B874 /* SplashView.swift in Sources */,
