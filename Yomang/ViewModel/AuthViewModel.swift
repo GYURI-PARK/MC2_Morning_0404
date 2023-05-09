@@ -15,6 +15,8 @@ class AuthViewModel: ObservableObject{
     @Published var userSession: FirebaseAuth.User?
     @Published var user: User?
     
+    
+    //TODO? 인터넷 연결 없을 시 오류 확인하는 기능 추가해야하나?
     init() {
         self.userSession = Auth.auth().currentUser
         fetchUser() {}
@@ -28,7 +30,9 @@ class AuthViewModel: ObservableObject{
         // TODO: 세션 내의 유저가 없다면 UserDefaults로 저장된 userId에 대한 밸류값이 있는지 확인하는 부분 추가
         
         db.document(uid).getDocument { snapshot , _ in
-            guard let user = try? snapshot?.data(as: User.self) else { return }
+            guard let user = try? snapshot?.data(as: User.self) else {
+                self.user?.userId = UserDefaults.standard.string(forKey: "userId") ?? "NaN"
+                return}
             
             self.user = user
             print("=== DEBUG: fetch \(self.user)")
@@ -110,15 +114,14 @@ class AuthViewModel: ObservableObject{
         }
     }
     
-    func uploadImage(image: Data?, imageName : String) {
-        let storageRef = Storage.storage().reference().child("TestPhotos/\(imageName)")
+    func uploadImage(image: Data?) {
+        let storageRef = Storage.storage().reference().child("Photos/test") //\(self.user?.userId)
         let data = image
         let metadata = StorageMetadata()
         metadata.contentType = "image/jpg"
         print(data ?? "no data")
         
         if let data = data{
-            print("Saved?")
             storageRef.putData(data, metadata: metadata) {(metadata, error) in
                 if let error = error {
                     print("Error: \(error)")
@@ -126,19 +129,20 @@ class AuthViewModel: ObservableObject{
                 if let metadata = metadata {
                     print("metadata: \(metadata)")
                 }
+                print("Saved!")
             }
-        }
-    }
-    
-    @Published var uiImage:UIImage? = nil
-    
-    func downloadImage(imageName: String){
-        let storageRef = Storage.storage().reference()
-        let fileRef = storageRef.child("TestPhotos/\(imageName)")
-        
-        fileRef.getData(maxSize: 20 * 1024 * 1024) { data, error in
-            if error == nil && data != nil {
-                self.uiImage = UIImage(data: data!)!
+            
+            storageRef.downloadURL { url, error in
+              if let error = error {
+                // Handle any errors
+              } else {
+                  print(1)
+                  print(url!)
+                  UserDefaults.standard.set(url!.absoluteString, forKey:"imageURL")
+                  print(2)
+                  print(UserDefaults.standard.string(forKey: "imageURL") ?? "ERR")
+                  // Get the download URL for 'images/stars.jpg'
+              }
             }
         }
     }
