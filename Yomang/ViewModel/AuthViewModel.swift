@@ -59,7 +59,7 @@ class AuthViewModel: ObservableObject{
             self.user?.userId = user.uid
             
             let data = ["userId": user.uid,
-                        "partnerId": "",
+                        "partnerId": "NaN",
                         "isConnected": false,
                         "imageUrl": "",
                         "uuid": uuid]
@@ -99,7 +99,13 @@ class AuthViewModel: ObservableObject{
                 db.document(partnerId).updateData(["isConnected": true])
                 return
             } else if partnersPartnerId.isEmpty {
-                print("=== DEBUG: 대기중... \(data)")
+                print("잘못된 코드를 넣은 것 같습니다! \(data)")
+            } else {
+                if (partnersPartnerId == "NaN"){
+                    print("대기중...")
+                }else{
+                    print("둘 중 누군가는 잘못된 코드를 넣었습니다!")
+                }
             }
         }
     }
@@ -110,7 +116,7 @@ class AuthViewModel: ObservableObject{
         let metadata = StorageMetadata()
         metadata.contentType = "image/jpg"
         print(data ?? "no data")
-
+        
         if let data = data{
             print("Saved?")
             storageRef.putData(data, metadata: metadata) {(metadata, error) in
@@ -127,15 +133,15 @@ class AuthViewModel: ObservableObject{
     @Published var uiImage:UIImage? = nil
     
     func downloadImage(imageName: String){
-             let storageRef = Storage.storage().reference()
-             let fileRef = storageRef.child("TestPhotos/\(imageName)")
-                    
-             fileRef.getData(maxSize: 20 * 1024 * 1024) { data, error in
-                  if error == nil && data != nil {
-                      self.uiImage = UIImage(data: data!)!
-                  }
-              }
+        let storageRef = Storage.storage().reference()
+        let fileRef = storageRef.child("TestPhotos/\(imageName)")
+        
+        fileRef.getData(maxSize: 20 * 1024 * 1024) { data, error in
+            if error == nil && data != nil {
+                self.uiImage = UIImage(data: data!)!
+            }
         }
+    }
     
     /**
      0404에는 로그아웃에 대한 기능 명세가 없습니다. 테스트용으로 구현된 메소드이니 사용하지 마세요.

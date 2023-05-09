@@ -17,10 +17,7 @@ import SwiftUI
 
 
 struct MatchingCodeView: View {
-    
-    @State private var isActive = false
-    
-    
+ 
     let user: User
     
     //View 내에서 직접 필요한 변수들
@@ -63,13 +60,15 @@ struct MatchingCodeView: View {
                                 .foregroundColor(.white)
                             
                             HStack {
-                                //서버에서 받은 코드 표시 및 공유하기 버튼 활성화
+                                //나의 코드 생성하기, 받은 코드 표시 및 공유하기 버튼 활성화
                                 Button(action: {
+                                    AuthViewModel.shared.registerUser { _ in }
                                     self.myCode = user.userId
                                     withAnimation{ isMyCodeActive = true }
                                 }) {
                                     Text(myCode)
                                         .foregroundColor(.white)
+                                        .lineLimit(1)
                                         .padding(EdgeInsets(top: 20, leading: 20, bottom: 20, trailing: 50))
                                         .frame(width: proxy.size.width * 0.88, alignment: .leading)
                                         .background(.white.opacity(0.1))
@@ -202,12 +201,10 @@ struct MatchingCodeView: View {
                             }
                             
                             //NavigationLink_정상 조건 충족 시 활성화
+                            //버튼 클릭 시
+                            //TO-DO dfsdf
                             else {
-                                NavigationLink(destination: MatchingLoadingView(), isActive: $isActive, label: {EmptyView()})
-                                Button {
-                                    AuthViewModel.shared.matchingUser(partnerId: yourCode)
-                                    isActive = true
-                                } label: {
+                                NavigationLink(destination: MatchingLoadingView()) {
                                     RoundedRectangle(cornerRadius: 20)
                                         .fill(colorButtonGradient1)
                                         .frame(height: 80)
@@ -215,15 +212,20 @@ struct MatchingCodeView: View {
                                             Text("연결하기")
                                                 .font(.title3.bold())
                                                 .foregroundColor(.white)
-                                        )
-                                }
+                                        )}
+                                    .simultaneousGesture(TapGesture().onEnded{
+                                        AuthViewModel.shared.matchingUser(partnerId: yourCode)
+                                    })
                             }
+//
+                               
                             Spacer().frame(height: proxy.size.height * 0.03)
                         }//VStack
                         .frame(width: proxy.size.width * 0.88)
                     }//VStack
                 }//ZStack
             }//NavigationView
+            .accentColor(.purple)
         }//Geometry Reader
     }
 }

@@ -5,13 +5,13 @@
 //  Created by 최민규 on 2023/05/05.
 //
 
-/*
- 매칭 완료 애니메이션은 프리뷰에서는 한 번만 작동하지만, 실제폰에서는 잘 작동됩니다.
- */
+//TODO: Navigation Back Button에 매칭 취소 기능 넣기
+//TODO: Matching Status 확인해서 완료 애니메이션 실행하기
 
 import SwiftUI
 
 struct MatchingLoadingView: View {
+   
     
     //뷰모델에서 선언예정
     @State var colorButtonGradient1: LinearGradient = LinearGradient(
@@ -29,6 +29,11 @@ struct MatchingLoadingView: View {
                 MatchingLoadingBackgroundView()
                 
                 VStack(alignment: .center) {
+                    HStack(alignment: .top) {
+                        
+                        Spacer()
+                    }
+                    
                     Spacer()
                     
                     //로딩뷰와 매칭완료뷰 전환(애니메이션장면)
@@ -66,7 +71,6 @@ struct MatchingLoadingView: View {
                 }//VStack
             }//ZStack
         }//GeometryReader
-        .navigationBarBackButtonHidden()
     }
 }
 
@@ -127,7 +131,7 @@ struct CompleteView: View {
             .foregroundColor(Color.white)
             .offset(x: 150, y: 175)
             .onAppear() {
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0) {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0) {
                     withAnimation(.easeInOut(duration: 0.4).delay(0.8)) {
                         showCheckmark = 1
                     }
@@ -233,11 +237,11 @@ struct MatchingLoadingBackgroundView: View {
         endPoint: .bottom)
     
     var body: some View {
-            Rectangle()
-                .fill(colorBackgroundGradient1)
-                .opacity(0.6)
-                .background(Color.black)
-                .ignoresSafeArea()
+        Rectangle()
+            .fill(colorBackgroundGradient1)
+            .opacity(0.6)
+            .background(Color.black)
+            .ignoresSafeArea()
     }
 }
 
