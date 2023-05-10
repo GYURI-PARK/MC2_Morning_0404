@@ -237,7 +237,7 @@ struct CropYomangView: View {
                     Image(systemName: "arrow.left.and.right.righttriangle.left.righttriangle.right.fill")
                         .foregroundColor(.gray)
                         .font(.system(size: 22))
-                }
+                }.padding()
                 
                 Button(action: {
                     
@@ -252,7 +252,7 @@ struct CropYomangView: View {
                     Image(systemName: "rotate.left.fill")
                         .foregroundColor(.gray)
                         .font(.system(size: 22))
-                }
+                }.padding()
                 
                 Spacer()
                 
