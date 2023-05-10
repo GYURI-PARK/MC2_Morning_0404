@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		683090082A08EDBA004F5663 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 683090072A08EDBA004F5663 /* Constants.swift */; };
+		6830900A2A0A5906004F5663 /* MarkupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 683090092A0A5906004F5663 /* MarkupView.swift */; };
 		68EBC3562A078F25006AD5C2 /* MyYomangView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68EBC3552A078F25006AD5C2 /* MyYomangView.swift */; };
 		68F7D2432A038B3700D7B874 /* YomangApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68F7D2422A038B3700D7B874 /* YomangApp.swift */; };
 		68F7D2472A038B3800D7B874 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 68F7D2462A038B3800D7B874 /* Assets.xcassets */; };
@@ -36,6 +37,7 @@
 
 /* Begin PBXFileReference section */
 		683090072A08EDBA004F5663 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		683090092A0A5906004F5663 /* MarkupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkupView.swift; sourceTree = "<group>"; };
 		68EBC3552A078F25006AD5C2 /* MyYomangView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyYomangView.swift; sourceTree = "<group>"; };
 		68F7D23F2A038B3700D7B874 /* Yomang.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Yomang.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		68F7D2422A038B3700D7B874 /* YomangApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YomangApp.swift; sourceTree = "<group>"; };
@@ -128,6 +130,7 @@
 				68F7D27E2A05001100D7B874 /* YomangImageView.swift */,
 				68F7D2722A0393E500D7B874 /* SplashView.swift */,
 				68EBC3552A078F25006AD5C2 /* MyYomangView.swift */,
+				683090092A0A5906004F5663 /* MarkupView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -236,6 +239,7 @@
 				68F7D2832A052C2500D7B874 /* ContentView.swift in Sources */,
 				68F7D2752A0393FE00D7B874 /* MatchingCodeViewModel.swift in Sources */,
 				68F7D2432A038B3700D7B874 /* YomangApp.swift in Sources */,
+				6830900A2A0A5906004F5663 /* MarkupView.swift in Sources */,
 				68F7D27F2A05001100D7B874 /* YomangImageView.swift in Sources */,
 				68F7D27D2A04FFF100D7B874 /* YomangViewModel.swift in Sources */,
 				68F7D2542A038B7100D7B874 /* User.swift in Sources */,

@@ -14,13 +14,16 @@ import CoreTransferable
 @MainActor
 class YomangViewModel: ObservableObject {
     
+    @Published var savedImage: UIImage?
+    
     // navigation cancel
     @Published var cancel: Bool = false
         
     enum ImageState {
         case empty
         case loading(Progress)
-        case success(Image)
+//        case success(Image)
+        case success(UIImage)
         case failure(Error)
     }
     
@@ -29,7 +32,7 @@ class YomangViewModel: ObservableObject {
     }
     
     struct YomangImage: Transferable {
-        let image: Image
+        let image: UIImage
         
         static var transferRepresentation: some TransferRepresentation {
             DataRepresentation(importedContentType: .image) { data in
@@ -43,7 +46,8 @@ class YomangViewModel: ObservableObject {
                 guard let uiImage = UIImage(data: data) else {
                     throw TransferError.importFailed
                 }
-                let image = Image(uiImage: uiImage)
+//                let image = Image(uiImage: uiImage)
+                let image = uiImage
                 return YomangImage(image: image)
             #else
                 throw TransferError.importFailed
@@ -76,7 +80,10 @@ class YomangViewModel: ObservableObject {
                 }
                 switch result {
                 case .success(let profileImage?):
+//                    self.imageState = .success(Image(uiImage: profileImage.image))
                     self.imageState = .success(profileImage.image)
+                    self.savedImage = profileImage.image
+                    
                 case .success(nil):
                     self.imageState = .empty
                 case .failure(let error):
