@@ -144,7 +144,9 @@ struct ImageMarkUpView: View {
                     
                     Spacer(minLength: 200)
                     
-                    Image(systemName: "scribble.variable").colorInvert().font(.system(size: 22))
+                    Image(systemName: "scribble.variable")
+                        .foregroundColor(.white)
+                        .font(.system(size: 22))
                         .onTapGesture {
                             showPopover.toggle()
                         }.iOSPopover(isPresented: $showPopover, arrowDirection: .down) {
