@@ -115,7 +115,7 @@ class AuthViewModel: ObservableObject{
     }
     
     func uploadImage(image: Data?) {
-        let storageRef = Storage.storage().reference().child("Photos/test") //\(self.user?.userId)
+        let storageRef = Storage.storage().reference().child("Photos/"+(self.user?.userId ?? "")) //\(self.user?.userId)
         let data = image
         let metadata = StorageMetadata()
         metadata.contentType = "image/jpg"
@@ -129,23 +129,47 @@ class AuthViewModel: ObservableObject{
                 if let metadata = metadata {
                     print("metadata: \(metadata)")
                 }
+                
+                storageRef.downloadURL { url, error in
+                  if let error = error {
+                    // Handle any errors
+                  } else {
+                      guard let uid = self.user?.userId else { return }
+                      UserDefaults.standard.set(url!.absoluteString, forKey:"imageURL")
+                      db.document(uid).updateData(["imageUrl": url!.absoluteString])
+                      self.user?.imageUrl = url!.absoluteString
+                  }
+                }
+                
                 print("Saved!")
             }
+
+        }
+    }
+    
+    func fetchImageLink(){
+                
+        db.document(self.user?.userId ?? "").getDocument{ (document, error) in
+            guard error == nil else {
+                print("Error")
+                self.user?.imageUrl = "https://firebasestorage.googleapis.com/v0/b/mc2test-6602b.appspot.com/o/error%2Ferror.png?alt=media&token=a38e6698-0a12-4741-95c4-a421b7fdb730"
+                return
+            }
             
-            storageRef.downloadURL { url, error in
-              if let error = error {
-                // Handle any errors
-              } else {
-                  print(1)
-                  print(url!)
-                  UserDefaults.standard.set(url!.absoluteString, forKey:"imageURL")
-                  print(2)
-                  print(UserDefaults.standard.string(forKey: "imageURL") ?? "ERR")
-                  // Get the download URL for 'images/stars.jpg'
-              }
+            if let document = document, document.exists {
+                let data = document.data()
+                if let data = data {
+                    self.user?.imageUrl = data["imageUrl"] as? String ?? ""
+                    print("url"+(data["imageUrl"] as? String ?? ""))
+                }
+            }
+            else{
+                self.user?.imageUrl = "https://firebasestorage.googleapis.com/v0/b/mc2test-6602b.appspot.com/o/error%2Ferror.png?alt=media&token=a38e6698-0a12-4741-95c4-a421b7fdb730"
             }
         }
     }
+    
+    //
     
     /**
      0404에는 로그아웃에 대한 기능 명세가 없습니다. 테스트용으로 구현된 메소드이니 사용하지 마세요.

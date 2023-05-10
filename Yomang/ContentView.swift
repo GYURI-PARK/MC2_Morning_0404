@@ -14,16 +14,16 @@ struct ContentView: View {
     
     var body: some View {
         if viewModel.userSession == nil {
-            MatchingCodeView(user: User(uuid: "", userId: "", isConnected: false))
+            MatchingTest(user: User(uuid: "", userId: "", isConnected: false))
         } else {
             if let user = viewModel.user {
                 if !connected {
-                    MatchingCodeView(user: user)
+                    MatchingTest(user: user)
                         .onChange(of: user.isConnected) { _ in
                             connected = true
                         }
                 } else {
-                    Text("Connected!")
+                    liveMatchingTest(user: user)
                         .onAppear() {
                             //signOut 하고싶을 때 사용하기
 //                            viewModel.signOut()
