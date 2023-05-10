@@ -323,7 +323,7 @@ struct CropYomangView: View {
                 viewModel.cancel = true
                 dismiss()
             }){
-                Text("취소").foregroundColor(.white)
+                Text("취소").foregroundColor(.white).padding()
             }
             
             Spacer()
@@ -342,7 +342,7 @@ struct CropYomangView: View {
                     
                     cropped = true
                 }){
-                    Text("꾸미기").foregroundColor(.yellow)
+                    Text("꾸미기").foregroundColor(.yellow).padding()
                 }
                 
                 NavigationLink("", destination: MarkupView(viewModel: viewModel), isActive: $cropped)
