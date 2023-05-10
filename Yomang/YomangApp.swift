@@ -16,10 +16,8 @@ struct YomangApp: App {
     
     var body: some Scene {
         WindowGroup {
-            ImageMarkUpView()
-            //PencilWeightView(selectedWeight: .constant(Font.Weight.medium))
-            //ColorPickerView()
-            //PencilWeightView(selectedWeight: .constant(400.0))
+            ContentView().environmentObject(AuthViewModel.shared)
+//            ImageMarkUpView()
         }
     }
 }

@@ -8,19 +8,31 @@
 import SwiftUI
 
 struct ContentView: View {
+    
+    @EnvironmentObject var viewModel: AuthViewModel
+    @State private var connected: Bool = false
+    
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundColor(.accentColor)
-            Text("Hello, world!")
+        if viewModel.userSession == nil {
+            MatchingCodeView(user: User(uuid: "", userId: "", isConnected: false))
+        } else {
+            if let user = viewModel.user {
+                if !connected {
+                    MatchingCodeView(user: user)
+                        .onChange(of: user.isConnected) { _ in
+                            connected = true
+                        }
+                } else {
+                    Text("Connected!")
+                        .onAppear() {
+                            //signOut 하고싶을 때 사용하기
+//                            viewModel.signOut()
+                        }
+                }
+            }
+//            else {
+//                Text("업성")
+//            }
         }
-        .padding()
-    }
-}
-
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView()
     }
 }
