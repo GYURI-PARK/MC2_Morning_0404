@@ -17,6 +17,7 @@ struct ImageMarkUpView: View {
     @State private var offset: CGFloat = 205.0
     @State private var pencilOpacity: CGFloat = 1.0
     @State private var showPopover: Bool = false
+    @State var selectedIndex: Int = 2
     
     @ObservedObject var viewModel: YomangViewModel
     
@@ -53,7 +54,7 @@ struct ImageMarkUpView: View {
                     )
                 
                 Spacer(minLength: 140)
-               
+                
                 ZStack{
                     Color(hex: 0x2F3031).ignoresSafeArea()
                     
@@ -68,7 +69,7 @@ struct ImageMarkUpView: View {
                             Spacer()
                             
                             Image(systemName: "scribble.variable")
-                               // .padding(.trailing, 10)
+                            // .padding(.trailing, 10)
                                 .padding()
                                 .foregroundColor(.white)
                                 .font(.system(size: 22))
@@ -76,7 +77,7 @@ struct ImageMarkUpView: View {
                                     showPopover.toggle()
                                 }.iOSPopover(isPresented: $showPopover, arrowDirection: .down) {
                                     VStack{
-                                        PencilWeightView(selectedWeight: $selectedWeightDouble)
+                                        PencilWeightView(selectedWeight: $selectedWeightDouble, selectedIndex: $selectedIndex)
                                             .onChange(of: selectedWeightDouble) { newWeight in
                                                 currentLine.fontWeight = newWeight
                                             }
@@ -88,6 +89,7 @@ struct ImageMarkUpView: View {
                                         
                                     }.padding(5)
                                 }
+                            Spacer()
                         }
                     }
                     Spacer()
@@ -156,7 +158,7 @@ struct CustomSliderView: View {
                 .offset(x: offset)
                 .gesture(DragGesture().onChanged({(value) in
                     if value.location.x > 23 && value.location.x <=
-                        UIScreen.main.bounds.width - 170 {
+                        UIScreen.main.bounds.width - 160 {
                         offset = value.location.x - 26
                         opacity = abs(offset) / 180
                         if opacity > 1.0 {
