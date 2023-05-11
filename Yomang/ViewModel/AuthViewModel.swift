@@ -84,6 +84,7 @@ class AuthViewModel: ObservableObject{
         
         // 유저가 입력한 파트너 아이디로 partnerId 세팅
         self.user?.partnerId = partnerId
+        
         db.document(uid).updateData(["partnerId": partnerId])
         
         // 파트너가 설정한 partnerId가 현재 유저의 userId와 동일한지 확인
@@ -101,6 +102,10 @@ class AuthViewModel: ObservableObject{
                 // 두 유저 모두 연결된 것으로 변경
                 db.document(uid).updateData(["isConnected": true])
                 db.document(partnerId).updateData(["isConnected": true])
+                
+                //파트너id 저장
+                UserDefaults.standard.set(partnerId, forKey:"partnerId")
+
                 return
             } else if partnersPartnerId.isEmpty {
                 print("잘못된 코드를 넣은 것 같습니다! \(data)")
@@ -115,7 +120,8 @@ class AuthViewModel: ObservableObject{
     }
     
     func uploadImage(image: Data?) {
-        let storageRef = Storage.storage().reference().child("Photos/"+(self.user?.userId ?? "")) //\(self.user?.userId)
+        guard let tempUid = self.user?.userId else { return }
+        let storageRef = Storage.storage().reference().child("Photos/"+tempUid)
         let data = image
         let metadata = StorageMetadata()
         metadata.contentType = "image/jpg"
@@ -135,9 +141,8 @@ class AuthViewModel: ObservableObject{
                     // Handle any errors
                   } else {
                       guard let uid = self.user?.userId else { return }
-                      UserDefaults.standard.set(url!.absoluteString, forKey:"imageURL")
-                      db.document(uid).updateData(["imageUrl": url!.absoluteString])
-                      self.user?.imageUrl = url!.absoluteString
+                      guard let urlString: String = url?.absoluteString else {return}
+                      db.document(uid).updateData(["imageUrl": urlString])
                   }
                 }
                 
@@ -148,10 +153,13 @@ class AuthViewModel: ObservableObject{
     }
     
     func fetchImageLink(){
-                
-        db.document(self.user?.userId ?? "").getDocument{ (document, error) in
+        
+        guard let tempUid = self.user?.partnerId else { return }
+
+        db.document(tempUid).getDocument{ (document, error) in
             guard error == nil else {
                 print("Error")
+                //상대가 이미지 아예 안올리면 나오는 오류 이미지 링크 - 테스트용
                 self.user?.imageUrl = "https://firebasestorage.googleapis.com/v0/b/mc2test-6602b.appspot.com/o/error%2Ferror.png?alt=media&token=a38e6698-0a12-4741-95c4-a421b7fdb730"
                 return
             }
@@ -160,6 +168,7 @@ class AuthViewModel: ObservableObject{
                 let data = document.data()
                 if let data = data {
                     self.user?.imageUrl = data["imageUrl"] as? String ?? ""
+                    UserDefaults.standard.set(data["imageUrl"] as? String ?? "", forKey:"imageURL")
                     print("url"+(data["imageUrl"] as? String ?? ""))
                 }
             }
