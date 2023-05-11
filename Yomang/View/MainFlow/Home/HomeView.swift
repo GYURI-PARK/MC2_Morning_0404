@@ -11,6 +11,7 @@ struct HomeView: View {
 
     let user: User?
     @State var selectedTabTag = 1
+    
     var body: some View {
         NavigationView{
             TabView(selection: $selectedTabTag) {

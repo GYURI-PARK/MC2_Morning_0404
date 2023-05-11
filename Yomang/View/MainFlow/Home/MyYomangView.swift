@@ -10,13 +10,13 @@ import SwiftUI
 struct MyYomangView: View {
     
     let user: User?
+    
     var body: some View {
         ZStack {
-            if let user = user {
+            if let _ = user {
                 YomangImageView()
             } else {
                 YomangImageView()
-                
                 VStack (alignment: .center) {
                     Text("이곳을 눌러\n파트너와 연결해 보세요")
                         .font(.title)

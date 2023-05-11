@@ -13,8 +13,7 @@ struct YourYomangView: View {
     
     var body: some View {
         ZStack {
-            
-            if let url = imageUrl {
+            if let _ = imageUrl {
                 // TODO: Image
                 YomangImageView()
             } else {

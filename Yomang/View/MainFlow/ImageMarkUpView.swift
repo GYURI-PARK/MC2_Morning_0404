@@ -17,23 +17,22 @@ struct ImageMarkUpView: View {
     @State private var offset: CGFloat = 205.0
     @State private var pencilOpacity: CGFloat = 1.0
     @State private var showPopover: Bool = false
-    //@State private var isSelected: Bool = false
     
     var body: some View {
         
         ZStack{
             Color.black
                 .ignoresSafeArea()
+            
             VStack(alignment: .center) {
                 HStack {
-                    Button(action: {
+                    Button {
                         print("취소버튼 -> 모달창 닫힘")
-                    }, label: {
+                    } label: {
                         Text("취소")
                             .foregroundColor(Color(hex: 0x7638F9))
                             .font(.system(size: 17, weight: .regular))
-                        
-                    })
+                    }
                     
                     Spacer()
                     
@@ -45,10 +44,10 @@ struct ImageMarkUpView: View {
                             .resizable()
                             .frame(width: 22, height: 22)
                             .foregroundColor(Color(hex: 0xEBEBF5))
-                    }.padding(.trailing, 5)
-                        .disabled(lines.count == 0)
-                        .colorMultiply(lines.count > 0 ? .white : .gray)
-                    
+                    }
+                    .padding(.trailing, 5)
+                    .disabled(lines.count == 0)
+                    .colorMultiply(lines.count > 0 ? .white : .gray)
                     
                     Button {
                         let last = deletedLines.removeLast()
@@ -58,29 +57,28 @@ struct ImageMarkUpView: View {
                             .resizable()
                             .frame(width: 22, height: 22)
                             .foregroundColor(Color(hex: 0xEBEBF5))
-                    }.padding(.leading, 5)
-                        .disabled(deletedLines.count == 0)
-                        .colorMultiply(deletedLines.count > 0 ? .white : .gray)
+                    }
+                    .padding(.leading, 5)
+                    .disabled(deletedLines.count == 0)
+                    .colorMultiply(deletedLines.count > 0 ? .white : .gray)
                     
                     Spacer()
                     
                     Text("요망 만들기")
                         .foregroundColor(.white)
                         .font(.system(size: 17, weight: .bold))
-                    //.offset(x: geometry.size.width / 2)
                     
                     Spacer(minLength: 100)
                     
-                    Button(action: {
+                    Button{
                         print("저장후 모달창 닫힘")
-                    }, label: {
+                    } label: {
                         Text("완료")
                             .foregroundColor(Color(hex: 0x7638F9))
                             .font(.system(size: 17, weight: .bold))
-                    })
-                    
-                    
-                }.padding(.horizontal, 20).padding(.vertical, 30)
+                    }
+                }
+                .padding(.horizontal, 20).padding(.vertical, 30)
                 
                 Spacer()
                 
@@ -91,10 +89,12 @@ struct ImageMarkUpView: View {
                         path.addLines(line.points)
                         context.stroke(path, with: .color(line.color.opacity(line.lineOpacity)), lineWidth: line.fontWeight)
                     }
-                }.background(Color.gray).cornerRadius(20)
-                    .frame(width: 338, height: 354)
-                    .gesture(DragGesture(minimumDistance: 0, coordinateSpace: .local)
-                        .onChanged({ value in
+                }
+                .background(Color.gray).cornerRadius(20)
+                .frame(width: 338, height: 354)
+                .gesture(
+                    DragGesture(minimumDistance: 0, coordinateSpace: .local)
+                        .onChanged{ value in
                             let newPoint = value.location
                             if value.translation.width + value.translation.height == 0 {
                                 lines.append(Line(points: [newPoint], color: selectedColor, lineOpacity: pencilOpacity, fontWeight: selectedWeightDouble))
@@ -102,30 +102,27 @@ struct ImageMarkUpView: View {
                                 let index = lines.count - 1
                                 lines[index].points.append(newPoint)
                             }
-                        })
-                            .onEnded({ value in
-                                self.currentLine = Line(points: [], color: selectedColor, lineOpacity: pencilOpacity, fontWeight: selectedWeightDouble)
-                            })
-                    )
-                
-                
-                //Spacer(minLength: 40)
-                
-                
+                        }
+                        .onEnded{ value in
+                            self.currentLine = Line(points: [], color: selectedColor, lineOpacity: pencilOpacity, fontWeight: selectedWeightDouble)
+                        }
+                )
                 // 색깔고르는칸
-                
                 HStack() {
                     Spacer()
                     
                     HStack(alignment: .center){
-                        ColorPickerView(selectedColor: $selectedColor).padding(.horizontal, 5)
+                        ColorPickerView(selectedColor: $selectedColor)
+                            .padding(.horizontal, 5)
                         
-                        ColorPicker("", selection: $selectedColor).labelsHidden()
-                            .frame(width: 30, height: 30)//.padding(.horizontal, 5)
+                        ColorPicker("", selection: $selectedColor)
+                            .labelsHidden()
+                            .frame(width: 30, height: 30)
                         Spacer()
                     }
                     Spacer()
-                }.frame(width: 358, height: 72)
+                }
+                .frame(width: 358, height: 72)
                 
                 Spacer(minLength: 130)
                 
@@ -149,9 +146,9 @@ struct ImageMarkUpView: View {
                         .font(.system(size: 22))
                         .onTapGesture {
                             showPopover.toggle()
-                        }.iOSPopover(isPresented: $showPopover, arrowDirection: .down) {
+                        }
+                        .iOSPopover(isPresented: $showPopover, arrowDirection: .down) {
                             VStack{
-                                // Spacer()
                                 PencilWeightView(selectedWeight: $selectedWeightDouble)
                                     .onChange(of: selectedWeightDouble) { newWeight in
                                         currentLine.fontWeight = newWeight
@@ -163,9 +160,7 @@ struct ImageMarkUpView: View {
                             }
                             .padding(15)
                         }
-                    
                     Spacer()
-                    
                 }
             }
             Spacer()
@@ -181,32 +176,34 @@ struct Line {
 }
 
 struct CustomSliderView: View {
+    
     @Binding var offset: CGFloat
     @Binding var opacity: CGFloat
     @Binding var selectedColor: Color
-
+    
     var body: some View {
         ZStack(alignment: Alignment(horizontal: .leading, vertical: .center), content: {
             Capsule()
                 .fill(LinearGradient(gradient: Gradient(colors: [selectedColor.opacity(0.1), selectedColor]), startPoint: .leading, endPoint: .trailing)).opacity(0.7)
                 .frame(width: 230, height: 25)
-
+            
             Circle()
                 .fill(Color.white)
                 .frame(width: 40, height: 40)
                 .offset(x: offset)
-                .gesture(DragGesture().onChanged({(value) in
-                    if value.location.x > 23 && value.location.x <=
-                        UIScreen.main.bounds.width - 170 {
-                        offset = value.location.x - 26
-                        opacity = abs(offset) / 180
-                        if opacity > 1.0 {
-                            opacity = 1.0
-                        } else if opacity < 0.15 {
-                            opacity = 0.15
-                        }
-                    }
-                }))
+                .gesture(
+                    DragGesture()
+                        .onChanged{(value) in
+                            if (value.location.x > 23) && (value.location.x <= (UIScreen.main.bounds.width - 170)) {
+                                offset = value.location.x - 26
+                                opacity = abs(offset) / 180
+                                if opacity > 1.0 {
+                                    opacity = 1.0
+                                } else if opacity < 0.15 {
+                                    opacity = 0.15
+                                }
+                            }
+                        })
         })
     }
 }
@@ -224,12 +221,10 @@ extension Color {
 
 extension View{
     @ViewBuilder
-    func iOSPopover<Content: View>(isPresented: Binding<Bool>, arrowDirection:
-                                   UIPopoverArrowDirection, @ViewBuilder content: @escaping () -> Content)->some View {
-        self
-            .background {
-                PopOverController(isPresented: isPresented, arrowDirection: arrowDirection, content: content())
-            }
+    func iOSPopover<Content: View>(isPresented: Binding<Bool>, arrowDirection: UIPopoverArrowDirection, @ViewBuilder content: @escaping() -> Content) -> some View {
+        self.background {
+            PopOverController(isPresented: isPresented, arrowDirection: arrowDirection, content: content())
+        }
     }
 }
 
@@ -250,7 +245,7 @@ struct PopOverController<Content: View>: UIViewControllerRepresentable{
     }
     
     func updateUIViewController(_ uiViewController: UIViewController, context: Context) {
-        if isPresented{
+        if isPresented {
             // presenting popover
             let controller = CustomHostingView(rootView: content)
             controller.view.backgroundColor =  UIColor(red: 0.149, green: 0.149, blue: 0.149, alpha: 1)
@@ -293,8 +288,6 @@ class CustomHostingView<Content: View>: UIHostingController<Content>{
         preferredContentSize = view.intrinsicContentSize
     }
 }
-
-
 
 struct ImageMarkUpView_Previews: PreviewProvider {
     static var previews: some View {
