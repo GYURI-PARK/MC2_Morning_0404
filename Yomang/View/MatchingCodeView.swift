@@ -62,7 +62,6 @@ struct MatchingCodeView: View {
                             HStack {
                                 //나의 코드 생성하기, 받은 코드 표시 및 공유하기 버튼 활성화
                                 Button(action: {
-                                    AuthViewModel.shared.registerUser { _ in }
                                     self.myCode = user.userId
                                     withAnimation{ isMyCodeActive = true }
                                 }) {
@@ -217,7 +216,6 @@ struct MatchingCodeView: View {
                                         AuthViewModel.shared.matchingUser(partnerId: yourCode)
                                     })
                             }
-//
                                
                             Spacer().frame(height: proxy.size.height * 0.03)
                         }//VStack

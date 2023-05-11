@@ -10,6 +10,9 @@
 		2F5FC2752A07670E00CDDC56 /* MatchingLoadingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F5FC2742A07670E00CDDC56 /* MatchingLoadingViewModel.swift */; };
 		2FD8C9A02A04F4ED00666609 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 2FD8C99F2A04F4ED00666609 /* FirebaseFirestore */; };
 		2FD8C9A22A052C3F00666609 /* AuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FD8C9A12A052C3F00666609 /* AuthViewModel.swift */; };
+		4B19E0D02A088BFF00CF3F42 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B19E0CF2A088BFF00CF3F42 /* HomeView.swift */; };
+		4B19E0D62A09EEC200CF3F42 /* MyYomangView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B19E0D52A09EEC200CF3F42 /* MyYomangView.swift */; };
+		4BE70B4C2A0398E000D7D588 /* YourYomangView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BE70B4B2A0398E000D7D588 /* YourYomangView.swift */; };
 		68F7D2432A038B3700D7B874 /* YomangApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68F7D2422A038B3700D7B874 /* YomangApp.swift */; };
 		68F7D2452A038B3700D7B874 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68F7D2442A038B3700D7B874 /* ContentView.swift */; };
 		68F7D2472A038B3800D7B874 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 68F7D2462A038B3800D7B874 /* Assets.xcassets */; };
@@ -29,18 +32,21 @@
 		68F7D2712A0390EA00D7B874 /* FirebaseStorageCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = 68F7D2702A0390EA00D7B874 /* FirebaseStorageCombine-Community */; };
 		68F7D2732A0393E500D7B874 /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68F7D2722A0393E500D7B874 /* SplashView.swift */; };
 		68F7D2752A0393FE00D7B874 /* MatchingCodeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68F7D2742A0393FE00D7B874 /* MatchingCodeViewModel.swift */; };
+		8AB30F9E2A04F78800AB274E /* MatchingCodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB30F9D2A04F78800AB274E /* MatchingCodeView.swift */; };
+		8AB30FA02A053B1400AB274E /* MatchingLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB30F9F2A053B1400AB274E /* MatchingLoadingView.swift */; };
+		AD24FFB82A0C7A340098DCA9 /* YomangImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD24FFB72A0C7A340098DCA9 /* YomangImageView.swift */; };
 		C16701882A051A4C00D3DFB4 /* ImageMarkUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C16701872A051A4C00D3DFB4 /* ImageMarkUpView.swift */; };
-		C167018A2A051B1600D3DFB4 /* MyYomangView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C16701892A051B1600D3DFB4 /* MyYomangView.swift */; };
 		C167018E2A051BDA00D3DFB4 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C167018D2A051BDA00D3DFB4 /* GoogleService-Info.plist */; };
 		C19ADC302A064A7B0081F760 /* ColorPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C19ADC2F2A064A7B0081F760 /* ColorPickerView.swift */; };
 		C19ADC322A064AA20081F760 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = C19ADC312A064AA20081F760 /* Constants.swift */; };
-		8AB30F9E2A04F78800AB274E /* MatchingCodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB30F9D2A04F78800AB274E /* MatchingCodeView.swift */; };
-		8AB30FA02A053B1400AB274E /* MatchingLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB30F9F2A053B1400AB274E /* MatchingLoadingView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		2F5FC2742A07670E00CDDC56 /* MatchingLoadingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchingLoadingViewModel.swift; sourceTree = "<group>"; };
 		2FD8C9A12A052C3F00666609 /* AuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewModel.swift; sourceTree = "<group>"; };
+		4B19E0CF2A088BFF00CF3F42 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		4B19E0D52A09EEC200CF3F42 /* MyYomangView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyYomangView.swift; sourceTree = "<group>"; };
+		4BE70B4B2A0398E000D7D588 /* YourYomangView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YourYomangView.swift; sourceTree = "<group>"; };
 		68F7D23F2A038B3700D7B874 /* Yomang.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Yomang.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		68F7D2422A038B3700D7B874 /* YomangApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YomangApp.swift; sourceTree = "<group>"; };
 		68F7D2442A038B3700D7B874 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -49,13 +55,13 @@
 		68F7D2532A038B7100D7B874 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		68F7D2722A0393E500D7B874 /* SplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
 		68F7D2742A0393FE00D7B874 /* MatchingCodeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchingCodeViewModel.swift; sourceTree = "<group>"; };
+		8AB30F9D2A04F78800AB274E /* MatchingCodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchingCodeView.swift; sourceTree = "<group>"; };
+		8AB30F9F2A053B1400AB274E /* MatchingLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchingLoadingView.swift; sourceTree = "<group>"; };
+		AD24FFB72A0C7A340098DCA9 /* YomangImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YomangImageView.swift; sourceTree = "<group>"; };
 		C16701872A051A4C00D3DFB4 /* ImageMarkUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageMarkUpView.swift; sourceTree = "<group>"; };
-		C16701892A051B1600D3DFB4 /* MyYomangView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyYomangView.swift; sourceTree = "<group>"; };
 		C167018D2A051BDA00D3DFB4 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		C19ADC2F2A064A7B0081F760 /* ColorPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPickerView.swift; sourceTree = "<group>"; };
 		C19ADC312A064AA20081F760 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
-		8AB30F9D2A04F78800AB274E /* MatchingCodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchingCodeView.swift; sourceTree = "<group>"; };
-		8AB30F9F2A053B1400AB274E /* MatchingLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchingLoadingView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -141,12 +147,15 @@
 			isa = PBXGroup;
 			children = (
 				68F7D2722A0393E500D7B874 /* SplashView.swift */,
+				4BE70B4B2A0398E000D7D588 /* YourYomangView.swift */,
+				4B19E0CF2A088BFF00CF3F42 /* HomeView.swift */,
+				4B19E0D52A09EEC200CF3F42 /* MyYomangView.swift */,
 				C16701872A051A4C00D3DFB4 /* ImageMarkUpView.swift */,
-				C16701892A051B1600D3DFB4 /* MyYomangView.swift */,
 				C19ADC2F2A064A7B0081F760 /* ColorPickerView.swift */,
 				C19ADC312A064AA20081F760 /* Constants.swift */,
 				8AB30F9D2A04F78800AB274E /* MatchingCodeView.swift */,
 				8AB30F9F2A053B1400AB274E /* MatchingLoadingView.swift */,
+				AD24FFB72A0C7A340098DCA9 /* YomangImageView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -250,14 +259,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4BE70B4C2A0398E000D7D588 /* YourYomangView.swift in Sources */,
+				4B19E0D62A09EEC200CF3F42 /* MyYomangView.swift in Sources */,
+				4B19E0D02A088BFF00CF3F42 /* HomeView.swift in Sources */,
 				C19ADC302A064A7B0081F760 /* ColorPickerView.swift in Sources */,
 				2F5FC2752A07670E00CDDC56 /* MatchingLoadingViewModel.swift in Sources */,
 				68F7D2452A038B3700D7B874 /* ContentView.swift in Sources */,
 				68F7D2732A0393E500D7B874 /* SplashView.swift in Sources */,
 				8AB30F9E2A04F78800AB274E /* MatchingCodeView.swift in Sources */,
 				68F7D2752A0393FE00D7B874 /* MatchingCodeViewModel.swift in Sources */,
+				AD24FFB82A0C7A340098DCA9 /* YomangImageView.swift in Sources */,
 				68F7D2432A038B3700D7B874 /* YomangApp.swift in Sources */,
-				C167018A2A051B1600D3DFB4 /* MyYomangView.swift in Sources */,
 				C16701882A051A4C00D3DFB4 /* ImageMarkUpView.swift in Sources */,
 				68F7D2542A038B7100D7B874 /* User.swift in Sources */,
 				C19ADC322A064AA20081F760 /* Constants.swift in Sources */,
@@ -391,7 +403,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Yomang/Preview Content\"";
-				DEVELOPMENT_TEAM = GBQ3ZW8V84;
+				DEVELOPMENT_TEAM = 7D5PZJWQ9T;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Get access to User Photo Library.";
@@ -421,7 +433,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Yomang/Preview Content\"";
-				DEVELOPMENT_TEAM = GBQ3ZW8V84;
+				DEVELOPMENT_TEAM = 7D5PZJWQ9T;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Get access to User Photo Library.";

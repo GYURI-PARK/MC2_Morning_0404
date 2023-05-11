@@ -17,12 +17,14 @@ class AuthViewModel: ObservableObject{
     
     init() {
         self.userSession = Auth.auth().currentUser
-        fetchUser() {}
+        fetchUser { _ in }
     }
     
-    func fetchUser(_ completion: @escaping() -> Void?) {
-        guard let uid = userSession?.uid else { return }
-        print("=== DEBUG: \(uid)")
+    func fetchUser(_ completion: @escaping(Bool) -> ()) {
+        guard let uid = userSession?.uid else {
+            completion(false)
+            return
+        }
         
         
         // TODO: 세션 내의 유저가 없다면 UserDefaults로 저장된 userId에 대한 밸류값이 있는지 확인하는 부분 추가
@@ -32,7 +34,7 @@ class AuthViewModel: ObservableObject{
             
             self.user = user
             print("=== DEBUG: fetch \(self.user)")
-            completion()
+            completion(true)
         }
     }
     
@@ -67,7 +69,7 @@ class AuthViewModel: ObservableObject{
             db.document(user.uid).setData(data) { _ in
                 print("=== DEBUG: 회원 등록 완료 \n\(data) ")
                 self.userSession = Auth.auth().currentUser
-                self.fetchUser() {
+                self.fetchUser { _ in
                     completion(user.uid)
                 }
             }
