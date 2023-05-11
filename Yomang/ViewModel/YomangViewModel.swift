@@ -18,10 +18,19 @@ class YomangViewModel: ObservableObject {
     
     // navigation cancel
     @Published var cancel: Bool = false
+    
+    @Published var test: String = "test"
         
     enum ImageState {
         case empty
         case loading(Progress)
+//        case success(Image)
+        case success(UIImage)
+        case failure(Error)
+    }
+    
+    enum ImageCroppedState {
+        case empty
 //        case success(Image)
         case success(UIImage)
         case failure(Error)
@@ -57,6 +66,7 @@ class YomangViewModel: ObservableObject {
     }
     
     @Published private(set) var imageState: ImageState = .empty
+    @Published private(set) var imageCroppedState: ImageCroppedState = .empty
     
     @Published var imageSelection: PhotosPickerItem? = nil {
         didSet {
@@ -92,4 +102,18 @@ class YomangViewModel: ObservableObject {
             }
         }
     }
+    
+    // MARK: - IMAGECROPPED
+    @Published var imageCropped: UIImage? = nil {
+        didSet {
+            if let imageCropped {
+                imageCroppedState = .success(imageCropped)
+            } else {
+                imageCroppedState = .empty
+            }
+        }
+    }
+    
+    
+
 }

@@ -9,8 +9,13 @@ import SwiftUI
 import PhotosUI
 
 struct ContentView: View {
+    @EnvironmentObject var viewModel: YomangViewModel
+    
     var body: some View {
         MyYomangView()
+//        VStack{
+//            Text("test")
+//        }
     }
 }
 

@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct MarkupView: View {
-    @ObservedObject var viewModel: YomangViewModel
+    @EnvironmentObject var viewModel: YomangViewModel
     var body: some View {
         VStack{
             Image(uiImage: viewModel.savedImage!).resizable().frame(width: WIDGET_WIDTH, height: WIDGET_HEIGHT).scaledToFit()

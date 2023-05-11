@@ -33,6 +33,28 @@ struct YomangImage: View {
     }
 }
 
+// MARK: - 요망 사진 상태뷰
+struct YomangCroppedImage: View {
+    let imageCroppedState: YomangViewModel.ImageCroppedState
+    
+    var body: some View {
+        switch imageCroppedState {
+        case .success(let image):
+            Image(uiImage: image).resizable().scaledToFit()
+//            image.resizable().scaledToFit()
+        case .empty:
+            Image(systemName: "person.fill")
+                .font(.system(size: 40))
+                .foregroundColor(.white)
+        case .failure:
+            Image(systemName: "exclamationmark.triangle.fill")
+                .font(.system(size: 40))
+                .foregroundColor(.white)
+        }
+    }
+}
+
+
 // MARK: - 요망 테두리 포함뷰
 //struct FrameYomangImage: View {
 //    let imageState: YomangViewModel.ImageState
@@ -49,7 +71,7 @@ struct YomangImage: View {
 
 // MARK: - 요망 선택하기
 struct EditableYomangImage: View {
-    @ObservedObject var viewModel: YomangViewModel
+    @EnvironmentObject var viewModel: YomangViewModel
     @State var selected: Bool = false
     @State var cancel: Bool = false
     
@@ -72,7 +94,7 @@ struct EditableYomangImage: View {
                 }.onChange(of: viewModel.imageSelection){ (imageState) in
                     selected = true
                 }
-                NavigationLink("", destination: CropYomangView(viewModel: viewModel), isActive: $selected)
+                NavigationLink("", destination: CropYomangView(), isActive: $selected)
             }.photosPicker(isPresented: $viewModel.cancel, selection: $viewModel.imageSelection, matching: .images,
                            photoLibrary: .shared())
     }
@@ -80,7 +102,7 @@ struct EditableYomangImage: View {
 
 // MARK: - 0507 Jose Add
 struct CropYomangView: View {
-    @ObservedObject var viewModel: YomangViewModel
+    @EnvironmentObject var viewModel: YomangViewModel
 
     // navigation back button
     @Environment(\.dismiss) private var dismiss
@@ -96,11 +118,11 @@ struct CropYomangView: View {
     // navigation cancel
     @State var cancel: Bool = false
     
-    // rotation Effect
-    @State var degree: Int = 0
-    // flip Effect
-    @State var flipped: Bool = false
-    
+//    // rotation Effect
+//    @State var degree: Int = 0
+//    // flip Effect
+//    @State var flipped: Bool = false
+//
     // save image
     @State var cropped: Bool = false
     
@@ -172,10 +194,10 @@ struct CropYomangView: View {
                 
                 ZStack {
                     YomangImage(imageState: viewModel.imageState)
-                        .rotationEffect(.degrees(Double(degree)))
+//                        .rotationEffect(.degrees(Double(degree)))
                         .scaleEffect(gestureScale * currentScale)
                         .frame(width: geometry.size.width, height: geometry.size.height)
-                        .rotation3DEffect(.degrees(flipped ? 180 : 0), axis: (x:0, y:1, z:0))
+//                        .rotation3DEffect(.degrees(flipped ? 180 : 0), axis: (x:0, y:1, z:0))
                         .offset(CGSize(width: gestureOffset.width + currentOffset.width, height: gestureOffset.height + currentOffset.height))
                         .blur(radius: 10)
                         .gesture(dragGesture)
@@ -186,11 +208,11 @@ struct CropYomangView: View {
                         }
                         .overlay{
                             YomangImage(imageState: viewModel.imageState)
-                                .rotationEffect(.degrees(Double(degree)))
+//                                .rotationEffect(.degrees(Double(degree)))
                                 .scaledToFit()
                                 .scaleEffect(gestureScale * currentScale)
                                 .frame(width: geometry.size.width, height: geometry.size.height)
-                                .rotation3DEffect(.degrees(flipped ? 180 : 0), axis: (x:0, y:1, z:0))
+//                                .rotation3DEffect(.degrees(flipped ? 180 : 0), axis: (x:0, y:1, z:0))
                                 .offset(CGSize(width: gestureOffset.width + currentOffset.width, height: gestureOffset.height + currentOffset.height))
                                 .gesture(dragGesture)
                                 .gesture(magnificationGesture)
@@ -225,50 +247,50 @@ struct CropYomangView: View {
     private func topButtonsView() -> some View {
         
         ZStack{
-            
-            HStack {
-                
-                Button(action: {
-                    withAnimation{
-                        flipped.toggle()
-                    }
-                    
-                }){
-                    Image(systemName: "arrow.left.and.right.righttriangle.left.righttriangle.right.fill")
-                        .foregroundColor(.gray)
-                        .font(.system(size: 22))
-                }.padding()
-                
-                Button(action: {
-                    
-                    degree = degree == -360 ? 0 : degree
-                    
-                    withAnimation{
-                        degree = degree - 90
-                        editted = true
-                    }
-                    
-                }){
-                    Image(systemName: "rotate.left.fill")
-                        .foregroundColor(.gray)
-                        .font(.system(size: 22))
-                }.padding()
-                
-                Spacer()
-                
+//
+//            HStack {
+//
 //                Button(action: {
-//                    print("markup")
+//                    withAnimation{
+//                        flipped.toggle()
+//                    }
+//
 //                }){
-//                    Image(systemName: "pencil.tip.crop.circle")
+//                    Image(systemName: "arrow.left.and.right.righttriangle.left.righttriangle.right.fill")
 //                        .foregroundColor(.gray)
 //                        .font(.system(size: 22))
-//
 //                }.padding()
-                
-            }
-            .buttonStyle(.plain)
-            .labelStyle(.iconOnly)
-            .padding()
+//
+//                Button(action: {
+//
+//                    degree = degree == -360 ? 0 : degree
+//
+//                    withAnimation{
+//                        degree = degree - 90
+//                        editted = true
+//                    }
+//
+//                }){
+//                    Image(systemName: "rotate.left.fill")
+//                        .foregroundColor(.gray)
+//                        .font(.system(size: 22))
+//                }.padding()
+//
+//                Spacer()
+//
+////                Button(action: {
+////                    print("markup")
+////                }){
+////                    Image(systemName: "pencil.tip.crop.circle")
+////                        .foregroundColor(.gray)
+////                        .font(.system(size: 22))
+////
+////                }.padding()
+//
+//            }
+//            .buttonStyle(.plain)
+//            .labelStyle(.iconOnly)
+//            .padding()
 
             if editted {
                     Button(action: {
@@ -278,8 +300,8 @@ struct CropYomangView: View {
                             gestureOffset = CGSize.zero
                             gestureScale = 1.0
                             
-                            flipped = false
-                            degree = 0
+//                            flipped = false
+//                            degree = 0
                             editted = false
                         }
                     }){
@@ -333,19 +355,18 @@ struct CropYomangView: View {
                 Button(action: {
                     //TODO: - 사진 저장해야 함!
                     //                dismiss()
-                    
-                    
-                    
                     viewModel.savedImage = cropImage(viewModel.savedImage!, toRect: CGRect(origin: CGPoint(x: (UIScreen.self.main.bounds.width - WIDGET_WIDTH) / 2, y: (UIScreen.self.main.bounds.height - WIDGET_WIDTH) / 2), size: CGSize(width: WIDGET_WIDTH, height: WIDGET_HEIGHT)), viewWidth: UIScreen.main.bounds.width, viewHeight: UIScreen.main.bounds.height)
+                    viewModel
                     
                     print(viewModel.savedImage)
+                    NavigationLink("", destination: MarkupView(), isActive: $cropped)
                     
                     cropped = true
                 }){
                     Text("꾸미기").foregroundColor(.yellow).padding()
                 }
                 
-                NavigationLink("", destination: MarkupView(viewModel: viewModel), isActive: $cropped)
+                
                 
             }
         }
@@ -359,6 +380,6 @@ struct CropYomangView: View {
 struct CropYomangView_Previews: PreviewProvider {
 
     static var previews: some View {
-        CropYomangView(viewModel: YomangViewModel())
+        CropYomangView().environmentObject(YomangViewModel())
     }
 }
