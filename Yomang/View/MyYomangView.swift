@@ -12,17 +12,18 @@ struct MyYomangView: View {
     let user: User?
     var body: some View {
         ZStack {
-            YomangImageView()
-            VStack (alignment: .center) {
-                Text("확인 중")
-                    .font(.title)
-                    .fontWeight(.bold)
-                    .frame(height: 36)
+            if let user = user {
+                YomangImageView()
+            } else {
+                YomangImageView()
                 
-                Text("상대가 내 요망을 확인하고 있어요.\n새로운 요망을 만들어볼까요?")
-                    .font(.body)
-                    .fontWeight(.regular)
-                    .multilineTextAlignment(.center)
+                VStack (alignment: .center) {
+                    Text("이곳을 눌러\n파트너와 연결해 보세요")
+                        .font(.title)
+                        .fontWeight(.bold)
+                        .multilineTextAlignment(.center)
+                        .foregroundColor(.white)
+                }
             }
         }
     }

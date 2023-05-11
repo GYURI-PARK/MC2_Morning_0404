@@ -8,16 +8,18 @@
 import SwiftUI
 
 struct HomeView: View {
+
     let user: User?
     @State var selectedTabTag = 1
     var body: some View {
         NavigationView{
             TabView(selection: $selectedTabTag) {
-                YourYomangView(imageUrl: nil)
+                YourYomangView(imageUrl: user?.imageURL ?? nil)
                     .tag(0)
-                MyYomangView(user: nil)
+                MyYomangView(user: user ?? nil)
                     .tag(1)
             }
+            .accentColor(Color.white)
             .navigationTitle(selectedTabTag == 1 ? "나의 요망" : "너의 요망")
             .tabViewStyle(.page(indexDisplayMode:.always))
             .navigationBarTitleDisplayMode(.large)

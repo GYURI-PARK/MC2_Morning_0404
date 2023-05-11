@@ -13,16 +13,24 @@ struct YourYomangView: View {
     
     var body: some View {
         ZStack {
-            YomangImageView()
             
-            VStack (alignment: .center) {
-                if let url = imageUrl {
-                    // TODO: Image
-                } else {
-                    Text("클릭해서\n상대방과 연결해요")
+            if let url = imageUrl {
+                // TODO: Image
+                YomangImageView()
+            } else {
+                YomangImageView()
+                VStack (alignment: .center) {
+                    Text("대기 중")
                         .font(.title)
                         .fontWeight(.bold)
+                        .frame(height: 36)
+                        .foregroundColor(.white)
+                    
+                    Text("상대의 첫 요망을 기다리고 있어요!")
+                        .font(.body)
+                        .fontWeight(.regular)
                         .multilineTextAlignment(.center)
+                        .foregroundColor(.white)
                 }
             }
         }
