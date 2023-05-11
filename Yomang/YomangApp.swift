@@ -13,11 +13,12 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 @main
 struct YomangApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
-    
+
     var body: some Scene {
         WindowGroup {
-            ContentView().environmentObject(AuthViewModel.shared)
-//            ImageMarkUpView()
+//            ContentView().environmentObject(AuthViewModel.shared)
+  //         ImageMarkUpView()
+          TestView()
         }
     }
 }

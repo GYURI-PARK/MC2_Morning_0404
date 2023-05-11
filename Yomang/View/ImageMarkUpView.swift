@@ -17,159 +17,114 @@ struct ImageMarkUpView: View {
     @State private var offset: CGFloat = 205.0
     @State private var pencilOpacity: CGFloat = 1.0
     @State private var showPopover: Bool = false
-    //@State private var isSelected: Bool = false
     
     var body: some View {
-        
-        ZStack{
-            Color.black
-                .ignoresSafeArea()
-            VStack(alignment: .center) {
-                HStack {
-                    Button(action: {
-                        print("취소버튼 -> 모달창 닫힘")
-                    }, label: {
-                        Text("취소")
-                            .foregroundColor(Color(hex: 0x7638F9))
-                            .font(.system(size: 17, weight: .regular))
-                        
-                    })
+        NavigationView{
+            ZStack{
+                Color.black
+                    .ignoresSafeArea()
+                VStack(alignment: .center) {
                     
                     Spacer()
                     
-                    Button {
-                        let last = lines.removeLast()
-                        deletedLines.append(last)
-                    } label: {
-                        Image(systemName: "arrow.uturn.backward.circle")
-                            .resizable()
-                            .frame(width: 22, height: 22)
-                            .foregroundColor(Color(hex: 0xEBEBF5))
-                    }.padding(.trailing, 5)
-                        .disabled(lines.count == 0)
-                        .colorMultiply(lines.count > 0 ? .white : .gray)
-                    
-                    
-                    Button {
-                        let last = deletedLines.removeLast()
-                        lines.append(last)
-                    } label: {
-                        Image(systemName: "arrow.uturn.forward.circle")
-                            .resizable()
-                            .frame(width: 22, height: 22)
-                            .foregroundColor(Color(hex: 0xEBEBF5))
-                    }.padding(.leading, 5)
-                        .disabled(deletedLines.count == 0)
-                        .colorMultiply(deletedLines.count > 0 ? .white : .gray)
-                    
-                    Spacer()
-                    
-                    Text("요망 만들기")
-                        .foregroundColor(.white)
-                        .font(.system(size: 17, weight: .bold))
-                    //.offset(x: geometry.size.width / 2)
-                    
-                    Spacer(minLength: 100)
-                    
-                    Button(action: {
-                        print("저장후 모달창 닫힘")
-                    }, label: {
-                        Text("완료")
-                            .foregroundColor(Color(hex: 0x7638F9))
-                            .font(.system(size: 17, weight: .bold))
-                    })
-                    
-                    
-                }.padding(.horizontal, 20).padding(.vertical, 30)
-                
-                Spacer()
-                
-                //  사진
-                Canvas { context, size in
-                    for line in lines {
-                        var path = Path()
-                        path.addLines(line.points)
-                        context.stroke(path, with: .color(line.color.opacity(line.lineOpacity)), lineWidth: line.fontWeight)
-                    }
-                }.background(Color.gray).cornerRadius(20)
-                    .frame(width: 338, height: 354)
-                    .gesture(DragGesture(minimumDistance: 0, coordinateSpace: .local)
-                        .onChanged({ value in
-                            let newPoint = value.location
-                            if value.translation.width + value.translation.height == 0 {
-                                lines.append(Line(points: [newPoint], color: selectedColor, lineOpacity: pencilOpacity, fontWeight: selectedWeightDouble))
-                            } else {
-                                let index = lines.count - 1
-                                lines[index].points.append(newPoint)
-                            }
-                        })
-                            .onEnded({ value in
-                                self.currentLine = Line(points: [], color: selectedColor, lineOpacity: pencilOpacity, fontWeight: selectedWeightDouble)
+                    //  사진
+                    Canvas { context, size in
+                        for line in lines {
+                            var path = Path()
+                            path.addLines(line.points)
+                            context.stroke(path, with: .color(line.color.opacity(line.lineOpacity)), lineWidth: line.fontWeight)
+                        }
+                    }.background(Color.gray).cornerRadius(20)
+                        .frame(width: 338, height: 354)
+                        .gesture(DragGesture(minimumDistance: 0, coordinateSpace: .local)
+                            .onChanged({ value in
+                                let newPoint = value.location
+                                if value.translation.width + value.translation.height == 0 {
+                                    lines.append(Line(points: [newPoint], color: selectedColor, lineOpacity: pencilOpacity, fontWeight: selectedWeightDouble))
+                                } else {
+                                    let index = lines.count - 1
+                                    lines[index].points.append(newPoint)
+                                }
                             })
-                    )
+                                .onEnded({ value in
+                                    self.currentLine = Line(points: [], color: selectedColor, lineOpacity: pencilOpacity, fontWeight: selectedWeightDouble)
+                                })
+                        )
+                    Spacer(minLength: 170)
+                }}
+            .navigationBarTitle("요망 꾸미기", displayMode: .inline)
+            .navigationBarItems(leading:
+                                    HStack{
+                Button(action: {
+                    // Handle back button action here
+                }) {
+                    Image(systemName: "chevron.backward")
+                        .font(.system(size: 22))
+                        .foregroundColor(Color(hex: 0x7638F9))
+                }
+                Button {
+                    let last = lines.removeLast()
+                    deletedLines.append(last)
+                } label: {
+                    Image(systemName: "arrow.uturn.backward.circle")
+                        .resizable()
+                        .frame(width: 22, height: 22)
+                        .foregroundColor(Color(hex: 0xEBEBF5))
+                }.padding(.trailing, 5)
+                    .disabled(lines.count == 0)
+                    .colorMultiply(lines.count > 0 ? Color(hex: 0x7638F9) : .gray)
                 
                 
-                //Spacer(minLength: 40)
-                
-                
-                // 색깔고르는칸
-                
-                HStack() {
-                    Spacer()
-                    
-                    HStack(alignment: .center){
+                Button {
+                    let last = deletedLines.removeLast()
+                    lines.append(last)
+                } label: {
+                    Image(systemName: "arrow.uturn.forward.circle")
+                        .resizable()
+                        .frame(width: 22, height: 22)
+                        .foregroundColor(Color(hex: 0xEBEBF5))
+                }.padding(.leading, 5)
+                    .disabled(deletedLines.count == 0)
+                    .colorMultiply(deletedLines.count > 0 ? Color(hex: 0x7638F9) : .gray)
+            }
+                                , trailing: NavigationLink(destination: MyYomangView()){
+                Text("완료")
+                    .foregroundColor(Color(hex: 0x7638F9))
+                    .font(.system(size: 17, weight: .bold))
+            })
+            .toolbar{
+                ToolbarItemGroup(placement: .bottomBar) {
+                    HStack{
                         ColorPickerView(selectedColor: $selectedColor).padding(.horizontal, 5)
-                        
+                        Spacer()
                         ColorPicker("", selection: $selectedColor).labelsHidden()
-                            .frame(width: 30, height: 30)//.padding(.horizontal, 5)
+                            .scaleEffect(CGSize(width: 1.1, height: 1.1)).padding(.trailing, 5)
+
+                        Spacer(minLength: 10)
+
+                        Image(systemName: "scribble.variable")
+                            .foregroundColor(.white)
+                            .font(.system(size: 22))
+                            .onTapGesture {
+                                showPopover.toggle()
+                            }.iOSPopover(isPresented: $showPopover, arrowDirection: .down) {
+                                VStack{
+                                    PencilWeightView(selectedWeight: $selectedWeightDouble)
+                                        .onChange(of: selectedWeightDouble) { newWeight in
+                                            currentLine.fontWeight = newWeight
+                                        }
+                                    Spacer()
+                                    CustomSliderView(offset: $offset, opacity: $pencilOpacity, selectedColor: $selectedColor).onChange(of: pencilOpacity) { newOpacity in
+                                        currentLine.lineOpacity = newOpacity
+                                    }
+                                }.padding(10)
+                            }
                         Spacer()
                     }
-                    Spacer()
-                }.frame(width: 358, height: 72)
-                
-                Spacer(minLength: 130)
-                
-                // 모두 지우기 + scribble.variable 이미지
-                HStack{
-                    Spacer()
-                    Button {
-                        lines.removeAll()
-                    } label: {
-                        Text("모두 지우기")
-                            .font(.system(size: 17, weight: .regular))
-                            .foregroundColor(.white)
-                    }
-                    .disabled(lines.count == 0)
-                    .colorMultiply(lines.count > 0 ? .white : .gray)
-                    
-                    Spacer(minLength: 200)
-                    
-                    Image(systemName: "scribble.variable")
-                        .foregroundColor(.white)
-                        .font(.system(size: 22))
-                        .onTapGesture {
-                            showPopover.toggle()
-                        }.iOSPopover(isPresented: $showPopover, arrowDirection: .down) {
-                            VStack{
-                                // Spacer()
-                                PencilWeightView(selectedWeight: $selectedWeightDouble)
-                                    .onChange(of: selectedWeightDouble) { newWeight in
-                                        currentLine.fontWeight = newWeight
-                                    }
-                                Spacer()
-                                CustomSliderView(offset: $offset, opacity: $pencilOpacity, selectedColor: $selectedColor).onChange(of: pencilOpacity) { newOpacity in
-                                    currentLine.lineOpacity = newOpacity
-                                }
-                            }
-                            .padding(15)
-                        }
-                    
-                    Spacer()
-                    
                 }
             }
-            Spacer()
-        }
+            
+        }.navigationBarBackButtonHidden()
     }
 }
 

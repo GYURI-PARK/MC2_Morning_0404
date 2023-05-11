@@ -1,20 +1,22 @@
 //
-//  MyYomangView.swift
+//  TestView.swift
 //  Yomang
 //
-//  Created by GYURI PARK on 2023/05/05.
+//  Created by GYURI PARK on 2023/05/10.
 //
 
 import SwiftUI
 
-struct MyYomangView: View {
+struct TestView: View {
+    
     var body: some View {
         NavigationView{
-                    
                     ZStack{
                         HStack{
                             Spacer()
-                            Text("hello world")
+                            NavigationLink(destination: ImageMarkUpView()){
+                                Text("hello world")
+                            }
                             Spacer()
                         }
                     }
@@ -22,8 +24,8 @@ struct MyYomangView: View {
     }
 }
 
-struct MyYomangView_Previews: PreviewProvider {
+struct TestView_Previews: PreviewProvider {
     static var previews: some View {
-        MyYomangView()
+        TestView()
     }
 }

@@ -11,8 +11,6 @@ struct ColorPickerView: View {
     let colors =  [Color.white, Color.blue, Color.green, Color.yellow, Color.red]
     @Binding var selectedColor: Color
     
-    
-    
     var body: some View {
         HStack {
             ForEach(colors, id: \.self) { color in
@@ -20,11 +18,11 @@ struct ColorPickerView: View {
                       Constants.Icons.circleCircleFill :
                         Constants.Icons.circleFill)
                 .foregroundColor(color)
-                .font(.system(size: 30))
+                .font(.system(size: 22))
                 .clipShape(Circle())
                 .onTapGesture {
                     selectedColor = color
-                }.padding(.horizontal, 10)
+                }.padding(.horizontal, 4)
             }
         }
     }
@@ -37,11 +35,11 @@ public func switchFontWeight(for font: Font.Weight) -> Double{
     case .light:
         return 3.0
     case .medium:
-        return 5.0
+        return 6.0
     case .bold:
-        return 8.0
-    case .heavy:
         return 9.0
+    case .black:
+        return 12.0
     default:
         break
     }
@@ -50,7 +48,7 @@ public func switchFontWeight(for font: Font.Weight) -> Double{
 
 
 struct PencilWeightView: View {
-    let fonts = [Font.Weight.ultraLight, Font.Weight.light, Font.Weight.medium, Font.Weight.bold, Font.Weight.heavy]
+    let fonts = [Font.Weight.ultraLight, Font.Weight.light, Font.Weight.medium, Font.Weight.bold, Font.Weight.black]
     
     @Binding var selectedWeight: Double
     @State var selectedIndex: Int?
@@ -93,11 +91,15 @@ struct PencilWeightView: View {
 }
 
 
-//struct ColorPickerView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        ColorPickerView(selectedColor: .constant(.blue))
-//    }
-//}
+struct ColorPickerView_Previews: PreviewProvider {
+    static var previews: some View {
+        ZStack{
+            Color.black.ignoresSafeArea()
+            
+            ColorPickerView(selectedColor: .constant(.blue))
+        }
+    }
+}
 
 //struct PencilWeightView_Previews: PreviewProvider {
 //    static var previews: some View {
