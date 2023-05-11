@@ -5,13 +5,14 @@
 //  Created by 최민규 on 2023/05/05.
 //
 
-//TODO: Navigation Back Button에 매칭 취소 기능 넣기
+//TODO: 매칭 취소 함수 받아서 넣기
 //TODO: Matching Status 확인해서 완료 애니메이션 실행하기
 
 import SwiftUI
 
 struct MatchingLoadingView: View {
    
+    let user: User
     
     //뷰모델에서 선언예정
     @State var colorButtonGradient1: LinearGradient = LinearGradient(
@@ -19,7 +20,7 @@ struct MatchingLoadingView: View {
         startPoint: .top,
         endPoint: .bottom)
     @State var colorButtonDisabled = LinearGradient(colors: [.white.opacity(0.3)], startPoint: .top, endPoint: .bottom)
-    @State var isMatchingComplete: Bool = false
+    @State private var connected: Bool = false
     
     var body: some View {
         GeometryReader { proxy in
@@ -37,10 +38,17 @@ struct MatchingLoadingView: View {
                     Spacer()
                     
                     //로딩뷰와 매칭완료뷰 전환(애니메이션장면)
-                    if isMatchingComplete {
-                        CompleteView()
+                    if connected == false {
+                        if let currentUser = AuthViewModel.shared.user {
+                            LoadingView()
+                                .onChange(of: currentUser.isConnected){ newValue in
+                                    connected = newValue
+                                    print("\(newValue)매칭 부울값")
+                                }
+                        }
                     } else {
-                        LoadingView()
+                        CompleteView()
+                        
                     }
                     
                     //파트너 일러스트 이미지
@@ -51,18 +59,17 @@ struct MatchingLoadingView: View {
                     VStack(alignment: .center) {
                         
                         //서버에서 매칭 완료 시 버튼 활성화
-                        //현재는 서버값 없으므로 버튼 자체에 매칭완료 기능 부여함, 나중에는 다음뷰로 넘어가는 기능 부여해야함
+                        // TODO: 현재는 서버값 없으므로 버튼 자체에 매칭완료 기능 부여함, 나중에는 다음뷰로 넘어가는 기능 부여해야함
                         Button(action: {
-                            isMatchingComplete.toggle()
                         }, label: {
                             RoundedRectangle(cornerRadius: 20)
-                                .fill(isMatchingComplete ? colorButtonGradient1 : colorButtonDisabled)
+                                .fill(connected ? colorButtonGradient1 : colorButtonDisabled)
                                 .frame(height: 70)
                                 .overlay(
-                                    Text(isMatchingComplete ? "연결완료" : "연결중…")
+                                    Text(connected ? "연결완료" : "연결중…")
                                         .font(.title3)
                                         .bold()
-                                        .foregroundColor(isMatchingComplete ? .white.opacity(1) : .white.opacity(0.5))
+                                        .foregroundColor(connected ? .white.opacity(1) : .white.opacity(0.5))
                                 )//overlay
                         })//Button
                         Spacer().frame(height: proxy.size.height * 0.03)
@@ -70,6 +77,14 @@ struct MatchingLoadingView: View {
                     .frame(width: proxy.size.width * 0.88)
                 }//VStack
             }//ZStack
+            .onAppear{
+                connected = user.isConnected
+                print("onAppear, connected 변수에 값 \(connected) 들어감")
+            }
+            .onDisappear {
+                // TODO: 매칭 취소 기능 넣기
+                print("Matching Canceled")
+            }
         }//GeometryReader
     }
 }
@@ -78,7 +93,7 @@ struct MatchingLoadingView: View {
 //프리뷰
 struct MatchingLoadingView_Previews: PreviewProvider {
     static var previews: some View {
-        MatchingLoadingView()
+        MatchingLoadingView(user: User(uuid: "", userId: "", isConnected: false))
     }
 }
 

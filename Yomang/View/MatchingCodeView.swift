@@ -14,8 +14,6 @@
 
 import SwiftUI
 
-
-
 struct MatchingCodeView: View {
  
     let user: User
@@ -38,7 +36,6 @@ struct MatchingCodeView: View {
         
         GeometryReader { proxy in
             NavigationView {
-                
                 ZStack {
                     //MatchingCode 배경
                     MatchingCodeBackgroundView()
@@ -204,7 +201,7 @@ struct MatchingCodeView: View {
                             //버튼 클릭 시
                             //TO-DO dfsdf
                             else {
-                                NavigationLink(destination: MatchingLoadingView()) {
+                                NavigationLink(destination: MatchingLoadingView(user: self.user)) {
                                     RoundedRectangle(cornerRadius: 20)
                                         .fill(colorButtonGradient1)
                                         .frame(height: 70)
@@ -215,10 +212,9 @@ struct MatchingCodeView: View {
                                         )}
                                     .simultaneousGesture(TapGesture().onEnded{
                                         AuthViewModel.shared.matchingUser(partnerId: yourCode)
+                                        print("Matching Code sent")
                                     })
                             }
-//
-                               
                             Spacer().frame(height: proxy.size.height * 0.03)
                         }//VStack
                         .frame(width: proxy.size.width * 0.88)
