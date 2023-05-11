@@ -32,7 +32,7 @@
 		8AB30F9E2A04F78800AB274E /* MatchingCodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB30F9D2A04F78800AB274E /* MatchingCodeView.swift */; };
 		8AB30FA02A053B1400AB274E /* MatchingLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB30F9F2A053B1400AB274E /* MatchingLoadingView.swift */; };
 		AD24FFB82A0C7A340098DCA9 /* YomangImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD24FFB72A0C7A340098DCA9 /* YomangImageView.swift */; };
-		AD24FFC22A0CE2F50098DCA9 /* MatchingCodeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD24FFC12A0CE2F50098DCA9 /* MatchingCodeViewModel.swift */; };
+		AD24FFC92A0D34280098DCA9 /* MatchingCodeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD24FFC82A0D34270098DCA9 /* MatchingCodeViewModel.swift */; };
 		C16701882A051A4C00D3DFB4 /* ImageMarkUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C16701872A051A4C00D3DFB4 /* ImageMarkUpView.swift */; };
 		C167018E2A051BDA00D3DFB4 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C167018D2A051BDA00D3DFB4 /* GoogleService-Info.plist */; };
 		C19ADC302A064A7B0081F760 /* ColorPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C19ADC2F2A064A7B0081F760 /* ColorPickerView.swift */; };
@@ -53,7 +53,7 @@
 		8AB30F9D2A04F78800AB274E /* MatchingCodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchingCodeView.swift; sourceTree = "<group>"; };
 		8AB30F9F2A053B1400AB274E /* MatchingLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchingLoadingView.swift; sourceTree = "<group>"; };
 		AD24FFB72A0C7A340098DCA9 /* YomangImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YomangImageView.swift; sourceTree = "<group>"; };
-		AD24FFC12A0CE2F50098DCA9 /* MatchingCodeViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MatchingCodeViewModel.swift; sourceTree = "<group>"; };
+		AD24FFC82A0D34270098DCA9 /* MatchingCodeViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MatchingCodeViewModel.swift; sourceTree = "<group>"; };
 		C16701872A051A4C00D3DFB4 /* ImageMarkUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageMarkUpView.swift; sourceTree = "<group>"; };
 		C167018D2A051BDA00D3DFB4 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		C19ADC2F2A064A7B0081F760 /* ColorPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPickerView.swift; sourceTree = "<group>"; };
@@ -142,15 +142,9 @@
 		68F7D2512A038B5400D7B874 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				4BE70B4B2A0398E000D7D588 /* YourYomangView.swift */,
-				4B19E0CF2A088BFF00CF3F42 /* HomeView.swift */,
-				4B19E0D52A09EEC200CF3F42 /* MyYomangView.swift */,
-				C16701872A051A4C00D3DFB4 /* ImageMarkUpView.swift */,
-				C19ADC2F2A064A7B0081F760 /* ColorPickerView.swift */,
+				AD24FFC42A0D32B20098DCA9 /* ConnectionFlow */,
+				AD24FFC32A0D32AA0098DCA9 /* MainFlow */,
 				C19ADC312A064AA20081F760 /* Constants.swift */,
-				8AB30F9D2A04F78800AB274E /* MatchingCodeView.swift */,
-				8AB30F9F2A053B1400AB274E /* MatchingLoadingView.swift */,
-				AD24FFB72A0C7A340098DCA9 /* YomangImageView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -158,10 +152,40 @@
 		68F7D2522A038B6400D7B874 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				AD24FFC82A0D34270098DCA9 /* MatchingCodeViewModel.swift */,
 				2FD8C9A12A052C3F00666609 /* AuthViewModel.swift */,
-				AD24FFC12A0CE2F50098DCA9 /* MatchingCodeViewModel.swift */,
 			);
 			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		AD24FFC32A0D32AA0098DCA9 /* MainFlow */ = {
+			isa = PBXGroup;
+			children = (
+				AD24FFC52A0D330E0098DCA9 /* Home */,
+				C16701872A051A4C00D3DFB4 /* ImageMarkUpView.swift */,
+				C19ADC2F2A064A7B0081F760 /* ColorPickerView.swift */,
+			);
+			path = MainFlow;
+			sourceTree = "<group>";
+		};
+		AD24FFC42A0D32B20098DCA9 /* ConnectionFlow */ = {
+			isa = PBXGroup;
+			children = (
+				8AB30F9D2A04F78800AB274E /* MatchingCodeView.swift */,
+				8AB30F9F2A053B1400AB274E /* MatchingLoadingView.swift */,
+			);
+			path = ConnectionFlow;
+			sourceTree = "<group>";
+		};
+		AD24FFC52A0D330E0098DCA9 /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				4BE70B4B2A0398E000D7D588 /* YourYomangView.swift */,
+				4B19E0CF2A088BFF00CF3F42 /* HomeView.swift */,
+				4B19E0D52A09EEC200CF3F42 /* MyYomangView.swift */,
+				AD24FFB72A0C7A340098DCA9 /* YomangImageView.swift */,
+			);
+			path = Home;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -253,7 +277,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AD24FFC22A0CE2F50098DCA9 /* MatchingCodeViewModel.swift in Sources */,
+				AD24FFC92A0D34280098DCA9 /* MatchingCodeViewModel.swift in Sources */,
 				4BE70B4C2A0398E000D7D588 /* YourYomangView.swift in Sources */,
 				4B19E0D62A09EEC200CF3F42 /* MyYomangView.swift in Sources */,
 				4B19E0D02A088BFF00CF3F42 /* HomeView.swift in Sources */,

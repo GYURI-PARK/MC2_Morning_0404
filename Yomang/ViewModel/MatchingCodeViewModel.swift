@@ -12,8 +12,8 @@ class MatchingCodeViewModel: ObservableObject {
         // TODO: AuthViewModel 싱글톤 구조로 변경 후 아래 코드 해결
         // self.user.partnerId = partnerId
     }
-    
+
     init(){
-        
+
     }
 }
