@@ -8,21 +8,22 @@
 import SwiftUI
 
 struct HomeView: View {
+    let user: User?
+    @State var selectedTabTag = 1
     var body: some View {
-        TabView {
-            YourYomangView()
-            MyYomangView()
+        NavigationView{
+            TabView(selection: $selectedTabTag) {
+                YourYomangView(imageUrl: nil)
+                    .tag(0)
+                MyYomangView(user: nil)
+                    .tag(1)
+            }
+            .navigationTitle(selectedTabTag == 1 ? "나의 요망" : "너의 요망")
+            .tabViewStyle(.page(indexDisplayMode:.always))
+            .navigationBarTitleDisplayMode(.large)
+            .indexViewStyle(.page(backgroundDisplayMode: .always))
+            .navigationViewStyle(.stack)
+            .background(LinearGradient(colors: [Color.black, Color(hex: 0x221D35)], startPoint: .top, endPoint: .bottom))
         }
-        .tabViewStyle(.page(indexDisplayMode:.always))
-        .indexViewStyle(.page(backgroundDisplayMode: .always))
-        .navigationViewStyle(.stack)
-        .navigationBarTitleDisplayMode(.inline)
-        .padding(20)
-    }
-}
-
-struct HomeView_Previews: PreviewProvider {
-    static var previews: some View {
-        HomeView()
     }
 }

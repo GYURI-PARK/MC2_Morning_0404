@@ -8,22 +8,23 @@
 import SwiftUI
 
 struct YourYomangView: View {
+    
+    let imageUrl: String?
+    
     var body: some View {
-        NavigationView {
-            VStack {
-                Rectangle()
-                    .fill(.gray)
-                    .frame(width: 338, height: 354)
-                    .cornerRadius(22)
+        ZStack {
+            YomangImageView()
+            
+            VStack (alignment: .center) {
+                if let url = imageUrl {
+                    // TODO: Image
+                } else {
+                    Text("클릭해서\n상대방과 연결해요")
+                        .font(.title)
+                        .fontWeight(.bold)
+                        .multilineTextAlignment(.center)
+                }
             }
-            .navigationTitle("너의 요망")
         }
-    }
-}
-
-
-struct YourYomangView_Previews: PreviewProvider {
-    static var previews: some View {
-        YourYomangView()
     }
 }
