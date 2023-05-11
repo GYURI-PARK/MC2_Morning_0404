@@ -18,50 +18,84 @@ struct ImageMarkUpView: View {
     @State private var pencilOpacity: CGFloat = 1.0
     @State private var showPopover: Bool = false
     
+    @ObservedObject var viewModel: YomangViewModel
+    
     var body: some View {
-        NavigationView{
-            ZStack{
-                Color.black
-                    .ignoresSafeArea()
-                VStack(alignment: .center) {
-                    
-                    Spacer()
-                    
-                    //  사진
-                    Canvas { context, size in
-                        for line in lines {
-                            var path = Path()
-                            path.addLines(line.points)
-                            context.stroke(path, with: .color(line.color.opacity(line.lineOpacity)), lineWidth: line.fontWeight)
-                        }
-                    }.background(Color.gray).cornerRadius(20)
-                        .frame(width: 338, height: 354)
-                        .gesture(DragGesture(minimumDistance: 0, coordinateSpace: .local)
-                            .onChanged({ value in
-                                let newPoint = value.location
-                                if value.translation.width + value.translation.height == 0 {
-                                    lines.append(Line(points: [newPoint], color: selectedColor, lineOpacity: pencilOpacity, fontWeight: selectedWeightDouble))
-                                } else {
-                                    let index = lines.count - 1
-                                    lines[index].points.append(newPoint)
-                                }
+        
+        ZStack{
+            Color.black
+                .ignoresSafeArea()
+            VStack(alignment: .center) {
+                
+                Spacer(minLength: 160)
+                //  사진
+                Canvas { context, size in
+                    for line in lines {
+                        var path = Path()
+                        path.addLines(line.points)
+                        context.stroke(path, with: .color(line.color.opacity(line.lineOpacity)) , style: StrokeStyle(lineWidth: line.fontWeight, lineCap: .round, lineJoin: .round))
+                    }
+                }.background(Color.gray).cornerRadius(20)
+                    .frame(width: 338, height: 354)
+                    .gesture(DragGesture(minimumDistance: 0, coordinateSpace: .local)
+                        .onChanged({ value in
+                            let newPoint = value.location
+                            if value.translation.width + value.translation.height == 0 {
+                                lines.append(Line(points: [newPoint], color: selectedColor, lineOpacity: pencilOpacity, fontWeight: selectedWeightDouble))
+                            } else {
+                                let index = lines.count - 1
+                                lines[index].points.append(newPoint)
+                            }
+                        })
+                            .onEnded({ value in
+                                self.currentLine = Line(points: [], color: selectedColor, lineOpacity: pencilOpacity, fontWeight: selectedWeightDouble)
                             })
-                                .onEnded({ value in
-                                    self.currentLine = Line(points: [], color: selectedColor, lineOpacity: pencilOpacity, fontWeight: selectedWeightDouble)
-                                })
-                        )
-                    Spacer(minLength: 170)
-                }}
+                    )
+                
+                Spacer(minLength: 140)
+               
+                ZStack{
+                    Color(hex: 0x2F3031).ignoresSafeArea()
+                    
+                    VStack{
+                        HStack{
+                            Spacer()
+                            ColorPickerView(selectedColor: $selectedColor).padding(.leading, 18)
+                            
+                            ColorPicker("", selection: $selectedColor).labelsHidden()
+                                .padding(.horizontal, 7)
+                            
+                            Spacer()
+                            
+                            Image(systemName: "scribble.variable")
+                               // .padding(.trailing, 10)
+                                .padding()
+                                .foregroundColor(.white)
+                                .font(.system(size: 22))
+                                .onTapGesture {
+                                    showPopover.toggle()
+                                }.iOSPopover(isPresented: $showPopover, arrowDirection: .down) {
+                                    VStack{
+                                        PencilWeightView(selectedWeight: $selectedWeightDouble)
+                                            .onChange(of: selectedWeightDouble) { newWeight in
+                                                currentLine.fontWeight = newWeight
+                                            }
+                                        Spacer()
+                                        CustomSliderView(offset: $offset, opacity: $pencilOpacity, selectedColor: $selectedColor).onChange(of: pencilOpacity) { newOpacity in
+                                            currentLine.lineOpacity = newOpacity
+                                        }
+                                        
+                                        
+                                    }.padding(5)
+                                }
+                        }
+                    }
+                    Spacer()
+                }
+            }
             .navigationBarTitle("요망 꾸미기", displayMode: .inline)
             .navigationBarItems(leading:
                                     HStack{
-                Button(action: {
-                    // Handle back button action here
-                }) {
-                    Image(systemName: "chevron.backward")
-                        .font(.system(size: 22))
-                        .foregroundColor(Color(hex: 0x7638F9))
-                }
                 Button {
                     let last = lines.removeLast()
                     deletedLines.append(last)
@@ -92,39 +126,9 @@ struct ImageMarkUpView: View {
                     .foregroundColor(Color(hex: 0x7638F9))
                     .font(.system(size: 17, weight: .bold))
             })
-            .toolbar{
-                ToolbarItemGroup(placement: .bottomBar) {
-                    HStack{
-                        ColorPickerView(selectedColor: $selectedColor).padding(.horizontal, 5)
-                        Spacer()
-                        ColorPicker("", selection: $selectedColor).labelsHidden()
-                            .scaleEffect(CGSize(width: 1.1, height: 1.1)).padding(.trailing, 5)
-
-                        Spacer(minLength: 10)
-
-                        Image(systemName: "scribble.variable")
-                            .foregroundColor(.white)
-                            .font(.system(size: 22))
-                            .onTapGesture {
-                                showPopover.toggle()
-                            }.iOSPopover(isPresented: $showPopover, arrowDirection: .down) {
-                                VStack{
-                                    PencilWeightView(selectedWeight: $selectedWeightDouble)
-                                        .onChange(of: selectedWeightDouble) { newWeight in
-                                            currentLine.fontWeight = newWeight
-                                        }
-                                    Spacer()
-                                    CustomSliderView(offset: $offset, opacity: $pencilOpacity, selectedColor: $selectedColor).onChange(of: pencilOpacity) { newOpacity in
-                                        currentLine.lineOpacity = newOpacity
-                                    }
-                                }.padding(10)
-                            }
-                        Spacer()
-                    }
-                }
-            }
-            
-        }.navigationBarBackButtonHidden()
+            .toolbarBackground(Color(hex: 0x2F3031), for: .navigationBar)
+            .toolbarBackground(.visible, for: .navigationBar)
+        }
     }
 }
 
@@ -144,11 +148,11 @@ struct CustomSliderView: View {
         ZStack(alignment: Alignment(horizontal: .leading, vertical: .center), content: {
             Capsule()
                 .fill(LinearGradient(gradient: Gradient(colors: [selectedColor.opacity(0.1), selectedColor]), startPoint: .leading, endPoint: .trailing)).opacity(0.7)
-                .frame(width: 230, height: 25)
+                .frame(width: 230, height: 22)
 
             Circle()
                 .fill(Color.white)
-                .frame(width: 40, height: 40)
+                .frame(width: 35, height: 35)
                 .offset(x: offset)
                 .gesture(DragGesture().onChanged({(value) in
                     if value.location.x > 23 && value.location.x <=
@@ -249,10 +253,10 @@ class CustomHostingView<Content: View>: UIHostingController<Content>{
     }
 }
 
-
-
-struct ImageMarkUpView_Previews: PreviewProvider {
-    static var previews: some View {
-        ImageMarkUpView()
-    }
-}
+//
+//
+//struct ImageMarkUpView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        ImageMarkUpView()
+//    }
+//}
