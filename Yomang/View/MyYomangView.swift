@@ -3,7 +3,6 @@
 //  Yomang
 //
 //  Created by Seohyun Bae on 2023/05/09.
-//
 
 import SwiftUI
 
@@ -20,7 +19,6 @@ struct MyYomangView: View {
         }
     }
 }
-
 
 struct MyYomangView_Previews: PreviewProvider {
     static var previews: some View {
