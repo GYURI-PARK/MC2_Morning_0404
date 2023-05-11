@@ -1,9 +1,17 @@
+//
+//  AuthViewModel.swift
+//  Yomang
+//
+//  Created by 제나 on 2023/05/06.
+//
+
 import SwiftUI
 import Firebase
 import FirebaseFirestore
 import FirebaseStorage
 import FirebaseAuth
 
+// TODO: Collection 이름 변경
 let db = Firestore.firestore().collection("TestCollection")
 
 //Firebase와 User 간의 통신을 담당
@@ -25,7 +33,6 @@ class AuthViewModel: ObservableObject{
             completion(false)
             return
         }
-        
         
         // TODO: 세션 내의 유저가 없다면 UserDefaults로 저장된 userId에 대한 밸류값이 있는지 확인하는 부분 추가
         
@@ -57,7 +64,7 @@ class AuthViewModel: ObservableObject{
             guard let user = result?.user else { return }
             
             //받아온 유저 고유 id를 저장
-            UserDefaults.standard.set(user.uid, forKey:"userId")
+            UserDefaults.standard.set(user.uid, forKey: "userId")
             self.user?.userId = user.uid
             
             let data = ["userId": user.uid,
@@ -99,11 +106,10 @@ class AuthViewModel: ObservableObject{
                 // 두 유저 모두 연결된 것으로 변경
                 db.document(uid).updateData(["isConnected": true])
                 db.document(partnerId).updateData(["isConnected": true])
-                return
             } else if partnersPartnerId.isEmpty {
                 print("잘못된 코드를 넣은 것 같습니다! \(data)")
             } else {
-                if (partnersPartnerId == "NaN"){
+                if partnersPartnerId == "NaN" {
                     print("대기중...")
                 }else{
                     print("둘 중 누군가는 잘못된 코드를 넣었습니다!")
@@ -113,14 +119,13 @@ class AuthViewModel: ObservableObject{
     }
     
     func uploadImage(image: Data?, imageName : String) {
+        // TODO: Storage 이름 변경
         let storageRef = Storage.storage().reference().child("TestPhotos/\(imageName)")
         let data = image
         let metadata = StorageMetadata()
         metadata.contentType = "image/jpg"
-        print(data ?? "no data")
         
-        if let data = data{
-            print("Saved?")
+        if let data = data {
             storageRef.putData(data, metadata: metadata) {(metadata, error) in
                 if let error = error {
                     print("Error: \(error)")
@@ -139,8 +144,13 @@ class AuthViewModel: ObservableObject{
         let fileRef = storageRef.child("TestPhotos/\(imageName)")
         
         fileRef.getData(maxSize: 20 * 1024 * 1024) { data, error in
-            if error == nil && data != nil {
-                self.uiImage = UIImage(data: data!)!
+            if let error = error {
+                print("== DEBUG: \(error.localizedDescription)")
+                return
+            }
+            
+            if let data = data {
+                self.uiImage = UIImage(data: data)
             }
         }
     }

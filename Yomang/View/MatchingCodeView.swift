@@ -14,13 +14,10 @@
 
 import SwiftUI
 
-
-
 struct MatchingCodeView: View {
- 
-    let user: User
     
     //View 내에서 직접 필요한 변수들
+    let user: User
     @State private var showAlertYourCodeNil: Bool = false
     @State private var showAlertYourCodeWrong: Bool = false
     @State private var isMyCodeActive: Bool = false
@@ -28,17 +25,12 @@ struct MatchingCodeView: View {
     //추후 뷰모델와 모델, 그리고 서버에서 받아와서 처리하도록 변경/이동해야하는 변수들
     @State var myCode: String = "이곳을 클릭하여 코드를 생성"
     @State var yourCode: String = ""
-    @State var colorButtonGradient1: LinearGradient = LinearGradient(
-        gradient: Gradient(colors: [Color(red: 118/255, green: 56/255, blue: 249/255), Color(red: 0/255, green: 139/255, blue: 255/255)]),
-        startPoint: .top,
-        endPoint: .bottom)
+    @State var colorButtonGradient1 = LinearGradient(colors: [Color(hex: 0x7638f9), Color(hex: 0x008cff)], startPoint: .top, endPoint: .bottom)
     @State var colorButtonDisabled = LinearGradient(colors: [.white.opacity(0.3)], startPoint: .top, endPoint: .bottom)
     
     var body: some View {
-        
         GeometryReader { proxy in
             NavigationView {
-                
                 ZStack {
                     //MatchingCode 배경
                     MatchingCodeBackgroundView()
@@ -61,10 +53,12 @@ struct MatchingCodeView: View {
                             
                             HStack {
                                 //나의 코드 생성하기, 받은 코드 표시 및 공유하기 버튼 활성화
-                                Button(action: {
+                                Button {
                                     self.myCode = user.userId
-                                    withAnimation{ isMyCodeActive = true }
-                                }) {
+                                    withAnimation {
+                                        isMyCodeActive = true
+                                    }
+                                } label: {
                                     Text(myCode)
                                         .foregroundColor(.white)
                                         .lineLimit(1)
@@ -76,7 +70,8 @@ struct MatchingCodeView: View {
                                             HStack {
                                                 Spacer()
                                                 //내 코드를 공유하는 ShareLink
-                                                ShareLink(item: myCode) { Image(systemName: "square.and.arrow.up")
+                                                ShareLink(item: myCode) {
+                                                    Image(systemName: "square.and.arrow.up")
                                                         .bold()
                                                         .foregroundColor(.white)
                                                         .padding()
@@ -89,11 +84,14 @@ struct MatchingCodeView: View {
                             
                             //내 코드 생성되고나면 상대방 코드 입력칸이 나옴
                             if isMyCodeActive {
-                                Spacer().frame(height: proxy.size.height * 0.04)
+                                Spacer()
+                                    .frame(height: proxy.size.height * 0.04)
+                                
                                 Text("상대방의 코드를 입력하세요")
                                     .font(.title3.bold())
                                     .foregroundColor(.white)
                                     .transition(.push(from: .bottom))
+                                
                                 TextField("클릭하여 입력하거나 붙여넣기", text: $yourCode)
                                     .multilineTextAlignment(.leading)
                                     .keyboardType(.asciiCapable)//영문과 숫자만 입력하도록 함
@@ -108,18 +106,21 @@ struct MatchingCodeView: View {
                                         HStack {
                                             Spacer()
                                             ZStack {
-                                                
                                                 //상대방 코드 입력 전 붙여넣기 버튼 활성화
-                                                Button(action: {
+                                                Button {
                                                     if let clipboardString = UIPasteboard.general.string { yourCode = clipboardString }
-                                                }) { Image(systemName: "doc.on.clipboard")
+                                                } label: {
+                                                    Image(systemName: "doc.on.clipboard")
                                                         .foregroundColor(.white)
                                                         .padding()
                                                 }
                                                 .opacity(yourCode.count != 0 ? 0 : 1)
                                                 
                                                 //상대방 코드 입력 시작 시 삭제버튼 활성화
-                                                Button(action: { yourCode = "" }) { Image(systemName: "x.circle")
+                                                Button {
+                                                    yourCode = ""
+                                                } label: {
+                                                    Image(systemName: "x.circle")
                                                         .foregroundColor(.white)
                                                         .padding()
                                                 }
@@ -136,14 +137,15 @@ struct MatchingCodeView: View {
                                     }
                             }
                             
-                            Spacer().frame(height: proxy.size.height * 0.08)
+                            Spacer()
+                                .frame(height: proxy.size.height * 0.08)
                             
                             //연결하기 버튼_조건 미충족 시 Alert, 조건 충족 시 NavigationLink 활성화
                             //Alert Case1_내 코드 생성하지 않은 경우
-                            if isMyCodeActive != true {
-                                Button(action: {
+                            if !isMyCodeActive {
+                                Button {
                                     showAlertYourCodeNil = true
-                                }) {
+                                } label: {
                                     RoundedRectangle(cornerRadius: 20)
                                         .fill(colorButtonDisabled)
                                         .frame(height: 70)
@@ -161,9 +163,9 @@ struct MatchingCodeView: View {
                             
                             //Alert Case2_상대코드 미입력헀거나 실수로 복사한 내 코드를 그대로 입력했을 경우
                             else if yourCode.count == 0 || yourCode == myCode {
-                                Button(action: {
+                                Button {
                                     showAlertYourCodeNil = true
-                                }) {
+                                } label: {
                                     RoundedRectangle(cornerRadius: 20)
                                         .fill(colorButtonDisabled)
                                         .frame(height: 70)
@@ -199,9 +201,8 @@ struct MatchingCodeView: View {
                                 }
                             }
                             
-                            //NavigationLink_정상 조건 충족 시 활성화
-                            //버튼 클릭 시
-                            //TO-DO dfsdf
+                            // NavigationLink_정상 조건 충족 시 활성화
+                            // 버튼 클릭 시
                             else {
                                 NavigationLink(destination: MatchingLoadingView()) {
                                     RoundedRectangle(cornerRadius: 20)
@@ -212,12 +213,13 @@ struct MatchingCodeView: View {
                                                 .font(.title3.bold())
                                                 .foregroundColor(.white)
                                         )}
-                                    .simultaneousGesture(TapGesture().onEnded{
-                                        AuthViewModel.shared.matchingUser(partnerId: yourCode)
-                                    })
+                                .simultaneousGesture(TapGesture().onEnded{
+                                    AuthViewModel.shared.matchingUser(partnerId: yourCode)
+                                })
                             }
-                               
-                            Spacer().frame(height: proxy.size.height * 0.03)
+                            
+                            Spacer()
+                                .frame(height: proxy.size.height * 0.03)
                         }//VStack
                         .frame(width: proxy.size.width * 0.88)
                     }//VStack
@@ -239,10 +241,7 @@ struct MatchingCodeView_Previews: PreviewProvider {
 struct MatchingCodeBackgroundView: View {
     
     //뷰모델에서 선언해서 불러오기
-    @State var colorBackgroundGradient1: LinearGradient = LinearGradient(
-        gradient: Gradient(colors: [Color(red: 118/255, green: 56/255, blue: 249/255), Color(red: 0/255, green: 0/255, blue: 0/255)]),
-        startPoint: .top,
-        endPoint: .bottom)
+    @State var colorBackgroundGradient1 = LinearGradient(colors: [Color(hex: 0x7638f9), .black], startPoint: .top, endPoint: .bottom)
     
     var body: some View {
         Rectangle()
