@@ -7,12 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		4B19E0D42A088E9F00CF3F42 /* Color+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B19E0D32A088E9F00CF3F42 /* Color+Extension.swift */; };
-		2F5FC2752A07670E00CDDC56 /* MatchingLoadingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F5FC2742A07670E00CDDC56 /* MatchingLoadingViewModel.swift */; };
 		2F70F3242A0A988100921844 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 2F70F3232A0A988100921844 /* Kingfisher */; };
 		2FD8C9A02A04F4ED00666609 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 2FD8C99F2A04F4ED00666609 /* FirebaseFirestore */; };
 		2FD8C9A22A052C3F00666609 /* AuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FD8C9A12A052C3F00666609 /* AuthViewModel.swift */; };
 		4B19E0D02A088BFF00CF3F42 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B19E0CF2A088BFF00CF3F42 /* HomeView.swift */; };
+		4B19E0D42A088E9F00CF3F42 /* Color+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B19E0D32A088E9F00CF3F42 /* Color+Extension.swift */; };
 		4B19E0D62A09EEC200CF3F42 /* MyYomangView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B19E0D52A09EEC200CF3F42 /* MyYomangView.swift */; };
 		4BE70B4C2A0398E000D7D588 /* YourYomangView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BE70B4B2A0398E000D7D588 /* YourYomangView.swift */; };
 		68F7D2432A038B3700D7B874 /* YomangApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68F7D2422A038B3700D7B874 /* YomangApp.swift */; };
@@ -43,9 +42,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		4B19E0D32A088E9F00CF3F42 /* Color+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Extension.swift"; sourceTree = "<group>"; };
 		2FD8C9A12A052C3F00666609 /* AuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewModel.swift; sourceTree = "<group>"; };
 		4B19E0CF2A088BFF00CF3F42 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		4B19E0D32A088E9F00CF3F42 /* Color+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Extension.swift"; sourceTree = "<group>"; };
 		4B19E0D52A09EEC200CF3F42 /* MyYomangView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyYomangView.swift; sourceTree = "<group>"; };
 		4BE70B4B2A0398E000D7D588 /* YourYomangView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YourYomangView.swift; sourceTree = "<group>"; };
 		68F7D23F2A038B3700D7B874 /* Yomang.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Yomang.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -89,19 +88,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2FD8C99E2A04F4B900666609 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		4B19E0D22A088E8F00CF3F42 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
 				4B19E0D32A088E9F00CF3F42 /* Color+Extension.swift */,
 			);
 			path = Extensions;
-            sourceTree = "<group>";
-        };
-		2FD8C99E2A04F4B900666609 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		68F7D2362A038B3700D7B874 = {
@@ -300,7 +299,6 @@
 				C19ADC302A064A7B0081F760 /* ColorPickerView.swift in Sources */,
 				68F7D2452A038B3700D7B874 /* ContentView.swift in Sources */,
 				4B19E0D42A088E9F00CF3F42 /* Color+Extension.swift in Sources */,
-				68F7D2752A0393FE00D7B874 /* MatchingCodeViewModel.swift in Sources */,
 				8AB30F9E2A04F78800AB274E /* MatchingCodeView.swift in Sources */,
 				AD24FFB82A0C7A340098DCA9 /* YomangImageView.swift in Sources */,
 				68F7D2432A038B3700D7B874 /* YomangApp.swift in Sources */,
@@ -437,7 +435,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Yomang/Preview Content\"";
-				DEVELOPMENT_TEAM = 7D5PZJWQ9T;
+				DEVELOPMENT_TEAM = GBQ3ZW8V84;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Get access to User Photo Library.";
@@ -467,7 +465,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Yomang/Preview Content\"";
-				DEVELOPMENT_TEAM = 7D5PZJWQ9T;
+				DEVELOPMENT_TEAM = GBQ3ZW8V84;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Get access to User Photo Library.";
