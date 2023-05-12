@@ -11,15 +11,11 @@
 import SwiftUI
 
 struct MatchingLoadingView: View {
-   
     
     //뷰모델에서 선언예정
-    @State var colorButtonGradient1: LinearGradient = LinearGradient(
-        gradient: Gradient(colors: [Color(red: 118/255, green: 56/255, blue: 249/255), Color(red: 0/255, green: 139/255, blue: 255/255)]),
-        startPoint: .top,
-        endPoint: .bottom)
+    @State var colorButtonGradient1 = LinearGradient(colors: [Color(hex: 0x7538f9), Color(hex: 0x008cff)], startPoint: .top, endPoint: .bottom)
     @State var colorButtonDisabled = LinearGradient(colors: [.white.opacity(0.3)], startPoint: .top, endPoint: .bottom)
-    @State var isMatchingComplete: Bool = false
+    @State var isMatchingComplete = false
     
     var body: some View {
         GeometryReader { proxy in
@@ -30,10 +26,8 @@ struct MatchingLoadingView: View {
                 
                 VStack(alignment: .center) {
                     HStack(alignment: .top) {
-                        
                         Spacer()
                     }
-                    
                     Spacer()
                     
                     //로딩뷰와 매칭완료뷰 전환(애니메이션장면)
@@ -46,15 +40,15 @@ struct MatchingLoadingView: View {
                     //파트너 일러스트 이미지
                     Image("Image_Partners_White")
                         .opacity(0.8)
-                    Spacer().frame(height: proxy.size.height * 0.08)
+                    Spacer()
+                        .frame(height: proxy.size.height * 0.08)
                     
                     VStack(alignment: .center) {
-                        
                         //서버에서 매칭 완료 시 버튼 활성화
                         //현재는 서버값 없으므로 버튼 자체에 매칭완료 기능 부여함, 나중에는 다음뷰로 넘어가는 기능 부여해야함
-                        Button(action: {
+                        Button {
                             isMatchingComplete.toggle()
-                        }, label: {
+                        } label: {
                             RoundedRectangle(cornerRadius: 20)
                                 .fill(isMatchingComplete ? colorButtonGradient1 : colorButtonDisabled)
                                 .frame(height: 70)
@@ -64,8 +58,9 @@ struct MatchingLoadingView: View {
                                         .bold()
                                         .foregroundColor(isMatchingComplete ? .white.opacity(1) : .white.opacity(0.5))
                                 )//overlay
-                        })//Button
-                        Spacer().frame(height: proxy.size.height * 0.03)
+                        }//Button
+                        Spacer()
+                            .frame(height: proxy.size.height * 0.03)
                     }//VStack
                     .frame(width: proxy.size.width * 0.88)
                 }//VStack
@@ -84,17 +79,18 @@ struct MatchingLoadingView_Previews: PreviewProvider {
 
 //로딩 애니메이션 뷰
 struct LoadingView: View {
-    
     //뷰 내부 변수
-    @State private var circleOpacityToggle: [Bool] = Array(repeating: false, count: 5)
-    @State private var circleSizeToggle: [Bool] = Array(repeating: false, count: 5)
+    @State private var circleOpacityToggle = Array(repeating: false, count: 5)
+    @State private var circleSizeToggle = Array(repeating: false, count: 5)
     
     var body: some View {
         ZStack(alignment: .center) {
-            
             //원Shape 애니메이션 배열_ 하위 뷰로 값을 넘겨줘서 표시한다
             ForEach (0 ..< 5) { index in
-                CircleLoadingView(circleOpacityToggle: circleOpacityToggle[index], circleSizeToggle: circleSizeToggle[index], delayTime: 0.2 * Double(index))
+                CircleLoadingView(
+                    circleOpacityToggle: circleOpacityToggle[index],
+                    circleSizeToggle: circleSizeToggle[index],
+                    delayTime: 0.2 * Double(index))
             }
         }//ZStack
         .frame(width: 350, height: 350)
@@ -105,8 +101,8 @@ struct LoadingView: View {
 struct CompleteView: View {
     
     //뷰 내부 변수
-    @State private var circleOpacityToggle: [Bool] = Array(repeating: false, count: 5)
-    @State private var circleSizeToggle: [Bool] = Array(repeating: false, count: 5)
+    @State private var circleOpacityToggle = Array(repeating: false, count: 5)
+    @State private var circleSizeToggle = Array(repeating: false, count: 5)
     @State private var showCheckmark = 0.0
     
     var body: some View {
@@ -190,10 +186,7 @@ struct CircleLoadingView: View {
 struct CircleCompleteView: View {
     
     //뷰모델에서 받아올 컬러
-    @State var colorButtonGradient1: LinearGradient = LinearGradient(
-        gradient: Gradient(colors: [Color(red: 118/255, green: 56/255, blue: 249/255), Color(red: 0/255, green: 139/255, blue: 255/255)]),
-        startPoint: .top,
-        endPoint: .bottom)
+    @State var colorButtonGradient1 = LinearGradient(colors: [Color(hex: 0x7538f9), Color(hex: 0x008cff)], startPoint: .top, endPoint: .bottom)
     @State var colorButtonDisabled = LinearGradient(colors: [.white.opacity(0.3)], startPoint: .top, endPoint: .bottom)
     
     //뷰 내부 변수
@@ -231,10 +224,7 @@ struct CircleCompleteView: View {
 struct MatchingLoadingBackgroundView: View {
     
     //뷰모델에서 컬러 선언
-    @State var colorBackgroundGradient1: LinearGradient = LinearGradient(
-        gradient: Gradient(colors: [Color(red: 118/255, green: 56/255, blue: 249/255), Color(red: 0/255, green: 0/255, blue: 0/255)]),
-        startPoint: .top,
-        endPoint: .bottom)
+    @State var colorBackgroundGradient1 = LinearGradient(colors: [Color(hex: 0x7538f9), .black], startPoint: .top, endPoint: .bottom)
     
     var body: some View {
         Rectangle()
