@@ -1,9 +1,17 @@
+//
+//  AuthViewModel.swift
+//  Yomang
+//
+//  Created by 제나 on 2023/05/06.
+//
+
 import SwiftUI
 import Firebase
 import FirebaseFirestore
 import FirebaseStorage
 import FirebaseAuth
 
+// TODO: Collection 이름 변경
 let db = Firestore.firestore().collection("TestCollection")
 
 //Firebase와 User 간의 통신을 담당
@@ -19,13 +27,14 @@ class AuthViewModel: ObservableObject{
     //TODO? 인터넷 연결 없을 시 오류 확인하는 기능 추가해야하나?
     init() {
         self.userSession = Auth.auth().currentUser
-        fetchUser() {}
+        fetchUser { _ in }
     }
     
-    func fetchUser(_ completion: @escaping() -> Void?) {
-        guard let uid = userSession?.uid else { return }
-        print("=== DEBUG: \(uid)")
-        
+    func fetchUser(_ completion: @escaping(Bool) -> ()) {
+        guard let uid = userSession?.uid else {
+            completion(false)
+            return
+        }
         
         // TODO: 세션 내의 유저가 없다면 UserDefaults로 저장된 userId에 대한 밸류값이 있는지 확인하는 부분 추가
         
@@ -36,7 +45,7 @@ class AuthViewModel: ObservableObject{
             
             self.user = user
             print("=== DEBUG: fetch \(self.user)")
-            completion()
+            completion(true)
         }
     }
     
@@ -59,7 +68,7 @@ class AuthViewModel: ObservableObject{
             guard let user = result?.user else { return }
             
             //받아온 유저 고유 id를 저장
-            UserDefaults.standard.set(user.uid, forKey:"userId")
+            UserDefaults.standard.set(user.uid, forKey: "userId")
             self.user?.userId = user.uid
             
             let data = ["userId": user.uid,
@@ -71,7 +80,7 @@ class AuthViewModel: ObservableObject{
             db.document(user.uid).setData(data) { _ in
                 print("=== DEBUG: 회원 등록 완료 \n\(data) ")
                 self.userSession = Auth.auth().currentUser
-                self.fetchUser() {
+                self.fetchUser { _ in
                     completion(user.uid)
                 }
             }
@@ -102,15 +111,10 @@ class AuthViewModel: ObservableObject{
                 // 두 유저 모두 연결된 것으로 변경
                 db.document(uid).updateData(["isConnected": true])
                 db.document(partnerId).updateData(["isConnected": true])
-                
-                //파트너id 저장
-                UserDefaults.standard.set(partnerId, forKey:"partnerId")
-
-                return
             } else if partnersPartnerId.isEmpty {
                 print("잘못된 코드를 넣은 것 같습니다! \(data)")
             } else {
-                if (partnersPartnerId == "NaN"){
+                if partnersPartnerId == "NaN" {
                     print("대기중...")
                 }else{
                     print("둘 중 누군가는 잘못된 코드를 넣었습니다!")
@@ -120,60 +124,59 @@ class AuthViewModel: ObservableObject{
     }
     
     func uploadImage(image: Data?) {
-        guard let tempUid = self.user?.userId else { return }
-        let storageRef = Storage.storage().reference().child("Photos/"+tempUid)
+        guard let uid  = self.user?.userId else { return }
+        let storageRef = Storage.storage().reference().child("Photos/\(uid)")
         let data = image
         let metadata = StorageMetadata()
         metadata.contentType = "image/jpg"
-        print(data ?? "no data")
         
-        if let data = data{
+        if let data = data {
             storageRef.putData(data, metadata: metadata) {(metadata, error) in
                 if let error = error {
                     print("Error: \(error)")
+                    return
                 }
                 if let metadata = metadata {
                     print("metadata: \(metadata)")
                 }
                 
                 storageRef.downloadURL { url, error in
-                  if let error = error {
-                    // Handle any errors
-                  } else {
-                      guard let uid = self.user?.userId else { return }
-                      guard let urlString: String = url?.absoluteString else {return}
-                      db.document(uid).updateData(["imageUrl": urlString])
-                  }
+                    if let error = error {
+                        // Handle any errors
+                    } else {
+                        guard let uid = self.user?.userId else { return }
+                        guard let urlString = url?.absoluteString else {return}
+                        db.document(uid).updateData(["imageUrl": urlString])
+                    }
+                    print("Saved!")
                 }
-                
-                print("Saved!")
             }
-
         }
     }
     
-    func fetchImageLink(){
+    func fetchImageLink() {
+        guard let partnerUid = self.user?.partnerId else { return }
+        let noImage = "https://firebasestorage.googleapis.com/v0/b/mc2test-6602b.appspot.com/o/error%2Ferror.png?alt=media&token=a38e6698-0a12-4741-95c4-a421b7fdb730"
         
-        guard let tempUid = self.user?.partnerId else { return }
-
-        db.document(tempUid).getDocument{ (document, error) in
+        db.document(partnerUid).getDocument{ document, error in
             guard error == nil else {
                 print("Error")
                 //상대가 이미지 아예 안올리면 나오는 오류 이미지 링크 - 테스트용
-                self.user?.imageUrl = "https://firebasestorage.googleapis.com/v0/b/mc2test-6602b.appspot.com/o/error%2Ferror.png?alt=media&token=a38e6698-0a12-4741-95c4-a421b7fdb730"
+                self.user?.imageUrl = noImage
                 return
             }
             
-            if let document = document, document.exists {
+            if let document = document {
                 let data = document.data()
                 if let data = data {
-                    self.user?.imageUrl = data["imageUrl"] as? String ?? ""
-                    UserDefaults.standard.set(data["imageUrl"] as? String ?? "", forKey:"imageURL")
-                    print("url"+(data["imageUrl"] as? String ?? ""))
+                    let imageUrl = data["imageUrl"] as? String ?? ""
+                    self.user?.imageUrl = imageUrl
+                    UserDefaults.standard.set(imageUrl, forKey:"imageURL")
+                    print("=== DEBUG: url \(imageUrl)")
                 }
             }
-            else{
-                self.user?.imageUrl = "https://firebasestorage.googleapis.com/v0/b/mc2test-6602b.appspot.com/o/error%2Ferror.png?alt=media&token=a38e6698-0a12-4741-95c4-a421b7fdb730"
+            else {
+                self.user?.imageUrl = noImage
             }
         }
     }
