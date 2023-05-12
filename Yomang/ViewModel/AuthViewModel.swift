@@ -162,7 +162,7 @@ class AuthViewModel: ObservableObject{
             guard error == nil else {
                 print("Error")
                 //상대가 이미지 아예 안올리면 나오는 오류 이미지 링크 - 테스트용
-                self.user?.imageUrl = noImage
+                UserDefaults.standard.set(noImage, forKey:"imageURL")
                 return
             }
             
@@ -170,13 +170,12 @@ class AuthViewModel: ObservableObject{
                 let data = document.data()
                 if let data = data {
                     let imageUrl = data["imageUrl"] as? String ?? ""
-                    self.user?.imageUrl = imageUrl
                     UserDefaults.standard.set(imageUrl, forKey:"imageURL")
                     print("=== DEBUG: url \(imageUrl)")
                 }
             }
             else {
-                self.user?.imageUrl = noImage
+                UserDefaults.standard.set(noImage, forKey:"imageURL")
             }
         }
     }
