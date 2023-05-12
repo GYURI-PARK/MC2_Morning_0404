@@ -9,8 +9,6 @@
 /* Begin PBXBuildFile section */
 		2F5FC2752A07670E00CDDC56 /* MatchingLoadingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F5FC2742A07670E00CDDC56 /* MatchingLoadingViewModel.swift */; };
 		2F70F3242A0A988100921844 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 2F70F3232A0A988100921844 /* Kingfisher */; };
-		2FA8D6072A0B691F00B3B16A /* MatchingTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FA8D6062A0B691F00B3B16A /* MatchingTest.swift */; };
-		2FA8D6092A0B739600B3B16A /* liveMatchingTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FA8D6082A0B739600B3B16A /* liveMatchingTest.swift */; };
 		2FD8C9A02A04F4ED00666609 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 2FD8C99F2A04F4ED00666609 /* FirebaseFirestore */; };
 		2FD8C9A22A052C3F00666609 /* AuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FD8C9A12A052C3F00666609 /* AuthViewModel.swift */; };
 		68F7D2432A038B3700D7B874 /* YomangApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68F7D2422A038B3700D7B874 /* YomangApp.swift */; };
@@ -43,8 +41,6 @@
 
 /* Begin PBXFileReference section */
 		2F5FC2742A07670E00CDDC56 /* MatchingLoadingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchingLoadingViewModel.swift; sourceTree = "<group>"; };
-		2FA8D6062A0B691F00B3B16A /* MatchingTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchingTest.swift; sourceTree = "<group>"; };
-		2FA8D6082A0B739600B3B16A /* liveMatchingTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = liveMatchingTest.swift; sourceTree = "<group>"; };
 		2FD8C9A12A052C3F00666609 /* AuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewModel.swift; sourceTree = "<group>"; };
 		68F7D23F2A038B3700D7B874 /* Yomang.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Yomang.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		68F7D2422A038B3700D7B874 /* YomangApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YomangApp.swift; sourceTree = "<group>"; };
@@ -88,15 +84,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		2FA8D6052A0B68E100B3B16A /* TestView */ = {
-			isa = PBXGroup;
-			children = (
-				2FA8D6062A0B691F00B3B16A /* MatchingTest.swift */,
-				2FA8D6082A0B739600B3B16A /* liveMatchingTest.swift */,
-			);
-			path = TestView;
-			sourceTree = "<group>";
-		};
 		2FD8C99E2A04F4B900666609 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -124,7 +111,6 @@
 		68F7D2412A038B3700D7B874 /* Yomang */ = {
 			isa = PBXGroup;
 			children = (
-				2FA8D6052A0B68E100B3B16A /* TestView */,
 				C167018D2A051BDA00D3DFB4 /* GoogleService-Info.plist */,
 				68F7D2502A038B4900D7B874 /* Model */,
 				68F7D2512A038B5400D7B874 /* View */,
@@ -268,7 +254,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2FA8D6072A0B691F00B3B16A /* MatchingTest.swift in Sources */,
 				C19ADC302A064A7B0081F760 /* ColorPickerView.swift in Sources */,
 				2F5FC2752A07670E00CDDC56 /* MatchingLoadingViewModel.swift in Sources */,
 				68F7D2452A038B3700D7B874 /* ContentView.swift in Sources */,
@@ -282,7 +267,6 @@
 				C19ADC322A064AA20081F760 /* Constants.swift in Sources */,
 				2FD8C9A22A052C3F00666609 /* AuthViewModel.swift in Sources */,
 				8AB30FA02A053B1400AB274E /* MatchingLoadingView.swift in Sources */,
-				2FA8D6092A0B739600B3B16A /* liveMatchingTest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -411,7 +395,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Yomang/Preview Content\"";
-				DEVELOPMENT_TEAM = GBQ3ZW8V84;
+				DEVELOPMENT_TEAM = 7D5PZJWQ9T;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Get access to User Photo Library.";
@@ -441,7 +425,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Yomang/Preview Content\"";
-				DEVELOPMENT_TEAM = GBQ3ZW8V84;
+				DEVELOPMENT_TEAM = 7D5PZJWQ9T;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Get access to User Photo Library.";
