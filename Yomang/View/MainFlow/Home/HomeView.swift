@@ -15,7 +15,7 @@ struct HomeView: View {
     var body: some View {
         NavigationView{
             TabView(selection: $selectedTabTag) {
-                YourYomangView(imageUrl: user?.imageURL ?? nil)
+                YourYomangView(imageUrl: user?.imageUrl ?? nil)
                     .tag(0)
                 MyYomangView(user: user ?? nil)
                     .tag(1)

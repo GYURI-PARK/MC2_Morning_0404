@@ -55,7 +55,6 @@ struct ContentView: View {
             }
         }
         .onAppear {
-            
             DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
                 withAnimation(Animation.easeOut(duration: 1)) { showSplash.toggle() }
             })
@@ -69,9 +68,6 @@ extension ContentView {
             Color(hex: 0x18181C)
                 .edgesIgnoringSafeArea(.all)
             Image("moon")
-            
         }
-        
     }
-    
 }
