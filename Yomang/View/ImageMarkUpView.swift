@@ -33,23 +33,13 @@ struct ImageMarkUpView: View {
                 
                 Spacer(minLength: 160)
                 //  사진
-                
-                ZStack{
-                    Rectangle()
-                        .frame(width: 338, height: 354)
-                        .overlay(
-                            savedImage != nil ? Image(uiImage: savedImage!) : nil
-                        )
-                    
                     Canvas { context, size in
                         for line in lines {
                             var path = Path()
                             path.addLines(line.points)
                             context.stroke(path, with: .color(line.color.opacity(line.lineOpacity)) , style: StrokeStyle(lineWidth: line.fontWeight, lineCap: .round, lineJoin: .round))
                         }
-                    }
-                }
-                .background(Color.clear).cornerRadius(20)
+                    }.background(savedImage != nil ? Image(uiImage: savedImage!) : nil).cornerRadius(20)
                     .frame(width: 338, height: 354)
                     .gesture(DragGesture(minimumDistance: 0, coordinateSpace: .local)
                         .onChanged({ value in
@@ -136,19 +126,16 @@ struct ImageMarkUpView: View {
                     .disabled(deletedLines.count == 0)
                     .colorMultiply(deletedLines.count > 0 ? Color(hex: 0x7638F9) : .gray)
             }
-            , trailing:
-//                                    NavigationLink(destination: MyYomangView()){
-//                Text("완료")
-//                    .foregroundColor(Color(hex: 0x7638F9))
-//                    .font(.system(size: 17, weight: .bold))
-//            }
-                                Button(action: {
-                                    // back button
-                                    dismiss()
-                            NavigationUtil.popToRootView()
-                                }){
-                                    Text("완료").foregroundColor(Color(hex: 0x7638F9)) .font(.system(size: 17, weight: .bold))
-                                }
+            , trailing: Button(action: {
+                dismiss()
+                NavigationUtil.popToRootView()
+                if let image = savedImage {
+                    // 이미지를 저장하거나 다른 곳에 사용할 수 있는 코드
+                   
+                }
+            }){
+                    Text("완료").foregroundColor(Color(hex: 0x7638F9)) .font(.system(size: 17, weight: .bold))
+                }
             )
             .toolbarBackground(Color(hex: 0x2F3031), for: .navigationBar)
             .toolbarBackground(.visible, for: .navigationBar)

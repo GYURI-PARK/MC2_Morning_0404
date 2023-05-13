@@ -296,12 +296,11 @@ struct CropYomangView: View {
                     viewModel
                     cropped = true
                 }){
-                    
-//                    Text("꾸미기").foregroundColor(.yellow).padding()
+    
                     NavigationLink(destination: ImageMarkUpView(viewModel: YomangViewModel(), savedImage: $viewModel.savedImage)){
                         Text("꾸미기").foregroundColor(.yellow).padding()
                     }.accentColor(Color(hex: 0x7638F9))
-                }
+                }.accentColor(Color(hex: 0x7638F9))
                 
                 
                 

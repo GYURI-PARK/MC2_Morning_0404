@@ -13,7 +13,6 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 struct YomangApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
     @StateObject var viewModel = YomangViewModel()
-
     
     var body: some Scene {
         WindowGroup {
