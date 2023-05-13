@@ -22,6 +22,8 @@ struct ImageMarkUpView: View {
     @ObservedObject var viewModel: YomangViewModel
     @Binding var savedImage: UIImage?
     
+    @Environment(\.dismiss) private var dismiss
+    
     var body: some View {
         
         ZStack{
@@ -31,17 +33,22 @@ struct ImageMarkUpView: View {
                 
                 Spacer(minLength: 160)
                 //  사진
-                Canvas { context, size in
-                    for line in lines {
-                        var path = Path()
-                        path.addLines(line.points)
-                        context.stroke(path, with: .color(line.color.opacity(line.lineOpacity)) , style: StrokeStyle(lineWidth: line.fontWeight, lineCap: .round, lineJoin: .round))
+                
+                ZStack{
+                    Rectangle()
+                        .frame(width: 338, height: 354)
+                        .overlay(
+                            savedImage != nil ? Image(uiImage: savedImage!) : nil
+                        )
+                    
+                    Canvas { context, size in
+                        for line in lines {
+                            var path = Path()
+                            path.addLines(line.points)
+                            context.stroke(path, with: .color(line.color.opacity(line.lineOpacity)) , style: StrokeStyle(lineWidth: line.fontWeight, lineCap: .round, lineJoin: .round))
+                        }
                     }
                 }
-                .overlay(
-                    savedImage != nil ? Image(uiImage: savedImage!) : nil
-                )
-                
                 .background(Color.clear).cornerRadius(20)
                     .frame(width: 338, height: 354)
                     .gesture(DragGesture(minimumDistance: 0, coordinateSpace: .local)
@@ -129,11 +136,19 @@ struct ImageMarkUpView: View {
                     .disabled(deletedLines.count == 0)
                     .colorMultiply(deletedLines.count > 0 ? Color(hex: 0x7638F9) : .gray)
             }
-                                , trailing: NavigationLink(destination: MyYomangView()){
-                Text("완료")
-                    .foregroundColor(Color(hex: 0x7638F9))
-                    .font(.system(size: 17, weight: .bold))
-            })
+            , trailing:
+//                                    NavigationLink(destination: MyYomangView()){
+//                Text("완료")
+//                    .foregroundColor(Color(hex: 0x7638F9))
+//                    .font(.system(size: 17, weight: .bold))
+//            }
+                                Button(action: {
+                                    // back button
+                                    dismiss()
+                                }){
+                                    Text("완료").foregroundColor(Color(hex: 0x7638F9)) .font(.system(size: 17, weight: .bold))
+                                }
+            )
             .toolbarBackground(Color(hex: 0x2F3031), for: .navigationBar)
             .toolbarBackground(.visible, for: .navigationBar)
         }
