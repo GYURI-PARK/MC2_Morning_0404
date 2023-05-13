@@ -10,8 +10,8 @@ import SwiftUI
 struct MyYomangView: View {
 
     @EnvironmentObject var viewModel: YomangViewModel
-//    @Binding var renderedImage: Image?
-    @State var renderedImage: Image?
+    @Binding var renderedImage: Image?
+//    @State var renderedImage: Image?
     
     var body: some View {
         NavigationView{

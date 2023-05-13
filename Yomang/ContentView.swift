@@ -10,11 +10,11 @@ import PhotosUI
 
 struct ContentView: View {
     @EnvironmentObject var viewModel: YomangViewModel
-//    @State var renderedImage: Image?
+    @State var renderedImage: Image?
     
     var body: some View {
 //        MyYomangView(renderedImage: $viewModel.renderedImage)
-        MyYomangView()
+        MyYomangView(renderedImage: $renderedImage)
  //       ImageMarkUpView(viewModel: viewModel)
  //       YomangImage(imageState: viewModel.imageState)
  //       CropYomangView()
