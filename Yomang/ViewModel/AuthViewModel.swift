@@ -146,9 +146,9 @@ class AuthViewModel: ObservableObject{
                     if let error = error {
                         // Handle any errors
                     } else {
-                        guard let partneruid = self.user?.partnerId else { return }
+                        guard let uid = self.user?.userId else { return }
                         guard let urlString = url?.absoluteString else {return}
-                        db.document(partneruid).updateData(["imageUrl": urlString])
+                        db.document(uid).updateData(["imageUrl": urlString])
                     }
                     print("Saved!")
                 }
@@ -159,10 +159,10 @@ class AuthViewModel: ObservableObject{
     //상대방이 올린 이미지 링크 불러오기. 내 도큐먼트 저장된 값으로 진행합니다.
     
     func fetchImageLink() {
-        guard let uid = self.user?.userId else { return }
+        guard let partnerUid = self.user?.partnerId else { return }
         let noImage = "https://firebasestorage.googleapis.com/v0/b/mc2test-6602b.appspot.com/o/error%2Ferror.png?alt=media&token=a38e6698-0a12-4741-95c4-a421b7fdb730"
         
-        db.document(uid).getDocument{ document, error in
+        db.document(partnerUid).getDocument{ document, error in
             guard error == nil else {
                 print("Error")
                 //상대가 이미지 아예 안올리면 나오는 오류 이미지 링크 - 테스트용
