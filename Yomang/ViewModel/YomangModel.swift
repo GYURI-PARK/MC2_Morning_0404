@@ -15,6 +15,7 @@ import CoreTransferable
 class YomangViewModel: ObservableObject {
     
     @Published var savedImage: UIImage?
+    @Published var renderedImage: Image?
     
     // navigation cancel
     @Published var cancel: Bool = false

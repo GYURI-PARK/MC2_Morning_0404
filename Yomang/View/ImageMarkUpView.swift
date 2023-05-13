@@ -21,6 +21,7 @@ struct ImageMarkUpView: View {
     
     @ObservedObject var viewModel: YomangViewModel
     @Binding var savedImage: UIImage?
+//    @State var renderedImage: Image?
     
     @Environment(\.dismiss) private var dismiss
     
@@ -33,13 +34,16 @@ struct ImageMarkUpView: View {
                 
                 Spacer(minLength: 160)
                 //  사진
-                    Canvas { context, size in
-                        for line in lines {
-                            var path = Path()
-                            path.addLines(line.points)
-                            context.stroke(path, with: .color(line.color.opacity(line.lineOpacity)) , style: StrokeStyle(lineWidth: line.fontWeight, lineCap: .round, lineJoin: .round))
-                        }
-                    }.background(savedImage != nil ? Image(uiImage: savedImage!) : nil).cornerRadius(20)
+//                ZStack{
+//                    Canvas { context, size in
+//                        for line in lines {
+//                            var path = Path()
+//                            path.addLines(line.points)
+//                            context.stroke(path, with: .color(line.color.opacity(line.lineOpacity)) , style: StrokeStyle(lineWidth: line.fontWeight, lineCap: .round, lineJoin: .round))
+//                        }
+//                    }.background(savedImage != nil ? Image(uiImage: savedImage!) : nil).cornerRadius(20)
+//                }
+                canvasImage
                     .frame(width: 338, height: 354)
                     .gesture(DragGesture(minimumDistance: 0, coordinateSpace: .local)
                         .onChanged({ value in
@@ -129,9 +133,11 @@ struct ImageMarkUpView: View {
             , trailing: Button(action: {
                 dismiss()
                 NavigationUtil.popToRootView()
-                if let image = savedImage {
-                    // 이미지를 저장하거나 다른 곳에 사용할 수 있는 코드
-                   
+                let renderer = ImageRenderer(content: canvasImage)
+                //renderer.scale = 3
+                if let renderedImage = renderer.uiImage {
+                    viewModel.renderedImage = Image(uiImage: renderedImage)
+                    //MyYomangView(renderedImage: $viewModel.renderedImage)
                 }
             }){
                     Text("완료").foregroundColor(Color(hex: 0x7638F9)) .font(.system(size: 17, weight: .bold))
@@ -140,6 +146,18 @@ struct ImageMarkUpView: View {
             .toolbarBackground(Color(hex: 0x2F3031), for: .navigationBar)
             .toolbarBackground(.visible, for: .navigationBar)
         }
+    }
+    
+    var canvasImage: some View {
+      //  ZStack{
+            Canvas { context, size in
+                for line in lines {
+                    var path = Path()
+                    path.addLines(line.points)
+                    context.stroke(path, with: .color(line.color.opacity(line.lineOpacity)) , style: StrokeStyle(lineWidth: line.fontWeight, lineCap: .round, lineJoin: .round))
+                }
+            }.background(savedImage != nil ? Image(uiImage: savedImage!) : nil).cornerRadius(20)
+     //   }
     }
 }
 
