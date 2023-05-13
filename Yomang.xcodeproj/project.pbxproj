@@ -35,6 +35,7 @@
 		C1404C692A0BDB710018FBF9 /* Cropview.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1404C682A0BDB710018FBF9 /* Cropview.swift */; };
 		C1404C6D2A0C95CB0018FBF9 /* YomangModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1404C6C2A0C95CB0018FBF9 /* YomangModel.swift */; };
 		C1404C712A0CB7D80018FBF9 /* TestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1404C702A0CB7D80018FBF9 /* TestView.swift */; };
+		C1404C732A0F4CF80018FBF9 /* NavigationUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1404C722A0F4CF80018FBF9 /* NavigationUtil.swift */; };
 		C16701882A051A4C00D3DFB4 /* ImageMarkUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C16701872A051A4C00D3DFB4 /* ImageMarkUpView.swift */; };
 		C167018A2A051B1600D3DFB4 /* MyYomangView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C16701892A051B1600D3DFB4 /* MyYomangView.swift */; };
 		C167018E2A051BDA00D3DFB4 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C167018D2A051BDA00D3DFB4 /* GoogleService-Info.plist */; };
@@ -59,6 +60,7 @@
 		C1404C682A0BDB710018FBF9 /* Cropview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cropview.swift; sourceTree = "<group>"; };
 		C1404C6C2A0C95CB0018FBF9 /* YomangModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YomangModel.swift; sourceTree = "<group>"; };
 		C1404C702A0CB7D80018FBF9 /* TestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestView.swift; sourceTree = "<group>"; };
+		C1404C722A0F4CF80018FBF9 /* NavigationUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationUtil.swift; sourceTree = "<group>"; };
 		C16701872A051A4C00D3DFB4 /* ImageMarkUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageMarkUpView.swift; sourceTree = "<group>"; };
 		C16701892A051B1600D3DFB4 /* MyYomangView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyYomangView.swift; sourceTree = "<group>"; };
 		C167018D2A051BDA00D3DFB4 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -125,6 +127,7 @@
 				68F7D2442A038B3700D7B874 /* ContentView.swift */,
 				68F7D2462A038B3800D7B874 /* Assets.xcassets */,
 				68F7D2482A038B3800D7B874 /* Preview Content */,
+				C1404C722A0F4CF80018FBF9 /* NavigationUtil.swift */,
 			);
 			path = Yomang;
 			sourceTree = "<group>";
@@ -279,6 +282,7 @@
 				C19ADC322A064AA20081F760 /* Constants.swift in Sources */,
 				2FD8C9A22A052C3F00666609 /* AuthViewModel.swift in Sources */,
 				8AB30FA02A053B1400AB274E /* MatchingLoadingView.swift in Sources */,
+				C1404C732A0F4CF80018FBF9 /* NavigationUtil.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

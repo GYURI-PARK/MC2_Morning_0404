@@ -145,6 +145,7 @@ struct ImageMarkUpView: View {
                                 Button(action: {
                                     // back button
                                     dismiss()
+                            NavigationUtil.popToRootView()
                                 }){
                                     Text("완료").foregroundColor(Color(hex: 0x7638F9)) .font(.system(size: 17, weight: .bold))
                                 }
