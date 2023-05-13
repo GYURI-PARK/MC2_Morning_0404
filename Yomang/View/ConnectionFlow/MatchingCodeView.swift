@@ -9,7 +9,6 @@
  디자인 요소는 로고 변경 및 배경 변경 예정
  공유하기 버튼은 Sharelink 기능 사용함
  "연결하기" 버튼은 AlertCase 3가지이며, 조건 충족 시 Navigation Link 활성화 -> 코드를 잘못입력하였을 때 돌아와야하는 선택지가 있어야하기 때문에 내비게이션 링크 활용
- 변수 뷰모델로 옮겨서 연동 예정
  */
 
 import SwiftUI
@@ -18,24 +17,13 @@ struct MatchingCodeView: View {
     
     let user: User
     
-    //View 내에서 직접 필요한 변수들
-    @State private var showAlertToggle: Bool = false
+    @State private var showAlertWrong: Bool = false
     @State private var showAlert1: Bool = false
     @State private var showAlert2: Bool = false
-    
-    @State private var showAlertYourCodeWrong: Bool = false
     @State private var isMyCodeShared: Bool = false
-    
-    
-    //추후 뷰모델와 모델, 그리고 서버에서 받아와서 처리하도록 변경/이동해야하는 변수들
+
     @State var myCode: String = " "
     @State var yourCode: String = ""
-    let colorPurple: Color = Color(red: 118/255, green: 56/255, blue: 249/255)
-    let colorButtonGradient1: LinearGradient = LinearGradient(
-        gradient: Gradient(colors: [Color(red: 118/255, green: 56/255, blue: 249/255), Color(red: 0/255, green: 139/255, blue: 255/255)]),
-        startPoint: .top,
-        endPoint: .bottom)
-    @State var colorButtonDisabled = LinearGradient(colors: [.white.opacity(0.3)], startPoint: .top, endPoint: .bottom)
     
     var body: some View {
         NavigationView {
@@ -55,25 +43,25 @@ struct MatchingCodeView: View {
                         .padding(.horizontal)
                         .padding(.top, 20)
                     
-                    
+                    //상대방에게 내 코드 공유하기 버튼_onAppear로 myCode에 서버값을 받는다.
                     ShareLink(item: myCode) {
                         HStack {
                             VStack(alignment: .leading) {
                                 Text("클릭하여 상대에게 코드 보내기")
                                     .font(.caption.bold())
-                                    .foregroundColor(.black.opacity(0.5))
+                                    .foregroundColor(.neu500)
                                     .padding(.horizontal)
                                 
                                 Text(myCode)
                                     .font(.body.bold())
-                                    .foregroundColor(colorPurple)
+                                    .foregroundColor(.main500)
                                     .lineLimit(1)
                                     .padding(.horizontal)
                             }
                             Spacer()
                             Image(systemName: "square.and.arrow.up")
                                 .bold()
-                                .foregroundColor(colorPurple)
+                                .foregroundColor(.main500)
                                 .padding(EdgeInsets(top: 8, leading: 8, bottom: 8, trailing: 8))
                                 .offset(x: -8)
                         }//HStack
@@ -83,8 +71,8 @@ struct MatchingCodeView: View {
                         .padding(.horizontal)
                     }
                     .simultaneousGesture(TapGesture().onEnded() {
+                        //UI 인터랙션 활성화와 Alert 내용 변경을 위한 부울값
                         isMyCodeShared = true
-                        print("HEY")
                     })
                     .onAppear {
                         self.myCode = user.userId
@@ -116,18 +104,18 @@ struct MatchingCodeView: View {
                                 Button(action: {
                                     if let clipboardString = UIPasteboard.general.string { yourCode = clipboardString }
                                 }) { Image(systemName: "doc.on.clipboard")
-                                        .foregroundColor(colorPurple)
+                                        .foregroundColor(.main500)
                                         .padding()
                                 }
                             } else {
                                 //상대방 코드 입력 시작 시 삭제버튼 활성화
                                 Button(action: { yourCode = "" }) { Image(systemName: "x.circle")
-                                        .foregroundColor(colorPurple)
+                                        .foregroundColor(.main500)
                                         .padding()
                                 }
                             }
                         }//HStack
-                        .overlay(Rectangle().frame(height: 1).foregroundColor(colorPurple), alignment: .bottom)
+                        .overlay(Rectangle().frame(height: 1).foregroundColor(.main500), alignment: .bottom)
                         .padding(.horizontal)
                         
                         
@@ -141,12 +129,11 @@ struct MatchingCodeView: View {
                     
                     Spacer()
                     
-                    //연결하기 버튼_조건 미충족 시 Alert, 조건 충족 시 NavigationLink 활성화
-                    
+                    //연결하기 버튼_조건 미충족 시 Button to Alert, 조건 충족 시 NavigationLink 활성화
                     if isMyCodeShared && yourCode.count == 28 && yourCode != myCode {
                         NavigationLink(destination: MatchingLoadingView(user: self.user)) {
                             RoundedRectangle(cornerRadius: 16)
-                                .fill(colorButtonGradient1)
+                                .fill(Color.main500)
                                 .frame(height: 70)
                                 .padding()
                                 .overlay(
@@ -160,7 +147,7 @@ struct MatchingCodeView: View {
                         })
                     } else {
                         Button(action: {
-                            showAlertToggle = true
+                            showAlertWrong = true
                             if !isMyCodeShared {
                                 showAlert1 = true
                             } else if yourCode.count == 0 || yourCode == myCode {
@@ -171,7 +158,7 @@ struct MatchingCodeView: View {
                             }
                         }) {
                             RoundedRectangle(cornerRadius: 16)
-                                .fill(colorButtonDisabled)
+                                .fill(Color.neu500)
                                 .frame(height: 70)
                                 .padding()
                                 .overlay(
@@ -183,13 +170,13 @@ struct MatchingCodeView: View {
                         }
                     }
                 }//VStack
-                .alert(isPresented: $showAlertToggle) {
+                .alert(isPresented: $showAlertWrong) {
                     //Alert Case1_내 코드 생성하지 않은 경우
                     Alert(title: Text("연결 실패"), message: Text(showAlert1 ? "내 코드를 먼저 공유하세요" : showAlert2 ? "상대방의 코드를 입력하세요" : "코드는 28자리 영문과 숫자로 구성되어 있습니다."), dismissButton: .default(Text("OK")))
                 }
             }//ZStack
         }//NavigationView
-        .accentColor(colorPurple)
+        .accentColor(.main500)
     }
 }
 
@@ -202,12 +189,6 @@ struct MatchingCodeView_Previews: PreviewProvider {
 
 //MatchingCode 장면 배경
 struct MatchingCodeBackgroundView: View {
-    
-    //뷰모델에서 선언해서 불러오기
-    @State var colorBackgroundGradient1: LinearGradient = LinearGradient(
-        gradient: Gradient(colors: [Color(red: 118/255, green: 56/255, blue: 249/255), Color(red: 0/255, green: 0/255, blue: 0/255)]),
-        startPoint: .top,
-        endPoint: .bottom)
     
     var body: some View {
         Rectangle()
