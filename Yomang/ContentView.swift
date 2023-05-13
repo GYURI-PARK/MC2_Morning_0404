@@ -39,7 +39,7 @@ struct ContentView: View {
                         }
                 } else {
                     if let user = viewModel.user {
-                        if !user.isConnected {
+                        if user.isConnected {
                             MatchingCodeView(user: user)
                                 .onChange(of: user.isConnected) { _ in
                                     connected = true
@@ -67,7 +67,10 @@ extension ContentView {
         ZStack {
             Color(hex: 0x18181C)
                 .edgesIgnoringSafeArea(.all)
-            Image("moon")
+            Image("Moon1")
+                .resizable()
+                .scaledToFit()
+                .frame(width: 120, height: 120)
         }
     }
 }
