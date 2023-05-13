@@ -20,6 +20,7 @@ struct ImageMarkUpView: View {
     @State var selectedIndex: Int = 2
     
     @ObservedObject var viewModel: YomangViewModel
+    @Binding var savedImage: UIImage?
     
     var body: some View {
         
@@ -36,7 +37,12 @@ struct ImageMarkUpView: View {
                         path.addLines(line.points)
                         context.stroke(path, with: .color(line.color.opacity(line.lineOpacity)) , style: StrokeStyle(lineWidth: line.fontWeight, lineCap: .round, lineJoin: .round))
                     }
-                }.background(Color.gray).cornerRadius(20)
+                }
+                .overlay(
+                    savedImage != nil ? Image(uiImage: savedImage!) : nil
+                )
+                
+                .background(Color.clear).cornerRadius(20)
                     .frame(width: 338, height: 354)
                     .gesture(DragGesture(minimumDistance: 0, coordinateSpace: .local)
                         .onChanged({ value in
