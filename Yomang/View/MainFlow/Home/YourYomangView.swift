@@ -48,7 +48,7 @@ struct YourYomangImageView: View {
     
     @State private var isPressed: Bool = false
     @State private var isHovering: Bool = false
-    @State private var hoverSpeed: Double = 1.5
+    @State private var hoverSpeed: Double = 1.2
     
     var body: some View {
         
@@ -70,7 +70,7 @@ struct YourYomangImageView: View {
                 Spacer()
                 
                 RoundedRectangle(cornerRadius: 22)
-                    .fill(LinearGradient(colors: [Color.white.opacity(0.3), Color.clear], startPoint: .top, endPoint: .bottom))
+                    .fill(LinearGradient(colors: [Color.white.opacity(0.3), Color.clear], startPoint: .top, endPoint: .bottom).opacity(isPressed ? 0 : 1))
                     .frame(width: 338, height: 354)
                     .overlay(
                         RoundedRectangle(cornerRadius: 22)
@@ -107,6 +107,27 @@ struct YourYomangImageView: View {
                             }
                         }
                     }
+                
+                //이미지 눌렀을 때 저장버튼 생성
+                if isPressed {
+                    Button(action: {
+                    }) {
+                        HStack {
+                            Spacer()
+                        
+                            RoundedRectangle(cornerRadius: 16)
+                                .fill(Color.blue500)
+                                .frame(width: 100, height: 50)
+                                .padding(.horizontal)
+                                .overlay(
+                                    Text("저장")
+                                        .font(.body)
+                                        .foregroundColor(.white.opacity(1))
+                                        .padding()
+                                )
+                        }.padding(.horizontal)
+                    }
+                }
                 
                 Spacer().frame(height: 100)
             }//VStack

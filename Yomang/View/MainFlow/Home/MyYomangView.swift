@@ -19,7 +19,7 @@ struct MyYomangView: View {
                 // TODO: Image
                 MyYomangImageView()
                 MyYomangMoon()
-
+                
             } else {
                 MyYomangImageView()
                     .overlay(
@@ -38,7 +38,7 @@ struct MyYomangImageView: View {
     
     @State private var isPressed: Bool = false
     @State private var isHovering: Bool = false
-    @State private var hoverSpeed: Double = 1.5
+    @State private var hoverSpeed: Double = 1.2
     
     var body: some View {
         
@@ -60,7 +60,7 @@ struct MyYomangImageView: View {
                 Spacer()
                 
                 RoundedRectangle(cornerRadius: 22)
-                    .fill(LinearGradient(colors: [Color.white.opacity(0.3), Color.clear], startPoint: .top, endPoint: .bottom).opacity(isPressed ? 0 : 0))
+                    .fill(LinearGradient(colors: [Color.white.opacity(0.3), Color.clear], startPoint: .top, endPoint: .bottom).opacity(isPressed ? 0 : 1))
                     .frame(width: 338, height: 354)
                     .overlay(
                         RoundedRectangle(cornerRadius: 22)
@@ -98,6 +98,26 @@ struct MyYomangImageView: View {
                         }
                     }
                 
+                //이미지 눌렀을 때 편집버튼 생성
+                if isPressed {
+                    Button(action: {
+                    }) {
+                        HStack {
+                            Spacer()
+                        
+                            RoundedRectangle(cornerRadius: 16)
+                                .fill(Color.main500)
+                                .frame(width: 100, height: 50)
+                                .padding(.horizontal)
+                                .overlay(
+                                    Text("편집")
+                                        .font(.body)
+                                        .foregroundColor(.white.opacity(1))
+                                        .padding()
+                                )
+                        }.padding(.horizontal)
+                    }
+                }
                 Spacer().frame(height: 100)
             }//VStack
         }//ZStack
@@ -122,9 +142,12 @@ struct MyYomangMoon: View {
     
     //TODO: every값 조정해서 받아오는 주기 조절
     let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
-    @State private var secondsLeft: Int = 0
+    @State private var timeFromNow: Double = 0.0
+    @State private var timeFromStart: Double = 0.0
+    
     @State private var offsetX: Double = -180
     @State private var isImageUploaded: Bool = false
+    
     
     var body: some View {
         GeometryReader { proxy in
@@ -137,7 +160,7 @@ struct MyYomangMoon: View {
                     .offset(x: offsetX)
                     .overlay(
                         VStack{
-                            Text("seconds: \(secondsLeft)")
+                            Text("seconds: \(timeFromNow)")
                                 .foregroundColor(Color.red)
                                 .font(.title3)
                             Text("offsetX: \(offsetX)")
@@ -146,26 +169,42 @@ struct MyYomangMoon: View {
                         }
                     )
                     .onAppear {
-                        calculateSecondsLeft()
                         loadSavedData()
+                        print("offset1: \(offsetX)")
+                        calculateTimeLeft()
+                        offsetX = (timeFromStart - timeFromNow) * (Double(proxy.size.width * 1.0) / (timeFromStart/5000))
+                        saveData()
+                        print("offset2: \(offsetX)")
                     }
                     .onReceive(timer) { _ in
-                        calculateSecondsLeft()
                         loadSavedData()
-                    if isImageUploaded {
-                            withAnimation(.linear(duration: 1)) { offsetX += Double((proxy.size.width * 2.0 - 180.0)) / Double(secondsLeft/1000)
+                        calculateTimeLeft()
+                        if isImageUploaded {
+                            if offsetX < Double(proxy.size.width * 1.0) {
+                                withAnimation(.linear(duration: 1)) { offsetX += Double(proxy.size.width * 1.0) / (timeFromStart/5000) }
+                                saveData()
+                            } else {
+                                print("새벽5시 전송완료")
+                                loadSavedData()
+                                isImageUploaded = false
+                                offsetX = -180
+                                timeFromStart = 0.0
                                 saveData()
                             }
+                        } else {
+                            print("Image 새로 업로드하기")
                         }
                         print("offset: \(offsetX)")
-                        print("second: \(secondsLeft)")
+                        print("timeFromNow: \(timeFromNow)")
+                        print("timeFromStart: \(timeFromStart)")
                     }
                 
                 Button(action: {
+                    loadSavedData()
                     isImageUploaded = true
                     if isImageUploaded { withAnimation(.easeInOut(duration: 1)){ offsetX = 0 } }
+                    timeFromStart = timeFromNow
                     saveData()
-                    print(offsetX)
                 }) {
                     Text("사진업로드완료")
                         .foregroundColor(.white)
@@ -173,8 +212,10 @@ struct MyYomangMoon: View {
                 }
                 
                 Button(action: {
+                    loadSavedData()
                     isImageUploaded = false
                     offsetX = -180
+                    timeFromStart = 0.0
                     saveData()
                 }) {
                     Text("시간다됨")
@@ -187,28 +228,31 @@ struct MyYomangMoon: View {
         }//GeometryReader
     }
     
-    func calculateSecondsLeft() {
+    func calculateTimeLeft() {
         
         let calendar = Calendar.current
         let now = Date()
         let tomorrow = calendar.date(bySettingHour: 5, minute: 0, second: 0, of: calendar.date(byAdding: .day, value: 1, to: now)!)!
         let components = calendar.dateComponents([.second], from: now, to: tomorrow)
-
+        
         if let seconds = components.second {
-            secondsLeft = seconds
+            timeFromNow = Double(seconds)
         }
     }
     
     func saveData() {
+        UserDefaults.standard.set(timeFromStart, forKey: "timeFromStart")
         UserDefaults.standard.set(offsetX, forKey: "offsetX")
         UserDefaults.standard.set(isImageUploaded, forKey: "isImageUploaded")
         
-       }
-
-       func loadSavedData() {
+        
+    }
+    
+    func loadSavedData() {
+        timeFromStart = UserDefaults.standard.double(forKey: "timeFromStart")
         offsetX = UserDefaults.standard.double(forKey: "offsetX")
         isImageUploaded = UserDefaults.standard.bool(forKey: "isImageUploaded")
-       }
+    }
     
 }
 
