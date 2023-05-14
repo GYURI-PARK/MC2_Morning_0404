@@ -15,22 +15,16 @@ import CoreTransferable
 class YomangViewModel: ObservableObject {
     
     @Published var savedImage: UIImage?
+    @Published var orgImage: UIImage?
     
     // navigation cancel
     @Published var cancel: Bool = false
     
-    @Published var test: String = "test"
+    @Published var currentOffset: CGSize = CGSize.zero
         
     enum ImageState {
         case empty
         case loading(Progress)
-//        case success(Image)
-        case success(UIImage)
-        case failure(Error)
-    }
-    
-    enum ImageCroppedState {
-        case empty
 //        case success(Image)
         case success(UIImage)
         case failure(Error)
@@ -55,7 +49,6 @@ class YomangViewModel: ObservableObject {
                 guard let uiImage = UIImage(data: data) else {
                     throw TransferError.importFailed
                 }
-//                let image = Image(uiImage: uiImage)
                 let image = uiImage
                 return YomangImage(image: image)
             #else
@@ -66,7 +59,6 @@ class YomangViewModel: ObservableObject {
     }
     
     @Published private(set) var imageState: ImageState = .empty
-    @Published private(set) var imageCroppedState: ImageCroppedState = .empty
     
     @Published var imageSelection: PhotosPickerItem? = nil {
         didSet {
@@ -93,6 +85,7 @@ class YomangViewModel: ObservableObject {
 //                    self.imageState = .success(Image(uiImage: profileImage.image))
                     self.imageState = .success(profileImage.image)
                     self.savedImage = profileImage.image
+                    self.orgImage = profileImage.image
                     
                 case .success(nil):
                     self.imageState = .empty
@@ -103,16 +96,6 @@ class YomangViewModel: ObservableObject {
         }
     }
     
-    // MARK: - IMAGECROPPED
-    @Published var imageCropped: UIImage? = nil {
-        didSet {
-            if let imageCropped {
-                imageCroppedState = .success(imageCropped)
-            } else {
-                imageCroppedState = .empty
-            }
-        }
-    }
     
     
 
