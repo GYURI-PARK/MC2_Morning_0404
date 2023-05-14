@@ -10,7 +10,6 @@ import SwiftUI
 struct MyYomangView: View {
     
     let user: User?
-//    @Binding var renderedImage: Image?
     @ObservedObject var viewModel: YomangViewModel
     
     var body: some View {
