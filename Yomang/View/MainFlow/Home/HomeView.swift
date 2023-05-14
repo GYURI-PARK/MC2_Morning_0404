@@ -16,7 +16,7 @@ struct HomeView: View {
     var body: some View {
         NavigationView{
             ZStack {
-                HomeBackground()
+                HomeBackground().environmentObject(animationViewModel)
                 TabView(selection: $selectedTabTag) {
                     MyYomangView(user: user ?? nil).environmentObject(animationViewModel)
                         .tag(0)
@@ -39,9 +39,42 @@ struct HomeView: View {
 //Home 장면 배경_우측
 struct HomeBackground: View {
     
+    @EnvironmentObject var ani: AnimationViewModel
+    @State private var isChanged:Bool = false
+
     var body: some View {
-        Rectangle()
-            .fill(LinearGradient(colors: [Color.black, Color(hex: 0x221D35)], startPoint: .top, endPoint: .bottom))
-            .ignoresSafeArea()
+        
+        ZStack {
+            Rectangle()
+                .fill(Color.black)
+            
+            Rectangle()
+                .fill(LinearGradient(colors: [Color.black, Color.main500], startPoint: .top, endPoint: .bottom))
+                .opacity(isChanged ? 0.1 : 0.3)
+                .onChange(of: ani.isImageUploaded) { isImageUploaded in
+                    withAnimation(.easeInOut(duration: (ani.timeFromStart/300))) {
+                        isChanged = isImageUploaded
+                    }
+                }
+            
+            Rectangle()
+                .fill(LinearGradient(colors: [Color.black, Color.white], startPoint: .top, endPoint: .bottom))
+                .opacity(isChanged ? 0.4 : 0.1)
+                .onChange(of: ani.isImageUploaded) { isImageUploaded in
+                    withAnimation(.easeInOut(duration: (ani.timeFromStart/300))) {
+                        isChanged = isImageUploaded
+                    }
+                }
+            
+            Rectangle()
+                .fill(LinearGradient(colors: [Color.main200, Color.blue500], startPoint: .top, endPoint: .bottom))
+                .opacity(isChanged ? 0.5 : 0)
+                .onChange(of: ani.isImageUploaded) { isImageUploaded in
+                    withAnimation(.easeInOut(duration: (ani.timeFromStart/300))) {
+                        isChanged = isImageUploaded
+                    }
+                }
+        }.edgesIgnoringSafeArea(.all)
+            
     }
 }

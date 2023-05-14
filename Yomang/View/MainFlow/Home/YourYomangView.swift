@@ -164,7 +164,7 @@ struct YourYomangMoon: View {
                     .offset(y: -(proxy.size.height + ani.offsetY))
                     .rotationEffect(.degrees(ani.moonAngle))
                     .offset(x: -(ani.moonSize / 2), y: proxy.size.height + ani.offsetY)
-                    
+                
                 Spacer()
             }//VStack
         }//GeometryReader
