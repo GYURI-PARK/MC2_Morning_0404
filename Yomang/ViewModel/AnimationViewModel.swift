@@ -17,6 +17,8 @@ class AnimationViewModel: ObservableObject{
     @Published var moonSize: Double = 180
     @Published var moonAngle: Double = -30
     @Published var limitAngle: Double = 0.0
+    @Published var offsetY: Double = 180.0
+    @Published var startAngle: Double = 18.0
 
     
     

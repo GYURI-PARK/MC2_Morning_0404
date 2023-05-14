@@ -18,10 +18,9 @@ struct YourYomangView: View {
             
             //이미지가 들어있다면 달이 떠있다.
             if let _ = imageUrl {
-                
+                YourYomangMoon().environmentObject(ani)
                 // TODO: Image
                 YourYomangImageView()
-                YourYomangMoon().environmentObject(ani)
                 
             } else {
                 YourYomangImageView()
@@ -153,9 +152,7 @@ struct YourYomangBackgroundObject: View {
 struct YourYomangMoon: View {
     
     @EnvironmentObject var ani: AnimationViewModel
-    //TODO: every값 조정해서 받아오는 주기 조절
-    let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
-
+   
     var body: some View {
         GeometryReader { proxy in
             VStack {
@@ -163,13 +160,15 @@ struct YourYomangMoon: View {
                 Image("Moon1")
                     .resizable()
                     .scaledToFit()
-                    .frame(width: 180, height: 180)
-                    .offset(y: -(proxy.size.height + 180))
+                    .frame(width: ani.moonSize, height: ani.moonSize)
+                    .offset(y: -(proxy.size.height + ani.offsetY))
                     .rotationEffect(.degrees(ani.moonAngle))
-                    .offset(x: -90, y: proxy.size.height + 180)
+                    .offset(x: -(ani.moonSize / 2), y: proxy.size.height + ani.offsetY)
+                    
                 Spacer()
-            }
+            }//VStack
         }//GeometryReader
+        .edgesIgnoringSafeArea(.all)
     }
 }
 
