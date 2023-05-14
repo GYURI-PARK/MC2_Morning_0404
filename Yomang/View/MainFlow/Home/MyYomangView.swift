@@ -63,6 +63,7 @@ struct MyYomangImageView: View {
                 RoundedRectangle(cornerRadius: 22)
                     .fill(LinearGradient(colors: [Color.white.opacity(0.3), Color.clear], startPoint: .top, endPoint: .bottom).opacity(isPressed ? 0 : 1))
                     .frame(width: 338, height: 354)
+                    .background(RoundedRectangle(cornerRadius: 22).fill(Color.main500))
                     .overlay(
                         RoundedRectangle(cornerRadius: 22)
                             .stroke(Color.white, lineWidth: 1)
@@ -142,7 +143,7 @@ struct MyYomangBackgroundObject: View {
 struct MyYomangMoon: View {
     
     //TODO: every값 조정해서 받아오는 주기 조절
-    let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
+    let timer = Timer.publish(every: 0.5, on: .main, in: .common).autoconnect()
     @EnvironmentObject var ani: AnimationViewModel
     let offsetY: Double = 180.0
     let startAngle: Double = 18.0
@@ -160,29 +161,25 @@ struct MyYomangMoon: View {
                     .offset(x: proxy.size.width - ani.moonSize / 2, y: proxy.size.height + offsetY)
                     .onAppear {
                         ani.loadSavedData()
+                        ani.calculateTimeLeft()
                         ani.calculateMoonLimitAngle(geoWidth: proxy.size.width, geoHeight: proxy.size.height, moonSize: ani.moonSize)
-                        ani.moonAngle = (ani.timeFromStart - ani.timeFromNow) * ((ani.limitAngle * 2 - startAngle) / (ani.timeFromStart/1000)) - ani.limitAngle + startAngle
+                        ani.moonAngle = (ani.timeFromStart - ani.timeFromNow) * ((ani.limitAngle * 2 - startAngle) / (ani.timeFromStart/500)) - ani.limitAngle + startAngle
                         ani.saveData()
                     }
                     .onReceive(timer) { _ in
-                        ani.loadSavedData()
-                        ani.calculateTimeLeft()
-                        ani.calculateMoonLimitAngle(geoWidth: proxy.size.width, geoHeight: proxy.size.height, moonSize: ani.moonSize)
                         if ani.isImageUploaded {
                             if ani.moonAngle < ani.limitAngle {
-                                withAnimation(.linear(duration: 1)) { ani.moonAngle += (ani.limitAngle * 2 - startAngle) / (ani.timeFromStart/1000)}
-                                ani.saveData()
+                                withAnimation(.linear(duration: 1)) { ani.moonAngle += (ani.limitAngle * 2 - startAngle) / (ani.timeFromStart/500)}
                             } else {
                                 print("새벽5시 전송완료")
-                                ani.loadSavedData()
                                 ani.isImageUploaded = false
                                 ani.timeFromStart = 0
                                 ani.moonAngle = -ani.limitAngle
-                                ani.saveData()
                             }
                         } else {
                             print("Image 새로 업로드하기")
                         }
+                        ani.saveData()
                     }
                 
                 Spacer()
@@ -190,7 +187,7 @@ struct MyYomangMoon: View {
                 Button(action: {
                     ani.loadSavedData()
                     ani.isImageUploaded = true
-                    withAnimation(.easeInOut(duration: 1)){ ani.moonAngle = -ani.limitAngle + 18 }
+                    withAnimation(.easeInOut(duration: 1)){ ani.moonAngle = -ani.limitAngle + startAngle }
                     ani.calculateTimeLeft()
                     ani.timeFromStart = ani.timeFromNow
                     ani.saveData()

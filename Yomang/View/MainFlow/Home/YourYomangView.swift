@@ -71,6 +71,7 @@ struct YourYomangImageView: View {
                 RoundedRectangle(cornerRadius: 22)
                     .fill(LinearGradient(colors: [Color.white.opacity(0.3), Color.clear], startPoint: .top, endPoint: .bottom).opacity(isPressed ? 0 : 1))
                     .frame(width: 338, height: 354)
+                    .background(RoundedRectangle(cornerRadius: 22).fill(Color.neu500))
                     .overlay(
                         RoundedRectangle(cornerRadius: 22)
                             .stroke(Color.white, lineWidth: 1)
