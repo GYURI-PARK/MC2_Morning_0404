@@ -37,13 +37,17 @@ class AuthViewModel: ObservableObject{
         }
         
         // TODO: 세션 내의 유저가 없다면 UserDefaults로 저장된 userId에 대한 밸류값이 있는지 확인하는 부분 추가
-        
         db.document(uid).getDocument { snapshot , _ in
             guard let user = try? snapshot?.data(as: User.self) else {
-                self.user?.userId = UserDefaults.standard.string(forKey: "userId") ?? "NaN"
-                return}
+                self.user?.userId = UserDefaults.shared.string(forKey: "userId") ?? "NaN"
+                return
+            }
             
             self.user = user
+            UserDefaults.shared.set(user.userId, forKey: "userId")
+            if user.isConnected {
+                UserDefaults.shared.set(user.partnerId, forKey: "partnerId")
+            }
             print("=== DEBUG: fetch \(self.user)")
             completion(true)
         }
@@ -68,7 +72,7 @@ class AuthViewModel: ObservableObject{
             guard let user = result?.user else { return }
             
             //받아온 유저 고유 id를 저장
-            UserDefaults.standard.set(user.uid, forKey: "userId")
+            UserDefaults.shared.set(user.uid, forKey: "userId")
             self.user?.userId = user.uid
             
             let data = ["userId": user.uid,
@@ -116,7 +120,7 @@ class AuthViewModel: ObservableObject{
             } else {
                 if partnersPartnerId == "NaN" {
                     print("대기중...")
-                }else{
+                } else {
                     print("둘 중 누군가는 잘못된 코드를 넣었습니다!")
                 }
             }
@@ -150,32 +154,6 @@ class AuthViewModel: ObservableObject{
                     }
                     print("Saved!")
                 }
-            }
-        }
-    }
-    
-    func fetchImageLink() {
-        guard let partnerUid = self.user?.partnerId else { return }
-        let noImage = "https://firebasestorage.googleapis.com/v0/b/mc2test-6602b.appspot.com/o/error%2Ferror.png?alt=media&token=a38e6698-0a12-4741-95c4-a421b7fdb730"
-        
-        db.document(partnerUid).getDocument{ document, error in
-            guard error == nil else {
-                print("Error")
-                //상대가 이미지 아예 안올리면 나오는 오류 이미지 링크 - 테스트용
-                UserDefaults.standard.set(noImage, forKey:"imageURL")
-                return
-            }
-            
-            if let document = document {
-                let data = document.data()
-                if let data = data {
-                    let imageUrl = data["imageUrl"] as? String ?? ""
-                    UserDefaults.standard.set(imageUrl, forKey:"imageURL")
-                    print("=== DEBUG: url \(imageUrl)")
-                }
-            }
-            else {
-                UserDefaults.standard.set(noImage, forKey:"imageURL")
             }
         }
     }

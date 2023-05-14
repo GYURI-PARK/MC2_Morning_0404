@@ -10,7 +10,7 @@ import SwiftUI
 struct ContentView: View {
     
     init() {
-            UINavigationBar.appearance().largeTitleTextAttributes = [.foregroundColor: UIColor.white]
+        UINavigationBar.appearance().largeTitleTextAttributes = [.foregroundColor: UIColor.white]
     }
     
     @State private var showSplash = true
@@ -22,21 +22,22 @@ struct ContentView: View {
         ZStack {
             if showSplash {
                 splashView
+                    .onAppear {
+                    viewModel.fetchUser { registered in
+                        if !registered {
+                            viewModel.registerUser { _ in
+                                successFetchUser = true
+                            }
+                        } else {
+                            successFetchUser = true
+                        }
+                    }
+                }
             } else { // hide splash
                 if !successFetchUser {
                     // TODO: 로그인때문에 지연되는 화면 필요해요
-                    Text("가입 중")
-                        .onAppear {
-                            viewModel.fetchUser { registered in
-                                if !registered {
-                                    viewModel.registerUser { _ in
-                                        successFetchUser = true
-                                    }
-                                } else {
-                                    successFetchUser = true
-                                }
-                            }
-                        }
+                    /// 여기서 안넘어간다면 signOut이 필요할 가능성이 높습니다
+                    Text("잠시만 기다려 주세요.")
                 } else {
                     if let user = viewModel.user {
                         if !user.isConnected {
@@ -58,6 +59,7 @@ struct ContentView: View {
             DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
                 withAnimation(Animation.easeOut(duration: 1)) { showSplash.toggle() }
             })
+            UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { _, _ in }
         }
     }
 }

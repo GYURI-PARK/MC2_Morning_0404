@@ -12,6 +12,8 @@ import SwiftUI
 
 struct MatchingLoadingView: View {
     
+    let user: User
+    
     //뷰모델에서 선언예정
     @State var colorButtonGradient1 = LinearGradient(colors: [Color(hex: 0x7538f9), Color(hex: 0x008cff)], startPoint: .top, endPoint: .bottom)
     @State var colorButtonDisabled = LinearGradient(colors: [.white.opacity(0.3)], startPoint: .top, endPoint: .bottom)
@@ -70,12 +72,12 @@ struct MatchingLoadingView: View {
 }
 
 
-//프리뷰
-struct MatchingLoadingView_Previews: PreviewProvider {
-    static var previews: some View {
-        MatchingLoadingView()
-    }
-}
+////프리뷰
+//struct MatchingLoadingView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        MatchingLoadingView()
+//    }
+//}
 
 //로딩 애니메이션 뷰
 struct LoadingView: View {

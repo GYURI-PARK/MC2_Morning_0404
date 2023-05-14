@@ -204,7 +204,7 @@ struct MatchingCodeView: View {
                             // NavigationLink_정상 조건 충족 시 활성화
                             // 버튼 클릭 시
                             else {
-                                NavigationLink(destination: MatchingLoadingView()) {
+                                NavigationLink(destination: MatchingLoadingView(user: user)) {
                                     RoundedRectangle(cornerRadius: 20)
                                         .fill(colorButtonGradient1)
                                         .frame(height: 70)

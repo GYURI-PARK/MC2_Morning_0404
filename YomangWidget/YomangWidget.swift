@@ -23,10 +23,13 @@ struct Provider: TimelineProvider {
 
         // Generate a timeline consisting of five entries an hour apart, starting from the current date.
         let currentDate = Date()
-        for hourOffset in 0 ..< 5 {
-            let entryDate = Calendar.current.date(byAdding: .hour, value: hourOffset, to: currentDate)!
-            let entry = SimpleEntry(date: entryDate, image: UIImage(named: "preview") ?? UIImage())
-            entries.append(entry)
+        for secondOffset in 0 ..< 10 {
+            let entryDate = Calendar.current.date(byAdding: .second, value: secondOffset, to: currentDate)!
+            if let widgetImageData = UserDefaults(suiteName: "group.youngsa.Yomang")?.data(forKey: "widgetImage"),
+               let widgetImage = UIImage(data: widgetImageData) {
+                let entry = SimpleEntry(date: entryDate, image: widgetImage)
+                entries.append(entry)
+            }
         }
 
         let timeline = Timeline(entries: entries, policy: .atEnd)
