@@ -14,10 +14,8 @@ class AnimationViewModel: ObservableObject{
     //앱을 켰을 때 지정시간까지 남은 시간을 담습니다. 시작시점과 지금시점 차이를 계산해 현재 시점에 좌표가 어디인지 계산합니다.
     @Published var timeFromNow: Double = 0.0
     @Published var timeFromStart: Double = 0.0
-    @Published var offsetX: Double = 0
-    @Published var offsetY: Double = 0
     @Published var moonSize: Double = 180
-    @Published var angle: Double = 0.0
+    @Published var moonAngle: Double = -30
     @Published var limitAngle: Double = 0.0
 
     
@@ -35,35 +33,24 @@ class AnimationViewModel: ObservableObject{
         }
     }
     
-    func calculateMoonAngle(geoWidth: Double, geoHeight: Double, moonSize: Double) -> Double {
+    func calculateMoonLimitAngle(geoWidth: Double, geoHeight: Double, moonSize: Double) {
         let a:Double = Double(geoWidth + (moonSize / 2))
-        let b:Double = Double(geoHeight - (moonSize / 2))
-        let limit:Double = 2.0 * asin(Double(a / b)) * 180 / .pi
+        let b:Double = Double(geoHeight - (moonSize / 2) + 180)
+        let limit:Double = asin(Double(a / b)) * 180 / .pi
         limitAngle = limit
-        return limitAngle
     }
-    
-    func calculateMoonOffsetXY(geoWidth: Double, geoHeight: Double, moonSize: Double) -> [Double] {
-        let radius = geoHeight - moonSize
-        let x = CGFloat(radius * cos(angle * .pi / 180))
-        let y = CGFloat(radius * sin(angle * .pi / 180))
-        offsetX = x
-        offsetY = y
-        return [x, y]
-        
-    }
-    
+   
     //사진이 업로드되었는지 확인, 사진 업로드 시점의 시간, 달의 움직임값을 UserDefaults에 저장합니다.
     func saveData() {
         UserDefaults.standard.set(isImageUploaded, forKey: "isImageUploaded")
         UserDefaults.standard.set(timeFromStart, forKey: "timeFromStart")
-        UserDefaults.standard.set(offsetX, forKey: "offsetX")
+        UserDefaults.standard.set(moonAngle, forKey: "moonAngle")
     }
     
     func loadSavedData() {
         isImageUploaded = UserDefaults.standard.bool(forKey: "isImageUploaded")
         timeFromStart = UserDefaults.standard.double(forKey: "timeFromStart")
-        offsetX = UserDefaults.standard.double(forKey: "offsetX")
+        moonAngle = UserDefaults.standard.double(forKey: "moonAngle")
     }
     
     

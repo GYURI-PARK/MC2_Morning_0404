@@ -105,7 +105,7 @@ struct MyYomangImageView: View {
                     }) {
                         HStack {
                             Spacer()
-                        
+                            
                             RoundedRectangle(cornerRadius: 16)
                                 .fill(Color.main500)
                                 .frame(width: 100, height: 50)
@@ -142,9 +142,11 @@ struct MyYomangBackgroundObject: View {
 struct MyYomangMoon: View {
     
     //TODO: every값 조정해서 받아오는 주기 조절
-    let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()    
+    let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
     @EnvironmentObject var ani: AnimationViewModel
-
+    let offsetY: Double = 180.0
+    let startAngle: Double = 18.0
+    
     var body: some View {
         GeometryReader { proxy in
             VStack {
@@ -152,52 +154,44 @@ struct MyYomangMoon: View {
                 Image("Moon1")
                     .resizable()
                     .scaledToFit()
-                    .frame(width: 180, height: 180)
-                    .offset(x: ani.offsetX, y: ani.offsetY)
-                    .overlay(
-                        VStack{
-                            Text("seconds: \(ani.timeFromNow)")
-                                .foregroundColor(Color.red)
-                                .font(.title3)
-                            Text("offsetX: \(ani.offsetX)")
-                                .foregroundColor(Color.blue)
-                                .font(.title3)
-                            Text("angle: \(ani.angle)")
-                                .foregroundColor(Color.blue)
-                                .font(.title3)
-                            Text("offsetX: \(ani.offsetX)")
-                                .foregroundColor(Color.blue)
-                                .font(.title3)
-                            Text("offsetY: \(ani.offsetY)")
-                                .foregroundColor(Color.blue)
-                                .font(.title3)
-                        }
-                    )
+                    .frame(width: ani.moonSize, height: ani.moonSize)
+                    .offset(y: -(proxy.size.height + offsetY))
+                    .rotationEffect(.degrees(ani.moonAngle))
+                    .offset(x: proxy.size.width - ani.moonSize / 2, y: proxy.size.height + offsetY)
+                //                    .overlay(
+                //                        VStack{
+                //                            Text("seconds: \(ani.timeFromNow)")
+                //                                .foregroundColor(Color.red)
+                //                                .font(.title3)
+                //                            Text("moonAngle: \(ani.moonAngle)")
+                //                                .foregroundColor(Color.blue)
+                //                                .font(.title3)
+                //                            Text("limitAngle: \(ani.limitAngle)")
+                //                                .foregroundColor(Color.blue)
+                //                                .font(.title3)
+                //                        }
+                //                    )
                     .onAppear {
                         ani.loadSavedData()
+                        ani.calculateMoonLimitAngle(geoWidth: proxy.size.width, geoHeight: proxy.size.height, moonSize: ani.moonSize)
                         ani.calculateTimeLeft()
-                        ani.angle = ani.calculateMoonAngle(geoWidth: proxy.size.width, geoHeight: proxy.size.height, moonSize: ani.moonSize)
-                        ani.offsetX = ani.calculateMoonOffsetXY(geoWidth: proxy.size.width, geoHeight: proxy.size.height, moonSize: ani.moonSize)[0]
-                        ani.offsetY = ani.calculateMoonOffsetXY(geoWidth: proxy.size.width, geoHeight: proxy.size.height, moonSize: ani.moonSize)[1]
-                        ani.offsetX = (ani.timeFromStart - ani.timeFromNow) * (Double(proxy.size.width * 2.0) / (ani.timeFromStart/5000))
+                        ani.moonAngle = (ani.timeFromStart - ani.timeFromNow) * ((ani.limitAngle * 2 - startAngle) / (ani.timeFromStart/1000)) - ani.limitAngle + startAngle
                         ani.saveData()
                     }
                     .onReceive(timer) { _ in
                         ani.loadSavedData()
                         ani.calculateTimeLeft()
-                        ani.angle = ani.calculateMoonAngle(geoWidth: proxy.size.width, geoHeight: proxy.size.height, moonSize: ani.moonSize)
-                        ani.offsetX = ani.calculateMoonOffsetXY(geoWidth: proxy.size.width, geoHeight: proxy.size.height, moonSize: ani.moonSize)[0]
-                        ani.offsetY = ani.calculateMoonOffsetXY(geoWidth: proxy.size.width, geoHeight: proxy.size.height, moonSize: ani.moonSize)[1]
+                        ani.calculateMoonLimitAngle(geoWidth: proxy.size.width, geoHeight: proxy.size.height, moonSize: ani.moonSize)
                         if ani.isImageUploaded {
-                            if ani.offsetX < Double(proxy.size.width * 2.0) {
-                                withAnimation(.linear(duration: 1)) { ani.angle += ani.limitAngle / (ani.timeFromStart/5000) }
+                            if ani.moonAngle < ani.limitAngle {
+                                withAnimation(.linear(duration: 1)) { ani.moonAngle += (ani.limitAngle * 2 - startAngle) / (ani.timeFromStart/1000)}
                                 ani.saveData()
                             } else {
                                 print("새벽5시 전송완료")
                                 ani.loadSavedData()
                                 ani.isImageUploaded = false
-                                ani.offsetX = -180
-                                ani.timeFromStart = 0.0
+                                ani.timeFromStart = 0
+                                ani.moonAngle = -ani.limitAngle
                                 ani.saveData()
                             }
                         } else {
@@ -205,35 +199,40 @@ struct MyYomangMoon: View {
                         }
                         print("timeFromNow: \(ani.timeFromNow)")
                         print("timeFromStart: \(ani.timeFromStart)")
+                        print("moonAngle: \(ani.moonAngle)")
+                        print("limitAngle: \(ani.limitAngle)")
                     }
                 
+                Spacer()
+                //TODO: 이미지업로드 확인버튼에 부여할 기능!
                 Button(action: {
                     ani.loadSavedData()
                     ani.isImageUploaded = true
-                    if ani.isImageUploaded { withAnimation(.easeInOut(duration: 1)){ ani.angle = 0 } }
+                    if ani.isImageUploaded { withAnimation(.easeInOut(duration: 1)){ ani.moonAngle = -ani.limitAngle + 18 } }
                     ani.timeFromStart = ani.timeFromNow
                     ani.saveData()
                 }) {
-                    Text("사진업로드완료")
-                        .foregroundColor(.white)
-                        .frame(width: 100, height: 100)
+                    Text("uploadedImage")
+                        .foregroundColor(.gray)
+                        .frame(width: 150, height: 50)
                 }
                 
+                //TODO: 시간 5시 넘었을 때 부여할 기능!
                 Button(action: {
                     ani.loadSavedData()
                     ani.isImageUploaded = false
-                    ani.angle = -5
+                    ani.moonAngle = 0 - ani.limitAngle
                     ani.timeFromStart = 0.0
                     ani.saveData()
                 }) {
-                    Text("시간다됨")
-                        .foregroundColor(.white)
-                        .frame(width: 100, height: 100)
+                    Text("timeDone")
+                        .foregroundColor(.gray)
+                        .frame(width: 150, height: 50)
                 }
-                
-                Spacer()
-            }
+                Spacer().frame(height: 100)
+            }//VStack
         }//GeometryReader
+        .edgesIgnoringSafeArea(.all)
     }
 }
 

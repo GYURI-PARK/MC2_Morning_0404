@@ -163,17 +163,9 @@ struct YourYomangMoon: View {
                     .resizable()
                     .scaledToFit()
                     .frame(width: 180, height: 180)
-                    .offset(x: ani.offsetX - proxy.size.width)
-                    .overlay(
-                        VStack{
-                            Text("seconds: \(ani.timeFromNow)")
-                                .foregroundColor(Color.red)
-                                .font(.title3)
-                            Text("offsetX: \(ani.offsetX)")
-                                .foregroundColor(Color.blue)
-                                .font(.title3)
-                        }
-                    )
+                    .offset(y: -(proxy.size.height + 180))
+                    .rotationEffect(.degrees(ani.moonAngle))
+                    .offset(x: -90, y: proxy.size.height + 180)
                 Spacer()
             }
         }//GeometryReader
