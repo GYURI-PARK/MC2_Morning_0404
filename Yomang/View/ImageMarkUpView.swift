@@ -368,26 +368,45 @@ struct ImageMarkUpView: View {
 //                        }
 //                    }.background(savedImage != nil ? Image(uiImage: savedImage!) : nil).cornerRadius(20)
 //                }
-                if test {
-                    canvasImage
-                        .frame(width: 338, height: 354)
-                        .gesture(DragGesture(minimumDistance: 0, coordinateSpace: .local)
-                            .onChanged({ value in
-                                let newPoint = value.location
-                                if value.translation.width + value.translation.height == 0 {
-                                    lines.append(Line(points: [newPoint], color: selectedColor, lineOpacity: pencilOpacity, fontWeight: selectedWeightDouble))
-                                } else {
-                                    let index = lines.count - 1
-                                    lines[index].points.append(newPoint)
-                                }
+                
+                // 테스트 코드
+//                if test {
+//                    canvasImage
+//                        .frame(width: 338, height: 354)
+//                        .gesture(DragGesture(minimumDistance: 0, coordinateSpace: .local)
+//                            .onChanged({ value in
+//                                let newPoint = value.location
+//                                if value.translation.width + value.translation.height == 0 {
+//                                    lines.append(Line(points: [newPoint], color: selectedColor, lineOpacity: pencilOpacity, fontWeight: selectedWeightDouble))
+//                                } else {
+//                                    let index = lines.count - 1
+//                                    lines[index].points.append(newPoint)
+//                                }
+//                            })
+//                                .onEnded({ value in
+//                                    self.currentLine = Line(points: [], color: selectedColor, lineOpacity: pencilOpacity, fontWeight: selectedWeightDouble)
+//                                })
+//                        )
+//                } else {
+//                    viewModel.renderedImage
+//                }
+                
+                canvasImage
+                    .frame(width: 338, height: 354)
+                    .gesture(DragGesture(minimumDistance: 0, coordinateSpace: .local)
+                        .onChanged({ value in
+                            let newPoint = value.location
+                            if value.translation.width + value.translation.height == 0 {
+                                lines.append(Line(points: [newPoint], color: selectedColor, lineOpacity: pencilOpacity, fontWeight: selectedWeightDouble))
+                            } else {
+                                let index = lines.count - 1
+                                lines[index].points.append(newPoint)
+                            }
+                        })
+                            .onEnded({ value in
+                                self.currentLine = Line(points: [], color: selectedColor, lineOpacity: pencilOpacity, fontWeight: selectedWeightDouble)
                             })
-                                .onEnded({ value in
-                                    self.currentLine = Line(points: [], color: selectedColor, lineOpacity: pencilOpacity, fontWeight: selectedWeightDouble)
-                                })
-                        )
-                } else {
-                    viewModel.renderedImage
-                }
+                    )
 
                 
                 Spacer(minLength: 140)
@@ -466,8 +485,8 @@ struct ImageMarkUpView: View {
                 if let renderedImage = renderer.uiImage {
                     print("이미지 렌더링")
                     viewModel.renderedImage = Image(uiImage: renderedImage)
-                    test = false
-                    //MyYomangView(renderedImage: $viewModel.renderedImage)
+                   
+                   // test = false
                     NavigationUtil.popToRootView()
                 }
             }){
@@ -480,16 +499,14 @@ struct ImageMarkUpView: View {
     }
     
     var canvasImage: some View {
-      //  ZStack{
-            Canvas { context, size in
-                for line in lines {
-                    var path = Path()
-                    path.addLines(line.points)
-                    context.stroke(path, with: .color(line.color.opacity(line.lineOpacity)) , style: StrokeStyle(lineWidth: line.fontWeight, lineCap: .round, lineJoin: .round))
-                }
-            }.frame(width: 338, height: 354)
+        Canvas { context, size in
+            for line in lines {
+                var path = Path()
+                path.addLines(line.points)
+                context.stroke(path, with: .color(line.color.opacity(line.lineOpacity)) , style: StrokeStyle(lineWidth: line.fontWeight, lineCap: .round, lineJoin: .round))
+            }
+        }.frame(width: 338, height: 354)
             .background(savedImage != nil ? Image(uiImage: savedImage!) : nil).cornerRadius(20)
-     //   }
     }
 }
 
