@@ -23,7 +23,6 @@ class AuthViewModel: ObservableObject{
     @Published var userSession: FirebaseAuth.User?
     @Published var user: User?
     
-    
     //TODO? 인터넷 연결 없을 시 오류 확인하는 기능 추가해야하나?
     init() {
         self.userSession = Auth.auth().currentUser
@@ -192,4 +191,10 @@ class AuthViewModel: ObservableObject{
             print("== DEBUG: Error signing out \(error.localizedDescription)")
         }
     }
+
+    
 }
+
+
+
+
