@@ -15,9 +15,9 @@ struct YourYomangView: View {
         ZStack {
             if let _ = imageUrl {
                 // TODO: Image
-                YomangImageView()
+                ImageTemplateView()
             } else {
-                YomangImageView()
+                ImageTemplateView()
                 VStack (alignment: .center) {
                     Text("대기 중")
                         .font(.title)

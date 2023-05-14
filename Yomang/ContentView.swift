@@ -6,11 +6,12 @@
 //
 
 import SwiftUI
+import PhotosUI
 
 struct ContentView: View {
     
     init() {
-            UINavigationBar.appearance().largeTitleTextAttributes = [.foregroundColor: UIColor.white]
+        UINavigationBar.appearance().largeTitleTextAttributes = [.foregroundColor: UIColor.white]
     }
     
     @State private var showSplash = true
@@ -71,3 +72,9 @@ extension ContentView {
         }
     }
 }
+
+//struct ContentView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        ContentView()
+//    }
+//}

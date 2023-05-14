@@ -11,13 +11,14 @@ struct HomeView: View {
 
     let user: User?
     @State var selectedTabTag = 1
+    @ObservedObject var viewModel = YomangViewModel()
     
     var body: some View {
         NavigationView{
             TabView(selection: $selectedTabTag) {
                 YourYomangView(imageUrl: user?.imageUrl ?? nil)
                     .tag(0)
-                MyYomangView(user: user ?? nil)
+                MyYomangView(user: user ?? nil, viewModel: viewModel)
                     .tag(1)
             }
             .accentColor(Color.white)

@@ -8,46 +8,46 @@
 import SwiftUI
 
 struct ColorPickerView: View {
-    
     let colors =  [Color.white, Color.blue, Color.green, Color.yellow, Color.red]
     @Binding var selectedColor: Color
     
     var body: some View {
         HStack {
             ForEach(colors, id: \.self) { color in
-                Image(systemName: selectedColor == color ? Constants.Icons.circleCircleFill : Constants.Icons.circleFill)
+                Image(systemName: selectedColor == color ?
+                      Constants.Icons.circleCircleFill :
+                        Constants.Icons.circleFill)
                 .foregroundColor(color)
-                .font(.system(size: 30))
+                .font(.system(size: 28))
                 .clipShape(Circle())
                 .onTapGesture {
                     selectedColor = color
-                }
-                .padding(.horizontal, 10)
+                }.padding(.horizontal, 4)
             }
         }
     }
 }
 
-public func switchFontWeight(for font: Font.Weight) -> Double {
+public func switchFontWeight(for font: Font.Weight) -> Double{
     switch font {
     case .ultraLight:
         return 1.0
     case .light:
         return 3.0
     case .medium:
-        return 5.0
+        return 6.0
     case .bold:
-        return 8.0
-    case .heavy:
         return 9.0
+    case .black:
+        return 12.0
     default:
-        return 0.0
+        break
     }
+    return 0
 }
 
 
 struct PencilWeightView: View {
-    
     let fonts = [Font.Weight.ultraLight, Font.Weight.light, Font.Weight.medium, Font.Weight.bold, Font.Weight.black]
     
     @Binding var selectedWeight: Double
@@ -62,21 +62,36 @@ struct PencilWeightView: View {
                         Color.white.opacity(1.0)
                             .frame(width: 34, height: 34)
                             .clipShape(Rectangle())
-                            .cornerRadius(10)
+                            .cornerRadius(6)
                     }
-                    
                     Image(systemName: "scribble.variable")
                         .foregroundColor(index == selectedIndex ? .black : .white)
-                        .font(.system(size: 22))
+                        .font(.system(size: 24))
                         .fontWeight(font)
                         .clipShape(Circle())
-                        .onTapGesture() {
+                        .onTapGesture {
                             selectedWeight = switchFontWeight(for: font)
                             selectedIndex = index
-                        }
-                        .padding(10)
+                        }.padding(10)
                 }
             }
         }
     }
 }
+
+
+struct ColorPickerView_Previews: PreviewProvider {
+    static var previews: some View {
+        ZStack{
+            Color.black.ignoresSafeArea()
+            
+            ColorPickerView(selectedColor: .constant(.blue))
+        }
+    }
+}
+
+//struct PencilWeightView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        PencilWeightView()
+//    }
+//}
