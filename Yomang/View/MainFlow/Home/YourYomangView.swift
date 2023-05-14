@@ -21,9 +21,9 @@ struct YourYomangView: View {
                 YourYomangMoon().environmentObject(ani)
                 // TODO: Image
                 YourYomangImageView()
-                
             } else {
                 YourYomangImageView()
+                
                 VStack (alignment: .center) {
                     Text("대기 중")
                         .font(.title)

@@ -11,18 +11,27 @@ struct MyYomangView: View {
     
     let user: User?
     @EnvironmentObject var ani: AnimationViewModel
+    @ObservedObject var viewModel: YomangViewModel
     
     var body: some View {
         ZStack {
             MyYomangBackgroundObject()
             //이미지가 들어있다면 달이 떠있다.
             if let _ = user {
-                MyYomangMoon().environmentObject(ani)
-                // TODO: Image
-                MyYomangImageView()
+                if let renderedImage = viewModel.renderedImage {
+                    MyYomangMoon().environmentObject(ani)
+                    
+                    renderedImage
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 338, height: 354)
+                    
+                } else {
+                    MyYomangImageView(viewModel: viewModel)
+                }
                 
             } else {
-                MyYomangImageView()
+                MyYomangImageView(viewModel: viewModel)
                     .overlay(
                         Text("이곳을 눌러\n파트너와 연결해 보세요")
                             .font(.title)
@@ -40,6 +49,7 @@ struct MyYomangImageView: View {
     @State private var isPressed: Bool = false
     @State private var isHovering: Bool = false
     @State private var hoverSpeed: Double = 1.2
+    @ObservedObject var viewModel: YomangViewModel
     
     var body: some View {
         
@@ -102,8 +112,9 @@ struct MyYomangImageView: View {
                 
                 //이미지 눌렀을 때 편집버튼 생성
                 if isPressed {
-                    Button(action: {
-                    }) {
+                    NavigationLink {
+                        EditableYomangImage(viewModel: viewModel)
+                    } label: {
                         HStack {
                             Spacer()
                             
@@ -119,6 +130,7 @@ struct MyYomangImageView: View {
                                 )
                         }.padding(.horizontal)
                     }
+
                 }
                 Spacer().frame(height: 100)
             }//VStack
@@ -136,6 +148,7 @@ struct MyYomangBackgroundObject: View {
             Text("나의 요망 배경요소들")
                 .foregroundColor(.white)
         }
+        
     }
 }
 

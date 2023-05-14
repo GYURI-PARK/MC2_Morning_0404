@@ -12,13 +12,14 @@ struct HomeView: View {
     let user: User?
     @State var selectedTabTag = 0
     @StateObject var animationViewModel = AnimationViewModel()
+    @ObservedObject var viewModel = YomangViewModel()
     
     var body: some View {
         NavigationView{
             ZStack {
                 HomeBackground().environmentObject(animationViewModel)
                 TabView(selection: $selectedTabTag) {
-                    MyYomangView(user: user ?? nil).environmentObject(animationViewModel)
+                    MyYomangView(user: user ?? nil, viewModel: viewModel).environmentObject(animationViewModel)
                         .tag(0)
                     YourYomangView(imageUrl: user?.imageUrl ?? nil).environmentObject(animationViewModel)
                         .tag(1)
@@ -33,8 +34,6 @@ struct HomeView: View {
         }//NavigationView
     }
 }
-
-
 
 //Home 장면 배경_우측
 struct HomeBackground: View {
@@ -74,7 +73,7 @@ struct HomeBackground: View {
                         isChanged = isImageUploaded
                     }
                 }
-        }.edgesIgnoringSafeArea(.all)
-            
+        }
+        .edgesIgnoringSafeArea(.all)
     }
 }

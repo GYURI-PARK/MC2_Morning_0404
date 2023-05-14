@@ -15,3 +15,6 @@ struct Constants {
         static var circleCircleFill = "circle.inset.filled"
     }
 }
+
+let WIDGET_WIDTH: CGFloat = 338
+let WIDGET_HEIGHT: CGFloat = 314
