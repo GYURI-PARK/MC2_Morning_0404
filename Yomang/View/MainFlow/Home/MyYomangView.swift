@@ -158,23 +158,9 @@ struct MyYomangMoon: View {
                     .offset(y: -(proxy.size.height + offsetY))
                     .rotationEffect(.degrees(ani.moonAngle))
                     .offset(x: proxy.size.width - ani.moonSize / 2, y: proxy.size.height + offsetY)
-                //                    .overlay(
-                //                        VStack{
-                //                            Text("seconds: \(ani.timeFromNow)")
-                //                                .foregroundColor(Color.red)
-                //                                .font(.title3)
-                //                            Text("moonAngle: \(ani.moonAngle)")
-                //                                .foregroundColor(Color.blue)
-                //                                .font(.title3)
-                //                            Text("limitAngle: \(ani.limitAngle)")
-                //                                .foregroundColor(Color.blue)
-                //                                .font(.title3)
-                //                        }
-                //                    )
                     .onAppear {
                         ani.loadSavedData()
                         ani.calculateMoonLimitAngle(geoWidth: proxy.size.width, geoHeight: proxy.size.height, moonSize: ani.moonSize)
-                        ani.calculateTimeLeft()
                         ani.moonAngle = (ani.timeFromStart - ani.timeFromNow) * ((ani.limitAngle * 2 - startAngle) / (ani.timeFromStart/1000)) - ani.limitAngle + startAngle
                         ani.saveData()
                     }
@@ -197,10 +183,6 @@ struct MyYomangMoon: View {
                         } else {
                             print("Image 새로 업로드하기")
                         }
-                        print("timeFromNow: \(ani.timeFromNow)")
-                        print("timeFromStart: \(ani.timeFromStart)")
-                        print("moonAngle: \(ani.moonAngle)")
-                        print("limitAngle: \(ani.limitAngle)")
                     }
                 
                 Spacer()
@@ -208,7 +190,8 @@ struct MyYomangMoon: View {
                 Button(action: {
                     ani.loadSavedData()
                     ani.isImageUploaded = true
-                    if ani.isImageUploaded { withAnimation(.easeInOut(duration: 1)){ ani.moonAngle = -ani.limitAngle + 18 } }
+                    withAnimation(.easeInOut(duration: 1)){ ani.moonAngle = -ani.limitAngle + 18 }
+                    ani.calculateTimeLeft()
                     ani.timeFromStart = ani.timeFromNow
                     ani.saveData()
                 }) {
