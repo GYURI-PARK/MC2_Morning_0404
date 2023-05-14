@@ -1,19 +1,27 @@
+//
+//  YomangModel.swift
+//  Yomang
+//
+//  Created by jose Yun on 2023/05/05.
+//
+// 요망 데이터 얻기
+// 호제가
+
 import SwiftUI
 import PhotosUI
 import CoreTransferable
 
 @MainActor
 class YomangViewModel: ObservableObject {
-
+    
     @Published var savedImage: UIImage?
-    @Published var orgImage: UIImage?
     @Published var renderedImage: Image?
-
+    
     // navigation cancel
     @Published var cancel: Bool = false
-
-    @Published var currentOffset: CGSize = CGSize.zero
-
+    
+    @Published var test: String = "test"
+        
     enum ImageState {
         case empty
         case loading(Progress)
@@ -21,14 +29,21 @@ class YomangViewModel: ObservableObject {
         case success(UIImage)
         case failure(Error)
     }
-
+    
+    enum ImageCroppedState {
+        case empty
+//        case success(Image)
+        case success(UIImage)
+        case failure(Error)
+    }
+    
     enum TransferError: Error {
         case importFailed
     }
-
+    
     struct YomangImage: Transferable {
         let image: UIImage
-
+        
         static var transferRepresentation: some TransferRepresentation {
             DataRepresentation(importedContentType: .image) { data in
             #if canImport(AppKit)
@@ -41,6 +56,7 @@ class YomangViewModel: ObservableObject {
                 guard let uiImage = UIImage(data: data) else {
                     throw TransferError.importFailed
                 }
+//                let image = Image(uiImage: uiImage)
                 let image = uiImage
                 return YomangImage(image: image)
             #else
@@ -49,9 +65,10 @@ class YomangViewModel: ObservableObject {
             }
         }
     }
-
+    
     @Published private(set) var imageState: ImageState = .empty
-
+    @Published private(set) var imageCroppedState: ImageCroppedState = .empty
+    
     @Published var imageSelection: PhotosPickerItem? = nil {
         didSet {
             if let imageSelection {
@@ -62,7 +79,7 @@ class YomangViewModel: ObservableObject {
             }
         }
     }
-
+    
     // MARK: - Private Methods
     
     private func loadTransferable(from imageSelection: PhotosPickerItem) -> Progress {
@@ -77,8 +94,7 @@ class YomangViewModel: ObservableObject {
 //                    self.imageState = .success(Image(uiImage: profileImage.image))
                     self.imageState = .success(profileImage.image)
                     self.savedImage = profileImage.image
-                    self.orgImage = profileImage.image
-
+                    
                 case .success(nil):
                     self.imageState = .empty
                 case .failure(let error):
@@ -87,4 +103,18 @@ class YomangViewModel: ObservableObject {
             }
         }
     }
+    
+    // MARK: - IMAGECROPPED
+    @Published var imageCropped: UIImage? = nil {
+        didSet {
+            if let imageCropped {
+                imageCroppedState = .success(imageCropped)
+            } else {
+                imageCroppedState = .empty
+            }
+        }
+    }
+    
+    
+
 }

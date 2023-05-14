@@ -1,20 +1,20 @@
 //
-//  SplashView.swift
+//  Cropview.swift
 //  Yomang
 //
-//  Created by jose Yun on 2023/05/04.
-// 
+//  Created by GYURI PARK on 2023/05/10.
+//
 
 import SwiftUI
 
-struct SplashView: View {
+struct Cropview: View {
     var body: some View {
         Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
     }
 }
 
-struct SplashView_Previews: PreviewProvider {
+struct Cropview_Previews: PreviewProvider {
     static var previews: some View {
-        SplashView()
+        Cropview()
     }
 }
