@@ -11,15 +11,16 @@ struct HomeView: View {
 
     let user: User?
     @State var selectedTabTag = 0
+    @StateObject var animationViewModel = AnimationViewModel()
     
     var body: some View {
         NavigationView{
             ZStack {
                 HomeBackground()
                 TabView(selection: $selectedTabTag) {
-                    MyYomangView(user: user ?? nil)
+                    MyYomangView(user: user ?? nil).environmentObject(animationViewModel)
                         .tag(0)
-                    YourYomangView(imageUrl: user?.imageUrl ?? nil)
+                    YourYomangView(imageUrl: user?.imageUrl ?? nil).environmentObject(animationViewModel)
                         .tag(1)
                 }
                 .accentColor(Color.white)

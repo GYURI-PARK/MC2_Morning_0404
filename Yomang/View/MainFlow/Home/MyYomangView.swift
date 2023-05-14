@@ -10,6 +10,7 @@ import SwiftUI
 struct MyYomangView: View {
     
     let user: User?
+    @EnvironmentObject var ani: AnimationViewModel
     
     var body: some View {
         ZStack {
@@ -18,7 +19,7 @@ struct MyYomangView: View {
             if let _ = user {
                 // TODO: Image
                 MyYomangImageView()
-                MyYomangMoon()
+                MyYomangMoon().environmentObject(ani)
                 
             } else {
                 MyYomangImageView()
@@ -141,14 +142,9 @@ struct MyYomangBackgroundObject: View {
 struct MyYomangMoon: View {
     
     //TODO: every값 조정해서 받아오는 주기 조절
-    let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
-    @State private var timeFromNow: Double = 0.0
-    @State private var timeFromStart: Double = 0.0
-    
-    @State private var offsetX: Double = -180
-    @State private var isImageUploaded: Bool = false
-    
-    
+    let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()    
+    @EnvironmentObject var ani: AnimationViewModel
+
     var body: some View {
         GeometryReader { proxy in
             VStack {
@@ -157,54 +153,66 @@ struct MyYomangMoon: View {
                     .resizable()
                     .scaledToFit()
                     .frame(width: 180, height: 180)
-                    .offset(x: offsetX)
+                    .offset(x: ani.offsetX, y: ani.offsetY)
                     .overlay(
                         VStack{
-                            Text("seconds: \(timeFromNow)")
+                            Text("seconds: \(ani.timeFromNow)")
                                 .foregroundColor(Color.red)
                                 .font(.title3)
-                            Text("offsetX: \(offsetX)")
+                            Text("offsetX: \(ani.offsetX)")
+                                .foregroundColor(Color.blue)
+                                .font(.title3)
+                            Text("angle: \(ani.angle)")
+                                .foregroundColor(Color.blue)
+                                .font(.title3)
+                            Text("offsetX: \(ani.offsetX)")
+                                .foregroundColor(Color.blue)
+                                .font(.title3)
+                            Text("offsetY: \(ani.offsetY)")
                                 .foregroundColor(Color.blue)
                                 .font(.title3)
                         }
                     )
                     .onAppear {
-                        loadSavedData()
-                        print("offset1: \(offsetX)")
-                        calculateTimeLeft()
-                        offsetX = (timeFromStart - timeFromNow) * (Double(proxy.size.width * 1.0) / (timeFromStart/5000))
-                        saveData()
-                        print("offset2: \(offsetX)")
+                        ani.loadSavedData()
+                        ani.calculateTimeLeft()
+                        ani.angle = ani.calculateMoonAngle(geoWidth: proxy.size.width, geoHeight: proxy.size.height, moonSize: ani.moonSize)
+                        ani.offsetX = ani.calculateMoonOffsetXY(geoWidth: proxy.size.width, geoHeight: proxy.size.height, moonSize: ani.moonSize)[0]
+                        ani.offsetY = ani.calculateMoonOffsetXY(geoWidth: proxy.size.width, geoHeight: proxy.size.height, moonSize: ani.moonSize)[1]
+                        ani.offsetX = (ani.timeFromStart - ani.timeFromNow) * (Double(proxy.size.width * 2.0) / (ani.timeFromStart/5000))
+                        ani.saveData()
                     }
                     .onReceive(timer) { _ in
-                        loadSavedData()
-                        calculateTimeLeft()
-                        if isImageUploaded {
-                            if offsetX < Double(proxy.size.width * 1.0) {
-                                withAnimation(.linear(duration: 1)) { offsetX += Double(proxy.size.width * 1.0) / (timeFromStart/5000) }
-                                saveData()
+                        ani.loadSavedData()
+                        ani.calculateTimeLeft()
+                        ani.angle = ani.calculateMoonAngle(geoWidth: proxy.size.width, geoHeight: proxy.size.height, moonSize: ani.moonSize)
+                        ani.offsetX = ani.calculateMoonOffsetXY(geoWidth: proxy.size.width, geoHeight: proxy.size.height, moonSize: ani.moonSize)[0]
+                        ani.offsetY = ani.calculateMoonOffsetXY(geoWidth: proxy.size.width, geoHeight: proxy.size.height, moonSize: ani.moonSize)[1]
+                        if ani.isImageUploaded {
+                            if ani.offsetX < Double(proxy.size.width * 2.0) {
+                                withAnimation(.linear(duration: 1)) { ani.angle += ani.limitAngle / (ani.timeFromStart/5000) }
+                                ani.saveData()
                             } else {
                                 print("새벽5시 전송완료")
-                                loadSavedData()
-                                isImageUploaded = false
-                                offsetX = -180
-                                timeFromStart = 0.0
-                                saveData()
+                                ani.loadSavedData()
+                                ani.isImageUploaded = false
+                                ani.offsetX = -180
+                                ani.timeFromStart = 0.0
+                                ani.saveData()
                             }
                         } else {
                             print("Image 새로 업로드하기")
                         }
-                        print("offset: \(offsetX)")
-                        print("timeFromNow: \(timeFromNow)")
-                        print("timeFromStart: \(timeFromStart)")
+                        print("timeFromNow: \(ani.timeFromNow)")
+                        print("timeFromStart: \(ani.timeFromStart)")
                     }
                 
                 Button(action: {
-                    loadSavedData()
-                    isImageUploaded = true
-                    if isImageUploaded { withAnimation(.easeInOut(duration: 1)){ offsetX = 0 } }
-                    timeFromStart = timeFromNow
-                    saveData()
+                    ani.loadSavedData()
+                    ani.isImageUploaded = true
+                    if ani.isImageUploaded { withAnimation(.easeInOut(duration: 1)){ ani.angle = 0 } }
+                    ani.timeFromStart = ani.timeFromNow
+                    ani.saveData()
                 }) {
                     Text("사진업로드완료")
                         .foregroundColor(.white)
@@ -212,11 +220,11 @@ struct MyYomangMoon: View {
                 }
                 
                 Button(action: {
-                    loadSavedData()
-                    isImageUploaded = false
-                    offsetX = -180
-                    timeFromStart = 0.0
-                    saveData()
+                    ani.loadSavedData()
+                    ani.isImageUploaded = false
+                    ani.angle = -5
+                    ani.timeFromStart = 0.0
+                    ani.saveData()
                 }) {
                     Text("시간다됨")
                         .foregroundColor(.white)
@@ -227,33 +235,6 @@ struct MyYomangMoon: View {
             }
         }//GeometryReader
     }
-    
-    func calculateTimeLeft() {
-        
-        let calendar = Calendar.current
-        let now = Date()
-        let tomorrow = calendar.date(bySettingHour: 5, minute: 0, second: 0, of: calendar.date(byAdding: .day, value: 1, to: now)!)!
-        let components = calendar.dateComponents([.second], from: now, to: tomorrow)
-        
-        if let seconds = components.second {
-            timeFromNow = Double(seconds)
-        }
-    }
-    
-    func saveData() {
-        UserDefaults.standard.set(timeFromStart, forKey: "timeFromStart")
-        UserDefaults.standard.set(offsetX, forKey: "offsetX")
-        UserDefaults.standard.set(isImageUploaded, forKey: "isImageUploaded")
-        
-        
-    }
-    
-    func loadSavedData() {
-        timeFromStart = UserDefaults.standard.double(forKey: "timeFromStart")
-        offsetX = UserDefaults.standard.double(forKey: "offsetX")
-        isImageUploaded = UserDefaults.standard.bool(forKey: "isImageUploaded")
-    }
-    
 }
 
 

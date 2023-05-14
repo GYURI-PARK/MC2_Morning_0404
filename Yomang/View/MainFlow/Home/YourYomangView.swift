@@ -10,6 +10,7 @@ import SwiftUI
 struct YourYomangView: View {
     
     let imageUrl: String?
+    @EnvironmentObject var ani: AnimationViewModel
     
     var body: some View {
         ZStack {
@@ -17,13 +18,11 @@ struct YourYomangView: View {
             
             //이미지가 들어있다면 달이 떠있다.
             if let _ = imageUrl {
-//                    YourYomangMoon()
-                    // TODO: Image
-                VStack {
-                    Spacer()
-                    // TODO: 이미지 프레임 사이즈 작아짐
-                    YourYomangImageView()
-                }
+                
+                // TODO: Image
+                YourYomangImageView()
+                YourYomangMoon().environmentObject(ani)
+                
             } else {
                 YourYomangImageView()
                 VStack (alignment: .center) {
@@ -152,17 +151,33 @@ struct YourYomangBackgroundObject: View {
 //MyYomang 달_우측화면
 struct YourYomangMoon: View {
     
+    @EnvironmentObject var ani: AnimationViewModel
+    //TODO: every값 조정해서 받아오는 주기 조절
+    let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
+
     var body: some View {
         GeometryReader { proxy in
             VStack {
+                
                 Image("Moon1")
                     .resizable()
                     .scaledToFit()
                     .frame(width: 180, height: 180)
-                    .offset(x: -90)
+                    .offset(x: ani.offsetX - proxy.size.width)
+                    .overlay(
+                        VStack{
+                            Text("seconds: \(ani.timeFromNow)")
+                                .foregroundColor(Color.red)
+                                .font(.title3)
+                            Text("offsetX: \(ani.offsetX)")
+                                .foregroundColor(Color.blue)
+                                .font(.title3)
+                        }
+                    )
                 Spacer()
             }
         }//GeometryReader
     }
 }
+
 
