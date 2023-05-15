@@ -20,16 +20,10 @@ struct MyYomangView: View {
             if let _ = user {
                 if let renderedImage = viewModel.renderedImage {
                     MyYomangMoon().environmentObject(ani)
-                    
-                    renderedImage
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 338, height: 354)
-                    
+                    MyYomangImageView(viewModel: viewModel)
                 } else {
                     MyYomangImageView(viewModel: viewModel)
                 }
-                
             } else {
                 MyYomangImageView(viewModel: viewModel)
                     .overlay(
@@ -72,12 +66,18 @@ struct MyYomangImageView: View {
                 
                 RoundedRectangle(cornerRadius: 22)
                     .fill(LinearGradient(colors: [Color.white.opacity(0.3), Color.clear], startPoint: .top, endPoint: .bottom).opacity(isPressed ? 0 : 1))
-                    .frame(width: 338, height: 354)
+                    .frame(width: WIDGET_WIDTH, height: WIDGET_HEIGHT)
                     .background(RoundedRectangle(cornerRadius: 22).fill(Color.main500))
-                    .overlay(
+                    .overlay {
                         RoundedRectangle(cornerRadius: 22)
                             .stroke(Color.white, lineWidth: 1)
-                    )
+                        if let renderedImage = viewModel.renderedImage {
+                            renderedImage
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: WIDGET_WIDTH, height: WIDGET_HEIGHT)
+                        }
+                    }
                     .scaleEffect(isPressed ? 1 : 0.8)
                     .offset(y: isHovering ? 10 : -10)
                     .rotation3DEffect(

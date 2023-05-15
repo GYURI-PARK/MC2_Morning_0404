@@ -89,7 +89,6 @@ struct MatchingLoadingView: View {
     }
 }
 
-
 //프리뷰
 struct MatchingLoadingView_Previews: PreviewProvider {
     static var previews: some View {

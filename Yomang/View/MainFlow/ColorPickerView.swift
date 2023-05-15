@@ -48,7 +48,7 @@ public func switchFontWeight(for font: Font.Weight) -> Double {
 
 struct PencilWeightView: View {
     
-    let fonts = [Font.Weight.ultraLight, Font.Weight.light, Font.Weight.medium, Font.Weight.bold, Font.Weight.black]
+    let fonts = [Font.Weight.ultraLight, Font.Weight.light, Font.Weight.medium, Font.Weight.bold, Font.Weight.heavy]
     
     @Binding var selectedWeight: Double
     @Binding var selectedIndex: Int
