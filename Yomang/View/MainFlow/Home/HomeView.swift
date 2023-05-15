@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct HomeView: View {
-
+    
     let user: User?
     @State var selectedTabTag = 0
     @StateObject var animationViewModel = AnimationViewModel()
@@ -35,12 +35,14 @@ struct HomeView: View {
     }
 }
 
+
+
 //Home 장면 배경_우측
 struct HomeBackground: View {
     
     @EnvironmentObject var ani: AnimationViewModel
     @State private var isChanged:Bool = false
-
+    
     var body: some View {
         
         ZStack {
@@ -51,7 +53,7 @@ struct HomeBackground: View {
                 .fill(LinearGradient(colors: [Color.black, Color.main500], startPoint: .top, endPoint: .bottom))
                 .opacity(isChanged ? 0.1 : 0.3)
                 .onChange(of: ani.isImageUploaded) { isImageUploaded in
-                    withAnimation(.easeInOut(duration: (ani.timeFromStart/300))) {
+                    withAnimation(.easeInOut(duration: (ani.timeFromStart/700))) {
                         isChanged = isImageUploaded
                     }
                 }
@@ -60,7 +62,7 @@ struct HomeBackground: View {
                 .fill(LinearGradient(colors: [Color.black, Color.white], startPoint: .top, endPoint: .bottom))
                 .opacity(isChanged ? 0.4 : 0.1)
                 .onChange(of: ani.isImageUploaded) { isImageUploaded in
-                    withAnimation(.easeInOut(duration: (ani.timeFromStart/300))) {
+                    withAnimation(.easeInOut(duration: (ani.timeFromStart/700))) {
                         isChanged = isImageUploaded
                     }
                 }
@@ -69,11 +71,12 @@ struct HomeBackground: View {
                 .fill(LinearGradient(colors: [Color.main200, Color.blue500], startPoint: .top, endPoint: .bottom))
                 .opacity(isChanged ? 0.5 : 0)
                 .onChange(of: ani.isImageUploaded) { isImageUploaded in
-                    withAnimation(.easeInOut(duration: (ani.timeFromStart/300))) {
+                    withAnimation(.easeInOut(duration: (ani.timeFromStart/700))) {
                         isChanged = isImageUploaded
                     }
                 }
-        }
-        .edgesIgnoringSafeArea(.all)
+            
+        }.edgesIgnoringSafeArea(.all)
+        
     }
 }

@@ -21,9 +21,9 @@ struct YourYomangView: View {
                 YourYomangMoon().environmentObject(ani)
                 // TODO: Image
                 YourYomangImageView()
+                
             } else {
                 YourYomangImageView()
-                
                 VStack (alignment: .center) {
                     Text("대기 중")
                         .font(.title)
@@ -69,8 +69,8 @@ struct YourYomangImageView: View {
                 
                 RoundedRectangle(cornerRadius: 22)
                     .fill(LinearGradient(colors: [Color.white.opacity(0.3), Color.clear], startPoint: .top, endPoint: .bottom).opacity(isPressed ? 0 : 1))
-                    .frame(width: WIDGET_WIDTH, height: WIDGET_HEIGHT)
-                    .background(RoundedRectangle(cornerRadius: 22).fill(Color.neu500))
+                    .frame(width: 338, height: 354)
+                    .background(RoundedRectangle(cornerRadius: 22).fill(Color.main200))
                     .overlay(
                         RoundedRectangle(cornerRadius: 22)
                             .stroke(Color.white, lineWidth: 1)
@@ -115,7 +115,7 @@ struct YourYomangImageView: View {
                             Spacer()
                         
                             RoundedRectangle(cornerRadius: 16)
-                                .fill(Color.blue500)
+                                .fill(Color.main200)
                                 .frame(width: 100, height: 50)
                                 .padding(.horizontal)
                                 .overlay(
@@ -139,12 +139,40 @@ struct YourYomangImageView: View {
 //YourYomang 장면 배경오브젝트_좌측
 struct YourYomangBackgroundObject: View {
     
+    @State private var isChanged:Bool = false
+
     var body: some View {
-        VStack {
-            Spacer()
-            Text("너의 요망 배경요소들")
-                .foregroundColor(.white)
-        }
+        ZStack {
+            Image("Image_Stars1")
+                .resizable()
+                .scaledToFit()
+                .opacity(isChanged ? 0.6 : 0.3)
+                .onAppear {
+                    withAnimation(.easeInOut(duration: 1).repeatForever(autoreverses: true)) {
+                        isChanged.toggle()
+                    }
+                }
+            
+            Image("Image_Stars2")
+                .resizable()
+                .scaledToFit()
+                .opacity(isChanged ? 0.3 : 0.7)
+                .onAppear {
+                    withAnimation(.easeInOut(duration: 2).repeatForever(autoreverses: true)) {
+                        isChanged.toggle()
+                    }
+                }
+            
+            Image("Image_Stars3")
+                .resizable()
+                .scaledToFit()
+                .opacity(isChanged ? 0.6 : 0.4)
+                .onAppear {
+                    withAnimation(.easeInOut(duration: 3).repeatForever(autoreverses: true)) {
+                        isChanged.toggle()
+                    }
+                }
+        }.edgesIgnoringSafeArea(.all)
     }
 }
 
@@ -157,7 +185,7 @@ struct YourYomangMoon: View {
         GeometryReader { proxy in
             VStack {
                 
-                Image("Moon1")
+                Image("Image_Moon1")
                     .resizable()
                     .scaledToFit()
                     .frame(width: ani.moonSize, height: ani.moonSize)

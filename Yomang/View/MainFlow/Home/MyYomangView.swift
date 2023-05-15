@@ -50,34 +50,28 @@ struct MyYomangImageView: View {
         ZStack {
             
             //뒷배경을 눌렀을 때 다시 작아집니다.
-            Rectangle()
-                .foregroundColor(Color.white.opacity(0.000))
-                .onTapGesture {
-                    withAnimation(.easeInOut(duration: 1)) {
-                        isPressed = false
-                    }
-                    withAnimation(.easeInOut(duration: hoverSpeed).repeatForever()) {
-                        isHovering = true
-                    }
-                }
+//            Rectangle()
+//                .foregroundColor(Color.white.opacity(0.001))
+//                .onTapGesture {
+//                    withAnimation(.easeInOut(duration: 1)) {
+//                        isPressed = false
+//                    }
+//                    withAnimation(.easeInOut(duration: hoverSpeed).repeatForever()) {
+//                        isHovering = true
+//                    }
+//                }
             
             VStack {
                 Spacer()
                 
                 RoundedRectangle(cornerRadius: 22)
                     .fill(LinearGradient(colors: [Color.white.opacity(0.3), Color.clear], startPoint: .top, endPoint: .bottom).opacity(isPressed ? 0 : 1))
-                    .frame(width: WIDGET_WIDTH, height: WIDGET_HEIGHT)
+                    .frame(width: 338, height: 354)
                     .background(RoundedRectangle(cornerRadius: 22).fill(Color.main500))
-                    .overlay {
+                    .overlay(
                         RoundedRectangle(cornerRadius: 22)
                             .stroke(Color.white, lineWidth: 1)
-                        if let renderedImage = viewModel.renderedImage {
-                            renderedImage
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: WIDGET_WIDTH, height: WIDGET_HEIGHT)
-                        }
-                    }
+                    )
                     .scaleEffect(isPressed ? 1 : 0.8)
                     .offset(y: isHovering ? 10 : -10)
                     .rotation3DEffect(
@@ -112,9 +106,8 @@ struct MyYomangImageView: View {
                 
                 //이미지 눌렀을 때 편집버튼 생성
                 if isPressed {
-                    NavigationLink {
-                        EditableYomangImage(viewModel: viewModel)
-                    } label: {
+                    Button(action: {
+                    }) {
                         HStack {
                             Spacer()
                             
@@ -130,7 +123,6 @@ struct MyYomangImageView: View {
                                 )
                         }.padding(.horizontal)
                     }
-
                 }
                 Spacer().frame(height: 100)
             }//VStack
@@ -142,13 +134,40 @@ struct MyYomangImageView: View {
 //MyYomang 장면 배경오브젝트_우측
 struct MyYomangBackgroundObject: View {
     
+    @State private var isChanged:Bool = false
+
     var body: some View {
-        VStack {
-            Spacer()
-            Text("나의 요망 배경요소들")
-                .foregroundColor(.white)
-        }
-        
+        ZStack {
+            Image("Image_Stars1")
+                .resizable()
+                .scaledToFit()
+                .opacity(isChanged ? 0.6 : 0.3)
+                .onAppear {
+                    withAnimation(.easeInOut(duration: 1).repeatForever(autoreverses: true)) {
+                        isChanged.toggle()
+                    }
+                }
+            
+            Image("Image_Stars2")
+                .resizable()
+                .scaledToFit()
+                .opacity(isChanged ? 0.3 : 0.7)
+                .onAppear {
+                    withAnimation(.easeInOut(duration: 2).repeatForever(autoreverses: true)) {
+                        isChanged.toggle()
+                    }
+                }
+            
+            Image("Image_Stars3")
+                .resizable()
+                .scaledToFit()
+                .opacity(isChanged ? 0.6 : 0.4)
+                .onAppear {
+                    withAnimation(.easeInOut(duration: 3).repeatForever(autoreverses: true)) {
+                        isChanged.toggle()
+                    }
+                }
+        }.edgesIgnoringSafeArea(.all)
     }
 }
 
@@ -161,66 +180,72 @@ struct MyYomangMoon: View {
    
     var body: some View {
         GeometryReader { proxy in
-            VStack {
-                
-                Image("Moon1")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: ani.moonSize, height: ani.moonSize)
-                    .offset(y: -(proxy.size.height + ani.offsetY))
-                    .rotationEffect(.degrees(ani.moonAngle))
-                    .offset(x: proxy.size.width - ani.moonSize / 2, y: proxy.size.height + ani.offsetY)
-                    .onAppear {
-                        ani.loadSavedData()
-                        ani.calculateTimeLeft()
-                        ani.calculateMoonLimitAngle(geoWidth: proxy.size.width, geoHeight: proxy.size.height, moonSize: ani.moonSize)
-                            ani.moonAngle = ((ani.timeFromStart - ani.timeFromNow) * ((ani.limitAngle * 2 - ani.startAngle) / (ani.timeFromStart/300))) - ani.limitAngle + ani.startAngle
-                        ani.saveData()
-                    }
-                    .onReceive(timer) { _ in
-                        if ani.isImageUploaded {
-                            if ani.moonAngle < ani.limitAngle {
-                                withAnimation(.linear(duration: 0.5)) { ani.moonAngle += (ani.limitAngle * 2 - ani.startAngle) / (ani.timeFromStart/300)}
-                            } else {
-                                print("새벽5시 전송완료")
-                                ani.isImageUploaded = false
-                                ani.timeFromStart = 0
-                                ani.moonAngle = -ani.limitAngle
-                            }
-                        } else {
-                            print("Image 새로 업로드하기")
+            ZStack {
+                VStack {
+                    Image("Image_Moon1")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: ani.moonSize, height: ani.moonSize)
+                        .offset(y: -(proxy.size.height + ani.offsetY))
+                        .rotationEffect(.degrees(ani.moonAngle))
+                        .offset(x: proxy.size.width - ani.moonSize / 2, y: proxy.size.height + ani.offsetY)
+                        .onAppear {
+                            ani.loadSavedData()
+                            ani.calculateTimeLeft()
+                            ani.calculateMoonLimitAngle(geoWidth: proxy.size.width, geoHeight: proxy.size.height, moonSize: ani.moonSize)
+                            ani.moonAngle = ((ani.timeFromStart - ani.timeFromNow) * ((ani.limitAngle * 2 - ani.startAngle) / (ani.timeFromStart/700))) - ani.limitAngle + ani.startAngle
+                            ani.saveData()
                         }
+                        .onReceive(timer) { _ in
+                            if ani.isImageUploaded {
+                                if ani.moonAngle < ani.limitAngle {
+                                    withAnimation(.linear(duration: 0.5)) { ani.moonAngle += (ani.limitAngle * 2 - ani.startAngle) / (ani.timeFromStart/700)}
+                                } else {
+                                    print("새벽5시 전송완료")
+                                    ani.isImageUploaded = false
+                                    ani.timeFromStart = 0
+                                    ani.moonAngle = -ani.limitAngle
+                                }
+                            } else {
+                                print("Image 새로 업로드하기")
+                            }
+                            ani.saveData()
+                        }
+                    
+                    Spacer()
+                }.edgesIgnoringSafeArea(.all)
+                //상위 ZStack포함, 나중에 기능분배하고나면 없어져야하는 버튼과 스택
+                VStack(alignment: .trailing) {
+                    //TODO: 이미지업로드 확인버튼에 부여할 기능!
+                    Button(action: {
+                        ani.loadSavedData()
+                        ani.isImageUploaded = true
+                        withAnimation(.easeInOut(duration: 1)){ ani.moonAngle = -ani.limitAngle + ani.startAngle }
+                        ani.calculateTimeLeft()
+                        ani.timeFromStart = ani.timeFromNow
                         ani.saveData()
+                    }) {
+                        Text("uploadedImage")
+                            .foregroundColor(.gray)
+                            .frame(width: 150, height: 50)
+                            .padding(.horizontal)
                     }
-                
-                Spacer()
-                //TODO: 이미지업로드 확인버튼에 부여할 기능!
-                Button(action: {
-                    ani.loadSavedData()
-                    ani.isImageUploaded = true
-                    withAnimation(.easeInOut(duration: 1)){ ani.moonAngle = -ani.limitAngle + ani.startAngle }
-                    ani.calculateTimeLeft()
-                    ani.timeFromStart = ani.timeFromNow
-                    ani.saveData()
-                }) {
-                    Text("uploadedImage")
-                        .foregroundColor(.gray)
-                        .frame(width: 150, height: 50)
+                    
+                    //TODO: 시간 5시 넘었을 때 부여할 기능!
+                    Button(action: {
+                        ani.loadSavedData()
+                        ani.isImageUploaded = false
+                        ani.moonAngle = 0 - ani.limitAngle
+                        ani.timeFromStart = 0.0
+                        ani.saveData()
+                    }) {
+                        Text("timeDone")
+                            .foregroundColor(.gray)
+                            .frame(width: 150, height: 50)
+                            .padding(.horizontal)
+                    }
+                    Spacer()
                 }
-                
-                //TODO: 시간 5시 넘었을 때 부여할 기능!
-                Button(action: {
-                    ani.loadSavedData()
-                    ani.isImageUploaded = false
-                    ani.moonAngle = 0 - ani.limitAngle
-                    ani.timeFromStart = 0.0
-                    ani.saveData()
-                }) {
-                    Text("timeDone")
-                        .foregroundColor(.gray)
-                        .frame(width: 150, height: 50)
-                }
-                Spacer().frame(height: 100)
             }//VStack
         }//GeometryReader
         .edgesIgnoringSafeArea(.all)
