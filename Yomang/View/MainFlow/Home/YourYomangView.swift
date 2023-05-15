@@ -73,7 +73,7 @@ struct YourYomangImageView: View {
                     .background(RoundedRectangle(cornerRadius: 22).fill(Color.neu500))
                     .overlay {
                         if let imageUrl = imageUrl {
-                            KFImage(URL(string: imageUrl)!)
+                            KFImage(URL(string: imageUrl))
                                 .resizable()
                                 .scaledToFit()
                                 .frame(width: WIDGET_WIDTH, height: WIDGET_HEIGHT)
