@@ -89,12 +89,12 @@ struct MatchingLoadingView: View {
     }
 }
 
-//프리뷰
-struct MatchingLoadingView_Previews: PreviewProvider {
-    static var previews: some View {
-        MatchingLoadingView(user: User(uuid: "", userId: "", isConnected: false))
-    }
-}
+////프리뷰
+//struct MatchingLoadingView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        MatchingLoadingView(user: User(uuid: "", userId: "", isConnected: false))
+//    }
+//}
 
 //로딩 애니메이션 뷰
 struct LoadingView: View {

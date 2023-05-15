@@ -6,6 +6,8 @@
 //
 
 import SwiftUI
+import PhotosUI
+import Kingfisher
 
 struct MyYomangView: View {
     
@@ -17,15 +19,15 @@ struct MyYomangView: View {
         ZStack {
             MyYomangBackgroundObject()
             //이미지가 들어있다면 달이 떠있다.
-            if let _ = user {
-                if let renderedImage = viewModel.renderedImage {
+            if let user = user {
+                if !user.imageUrl.isEmpty {
                     MyYomangMoon().environmentObject(ani)
-                    MyYomangImageView(viewModel: viewModel)
+                    MyYomangImageView(imageUrl: user.imageUrl, viewModel: viewModel)
                 } else {
-                    MyYomangImageView(viewModel: viewModel)
+                    MyYomangImageView(imageUrl: nil, viewModel: viewModel)
                 }
             } else {
-                MyYomangImageView(viewModel: viewModel)
+                MyYomangImageView(imageUrl: nil, viewModel: viewModel)
                     .overlay(
                         Text("이곳을 눌러\n파트너와 연결해 보세요")
                             .font(.title)
@@ -40,15 +42,18 @@ struct MyYomangView: View {
 
 struct MyYomangImageView: View {
     
-    @State private var isPressed: Bool = false
-    @State private var isHovering: Bool = false
-    @State private var hoverSpeed: Double = 1.2
+    let imageUrl: String?
+    
+    @State private var isPressed = false
+    @State private var isHovering = false
+    @State private var hoverSpeed = 1.2
+    @State private var selected = false
     @ObservedObject var viewModel: YomangViewModel
     
     var body: some View {
         
         ZStack {
-            
+
             //뒷배경을 눌렀을 때 다시 작아집니다.
             Rectangle()
                 .foregroundColor(Color.white.opacity(0.000))
@@ -69,14 +74,16 @@ struct MyYomangImageView: View {
                     .frame(width: WIDGET_WIDTH, height: WIDGET_HEIGHT)
                     .background(RoundedRectangle(cornerRadius: 22).fill(Color.main500))
                     .overlay {
-                        RoundedRectangle(cornerRadius: 22)
-                            .stroke(Color.white, lineWidth: 1)
-                        if let renderedImage = viewModel.renderedImage {
-                            renderedImage
+                        if let url = imageUrl {
+                            KFImage(URL(string: url)!)
                                 .resizable()
                                 .scaledToFit()
                                 .frame(width: WIDGET_WIDTH, height: WIDGET_HEIGHT)
+                                .clipShape(RoundedRectangle(cornerRadius: 22))
                         }
+                        
+                        RoundedRectangle(cornerRadius: 22)
+                            .stroke(Color.white, lineWidth: 1)
                     }
                     .scaleEffect(isPressed ? 1 : 0.8)
                     .offset(y: isHovering ? 10 : -10)
@@ -88,9 +95,10 @@ struct MyYomangImageView: View {
                     )
                 //나타날 때 부터 떠다니는 애니메이션 실행됩니다.
                     .onAppear {
-                        isPressed = false
-                        withAnimation(.easeInOut(duration: hoverSpeed).repeatForever()) {
-                            isHovering = true
+                        if !isPressed {
+                            withAnimation(.easeInOut(duration: hoverSpeed).repeatForever()) {
+                                isHovering = true
+                            }
                         }
                     }
                 //탭했을 때 작은 상태면 커지면서 애니메이션 중지, 큰 상태라면 작아지면서 애니메이션 실행
@@ -112,32 +120,37 @@ struct MyYomangImageView: View {
                 
                 //이미지 눌렀을 때 편집버튼 생성
                 if isPressed {
-                    NavigationLink {
-                        EditableYomangImage(viewModel: viewModel)
-                    } label: {
-                        HStack {
-                            Spacer()
-                            
-                            RoundedRectangle(cornerRadius: 16)
-                                .fill(Color.main500)
-                                .frame(width: 100, height: 50)
-                                .padding(.horizontal)
-                                .overlay(
-                                    Text("편집")
-                                        .font(.body)
-                                        .foregroundColor(.white.opacity(1))
-                                        .padding()
-                                )
-                        }.padding(.horizontal)
+                    HStack {
+                        Spacer()
+                        ZStack {
+                            PhotosPicker(selection: $viewModel.imageSelection,
+                                         matching: .images,
+                                         photoLibrary: .shared()) {
+                                
+                                RoundedRectangle(cornerRadius: 16)
+                                    .fill(Color.main500)
+                                    .frame(width: 100, height: 50)
+                                    .padding(.horizontal)
+                                    .overlay(
+                                        Text("편집")
+                                            .font(.body)
+                                            .foregroundColor(.white.opacity(1))
+                                            .padding()
+                                    )
+                            }
+                             .onChange(of: viewModel.imageSelection){ (imageState) in
+                                 selected = true
+                             }
+                             .photosPicker(isPresented: $viewModel.cancel, selection: $viewModel.imageSelection, matching: .images, photoLibrary: .shared())
+                            NavigationLink("", destination: CropYomangView(viewModel: viewModel, isPressed: $isPressed), isActive: $selected)
+                        }
                     }
-
                 }
                 Spacer().frame(height: 100)
             }//VStack
         }//ZStack
     }
 }
-
 
 //MyYomang 장면 배경오브젝트_우측
 struct MyYomangBackgroundObject: View {
@@ -158,7 +171,7 @@ struct MyYomangMoon: View {
     //TODO: every값 조정해서 받아오는 주기 조절
     let timer = Timer.publish(every: 0.5, on: .main, in: .common).autoconnect()
     @EnvironmentObject var ani: AnimationViewModel
-   
+    
     var body: some View {
         GeometryReader { proxy in
             VStack {
@@ -174,7 +187,7 @@ struct MyYomangMoon: View {
                         ani.loadSavedData()
                         ani.calculateTimeLeft()
                         ani.calculateMoonLimitAngle(geoWidth: proxy.size.width, geoHeight: proxy.size.height, moonSize: ani.moonSize)
-                            ani.moonAngle = ((ani.timeFromStart - ani.timeFromNow) * ((ani.limitAngle * 2 - ani.startAngle) / (ani.timeFromStart/300))) - ani.limitAngle + ani.startAngle
+                        ani.moonAngle = ((ani.timeFromStart - ani.timeFromNow) * ((ani.limitAngle * 2 - ani.startAngle) / (ani.timeFromStart/300))) - ani.limitAngle + ani.startAngle
                         ani.saveData()
                     }
                     .onReceive(timer) { _ in

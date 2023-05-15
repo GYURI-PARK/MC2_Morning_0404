@@ -17,7 +17,6 @@ class YomangViewModel: ObservableObject {
     enum ImageState {
         case empty
         case loading(Progress)
-//        case success(Image)
         case success(UIImage)
         case failure(Error)
     }
@@ -74,7 +73,6 @@ class YomangViewModel: ObservableObject {
                 }
                 switch result {
                 case .success(let profileImage?):
-//                    self.imageState = .success(Image(uiImage: profileImage.image))
                     self.imageState = .success(profileImage.image)
                     self.savedImage = profileImage.image
                     self.orgImage = profileImage.image

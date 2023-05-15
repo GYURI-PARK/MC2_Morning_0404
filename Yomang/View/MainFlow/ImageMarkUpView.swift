@@ -25,6 +25,8 @@ struct ImageMarkUpView: View {
     @State var test = true
     @Environment(\.dismiss) private var dismiss
     
+    @Binding var isPressed: Bool // from MyYomangView
+    
     var body: some View {
         
         ZStack{
@@ -38,19 +40,19 @@ struct ImageMarkUpView: View {
                 canvasImage
                     .frame(width: WIDGET_WIDTH, height: WIDGET_HEIGHT)
                     .gesture(DragGesture(minimumDistance: 0, coordinateSpace: .local)
-                    .onChanged({ value in
-                        let newPoint = value.location
-                        if value.translation.width + value.translation.height == 0 {
-                            lines.append(Line(points: [newPoint], color: selectedColor, lineOpacity: pencilOpacity, fontWeight: selectedWeightDouble))
-                        } else {
-                            let index = lines.count - 1
-                            lines[index].points.append(newPoint)
-                        }
-                    })
-                    .onEnded({ value in
-                        self.currentLine = Line(points: [], color: selectedColor, lineOpacity: pencilOpacity, fontWeight: selectedWeightDouble)
-                    })
-                )
+                        .onChanged({ value in
+                            let newPoint = value.location
+                            if value.translation.width + value.translation.height == 0 {
+                                lines.append(Line(points: [newPoint], color: selectedColor, lineOpacity: pencilOpacity, fontWeight: selectedWeightDouble))
+                            } else {
+                                let index = lines.count - 1
+                                lines[index].points.append(newPoint)
+                            }
+                        })
+                            .onEnded({ value in
+                                self.currentLine = Line(points: [], color: selectedColor, lineOpacity: pencilOpacity, fontWeight: selectedWeightDouble)
+                            })
+                    )
                 
                 Spacer(minLength: 140)
                 
@@ -128,8 +130,11 @@ struct ImageMarkUpView: View {
                 let renderer = ImageRenderer(content: canvasImage)
                 renderer.scale = 3
                 if let renderedImage = renderer.uiImage {
+                    isPressed = false
                     viewModel.renderedImage = Image(uiImage: renderedImage)
-                    NavigationUtil.popToRootView()
+                    AuthViewModel.shared.uploadImage(image: renderedImage) {
+                        NavigationUtil.popToRootView()
+                    }
                 }
             }){
                 Text("완료")

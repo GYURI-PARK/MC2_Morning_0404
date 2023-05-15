@@ -126,33 +126,25 @@ class AuthViewModel: ObservableObject{
         }
     }
     
-    func uploadImage(image: Data?) {
+    func uploadImage(image: UIImage, completion: @escaping() -> Void) {
         guard let uid  = self.user?.userId else { return }
-        let storageRef = Storage.storage().reference().child("Photos/\(uid)")
-        let data = image
+        guard let imageData = image.jpegData(compressionQuality: 0.5) else { return }
+        
+        let ref = Storage.storage().reference().child("Photos/\(uid)")
         let metadata = StorageMetadata()
         metadata.contentType = "image/jpg"
         
-        if let data = data {
-            storageRef.putData(data, metadata: metadata) {(metadata, error) in
-                if let error = error {
-                    print("Error: \(error)")
-                    return
-                }
-                if let metadata = metadata {
-                    print("metadata: \(metadata)")
-                }
-                
-                storageRef.downloadURL { url, error in
-                    if let error = error {
-                        // Handle any errors
-                    } else {
-                        guard let uid = self.user?.userId else { return }
-                        guard let urlString = url?.absoluteString else {return}
-                        db.document(uid).updateData(["imageUrl": urlString])
-                    }
-                    print("Saved!")
-                }
+        ref.putData(imageData, metadata: metadata) { metadata, error in
+            if let error = error {
+                print("=== DEBUG: 이미지 업로드 실패 \(error.localizedDescription)")
+                return
+            }
+            
+            ref.downloadURL { url , _ in
+                guard let imageUrl = url?.absoluteString else { return }
+                db.document(uid).updateData(["imageUrl": imageUrl])
+                self.user?.imageUrl = imageUrl
+                completion()
             }
         }
     }

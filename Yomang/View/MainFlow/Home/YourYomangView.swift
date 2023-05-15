@@ -6,10 +6,9 @@
 //
 
 import SwiftUI
+import Kingfisher
 
 struct YourYomangView: View {
-    
-    let imageUrl: String?
     @EnvironmentObject var ani: AnimationViewModel
     
     var body: some View {
@@ -17,12 +16,11 @@ struct YourYomangView: View {
             YourYomangBackgroundObject()
             
             //이미지가 들어있다면 달이 떠있다.
-            if let _ = imageUrl {
+            if let imageUrl = UserDefaults.shared.string(forKey: "imageUrl") {
                 YourYomangMoon().environmentObject(ani)
-                // TODO: Image
-                YourYomangImageView()
+                YourYomangImageView(imageUrl: imageUrl)
             } else {
-                YourYomangImageView()
+                YourYomangImageView(imageUrl: nil)
                 
                 VStack (alignment: .center) {
                     Text("대기 중")
@@ -48,6 +46,8 @@ struct YourYomangImageView: View {
     @State private var isHovering: Bool = false
     @State private var hoverSpeed: Double = 1.2
     
+    let imageUrl: String?
+    
     var body: some View {
         
         ZStack {
@@ -71,10 +71,18 @@ struct YourYomangImageView: View {
                     .fill(LinearGradient(colors: [Color.white.opacity(0.3), Color.clear], startPoint: .top, endPoint: .bottom).opacity(isPressed ? 0 : 1))
                     .frame(width: WIDGET_WIDTH, height: WIDGET_HEIGHT)
                     .background(RoundedRectangle(cornerRadius: 22).fill(Color.neu500))
-                    .overlay(
+                    .overlay {
+                        if let imageUrl = imageUrl {
+                            KFImage(URL(string: imageUrl)!)
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: WIDGET_WIDTH, height: WIDGET_HEIGHT)
+                                .clipShape(RoundedRectangle(cornerRadius: 22))
+                        }
+                        
                         RoundedRectangle(cornerRadius: 22)
                             .stroke(Color.white, lineWidth: 1)
-                    )
+                    }
                     .scaleEffect(isPressed ? 1 : 0.8)
                     .offset(y: isHovering ? 10 : -10)
                     .rotation3DEffect(
