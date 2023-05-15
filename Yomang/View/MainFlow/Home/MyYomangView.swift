@@ -14,6 +14,7 @@ struct MyYomangView: View {
     let user: User?
     @EnvironmentObject var ani: AnimationViewModel
     @ObservedObject var viewModel: YomangViewModel
+    @Binding var showMatchingCode: Bool
     
     var body: some View {
         ZStack {
@@ -22,12 +23,12 @@ struct MyYomangView: View {
             if let user = user {
                 if !user.imageUrl.isEmpty {
                     MyYomangMoon().environmentObject(ani)
-                    MyYomangImageView(imageUrl: user.imageUrl, viewModel: viewModel)
+                    MyYomangImageView(user: user, imageUrl: user.imageUrl, viewModel: viewModel)
                 } else {
-                    MyYomangImageView(imageUrl: nil, viewModel: viewModel)
+                    MyYomangImageView(user: user, imageUrl: nil, viewModel: viewModel)
                 }
             } else {
-                MyYomangImageView(imageUrl: nil, viewModel: viewModel)
+                MyYomangImageView(user: nil, imageUrl: nil, viewModel: viewModel)
                     .overlay(
                         Text("이곳을 눌러\n파트너와 연결해 보세요")
                             .font(.title)
@@ -35,6 +36,9 @@ struct MyYomangView: View {
                             .multilineTextAlignment(.center)
                             .foregroundColor(.white)
                     )
+                    .onTapGesture {
+                        showMatchingCode = true
+                    }
             }
         }//ZStack
     }
@@ -42,6 +46,7 @@ struct MyYomangView: View {
 
 struct MyYomangImageView: View {
     
+    let user: User?
     let imageUrl: String?
     
     @State private var isPressed = false
@@ -119,10 +124,11 @@ struct MyYomangImageView: View {
                     }
                 
                 //이미지 눌렀을 때 편집버튼 생성
-                if isPressed {
+                if let _ = user, isPressed {
                     HStack {
                         Spacer()
                         ZStack {
+                            
                             PhotosPicker(selection: $viewModel.imageSelection,
                                          matching: .images,
                                          photoLibrary: .shared()) {

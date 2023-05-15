@@ -11,6 +11,7 @@ struct HomeView: View {
 
     let user: User?
     @State var selectedTabTag = 0
+    @Binding var showMatchingCode: Bool
     @StateObject var animationViewModel = AnimationViewModel()
     @ObservedObject var viewModel = YomangViewModel()
     
@@ -19,7 +20,7 @@ struct HomeView: View {
             ZStack {
                 HomeBackground().environmentObject(animationViewModel)
                 TabView(selection: $selectedTabTag) {
-                    MyYomangView(user: user ?? nil, viewModel: viewModel).environmentObject(animationViewModel)
+                    MyYomangView(user: user ?? nil, viewModel: viewModel, showMatchingCode: $showMatchingCode).environmentObject(animationViewModel)
                         .tag(0)
                     YourYomangView().environmentObject(animationViewModel)
                         .tag(1)
