@@ -21,7 +21,7 @@ struct HomeView: View {
                 TabView(selection: $selectedTabTag) {
                     MyYomangView(user: user ?? nil, viewModel: viewModel).environmentObject(animationViewModel)
                         .tag(0)
-                    YourYomangView(imageUrl: user?.imageUrl ?? nil).environmentObject(animationViewModel)
+                    YourYomangView().environmentObject(animationViewModel)
                         .tag(1)
                 }
                 .accentColor(Color.white)
