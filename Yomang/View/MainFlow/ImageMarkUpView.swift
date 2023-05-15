@@ -17,6 +17,13 @@ struct ImageMarkUpView: View {
     @State private var offset: CGFloat = 205.0
     @State private var pencilOpacity: CGFloat = 1.0
     @State private var showPopover: Bool = false
+    @State var selectedIndex: Int = 2
+    
+    @ObservedObject var viewModel: YomangViewModel
+    @Binding var savedImage: UIImage?
+    
+    @State var test = true
+    @Environment(\.dismiss) private var dismiss
     
     var body: some View {
         
@@ -25,76 +32,13 @@ struct ImageMarkUpView: View {
                 .ignoresSafeArea()
             
             VStack(alignment: .center) {
-                HStack {
-                    Button {
-                        print("취소버튼 -> 모달창 닫힘")
-                    } label: {
-                        Text("취소")
-                            .foregroundColor(Color(hex: 0x7638F9))
-                            .font(.system(size: 17, weight: .regular))
-                    }
-                    
-                    Spacer()
-                    
-                    Button {
-                        let last = lines.removeLast()
-                        deletedLines.append(last)
-                    } label: {
-                        Image(systemName: "arrow.uturn.backward.circle")
-                            .resizable()
-                            .frame(width: 22, height: 22)
-                            .foregroundColor(Color(hex: 0xEBEBF5))
-                    }
-                    .padding(.trailing, 5)
-                    .disabled(lines.count == 0)
-                    .colorMultiply(lines.count > 0 ? .white : .gray)
-                    
-                    Button {
-                        let last = deletedLines.removeLast()
-                        lines.append(last)
-                    } label: {
-                        Image(systemName: "arrow.uturn.forward.circle")
-                            .resizable()
-                            .frame(width: 22, height: 22)
-                            .foregroundColor(Color(hex: 0xEBEBF5))
-                    }
-                    .padding(.leading, 5)
-                    .disabled(deletedLines.count == 0)
-                    .colorMultiply(deletedLines.count > 0 ? .white : .gray)
-                    
-                    Spacer()
-                    
-                    Text("요망 만들기")
-                        .foregroundColor(.white)
-                        .font(.system(size: 17, weight: .bold))
-                    
-                    Spacer(minLength: 100)
-                    
-                    Button{
-                        print("저장후 모달창 닫힘")
-                    } label: {
-                        Text("완료")
-                            .foregroundColor(Color(hex: 0x7638F9))
-                            .font(.system(size: 17, weight: .bold))
-                    }
-                }
-                .padding(.horizontal, 20).padding(.vertical, 30)
                 
-                Spacer()
-                
+                Spacer(minLength: 160)
                 //  사진
-                Canvas { context, size in
-                    for line in lines {
-                        var path = Path()
-                        path.addLines(line.points)
-                        context.stroke(path, with: .color(line.color.opacity(line.lineOpacity)), lineWidth: line.fontWeight)
-                    }
-                }
-                .background(Color.gray).cornerRadius(20)
-                .frame(width: 338, height: 354)
-                .gesture(
-                    DragGesture(minimumDistance: 0, coordinateSpace: .local)
-                        .onChanged{ value in
+                canvasImage
+                    .frame(width: 338, height: 354)
+                    .gesture(DragGesture(minimumDistance: 0, coordinateSpace: .local)
+                        .onChanged({ value in
                             let newPoint = value.location
                             if value.translation.width + value.translation.height == 0 {
                                 lines.append(Line(points: [newPoint], color: selectedColor, lineOpacity: pencilOpacity, fontWeight: selectedWeightDouble))
@@ -102,69 +46,104 @@ struct ImageMarkUpView: View {
                                 let index = lines.count - 1
                                 lines[index].points.append(newPoint)
                             }
-                        }
-                        .onEnded{ value in
-                            self.currentLine = Line(points: [], color: selectedColor, lineOpacity: pencilOpacity, fontWeight: selectedWeightDouble)
-                        }
-                )
-                // 색깔고르는칸
-                HStack() {
-                    Spacer()
-                    
-                    HStack(alignment: .center){
-                        ColorPickerView(selectedColor: $selectedColor)
-                            .padding(.horizontal, 5)
-                        
-                        ColorPicker("", selection: $selectedColor)
-                            .labelsHidden()
-                            .frame(width: 30, height: 30)
-                        Spacer()
-                    }
-                    Spacer()
-                }
-                .frame(width: 358, height: 72)
+                        })
+                            .onEnded({ value in
+                                self.currentLine = Line(points: [], color: selectedColor, lineOpacity: pencilOpacity, fontWeight: selectedWeightDouble)
+                            })
+                    )
                 
-                Spacer(minLength: 130)
+                Spacer(minLength: 140)
                 
-                // 모두 지우기 + scribble.variable 이미지
-                HStack{
-                    Spacer()
-                    Button {
-                        lines.removeAll()
-                    } label: {
-                        Text("모두 지우기")
-                            .font(.system(size: 17, weight: .regular))
-                            .foregroundColor(.white)
-                    }
-                    .disabled(lines.count == 0)
-                    .colorMultiply(lines.count > 0 ? .white : .gray)
+                ZStack{
+                    Color(hex: 0x2F3031).ignoresSafeArea()
                     
-                    Spacer(minLength: 200)
-                    
-                    Image(systemName: "scribble.variable")
-                        .foregroundColor(.white)
-                        .font(.system(size: 22))
-                        .onTapGesture {
-                            showPopover.toggle()
-                        }
-                        .iOSPopover(isPresented: $showPopover, arrowDirection: .down) {
-                            VStack{
-                                PencilWeightView(selectedWeight: $selectedWeightDouble)
-                                    .onChange(of: selectedWeightDouble) { newWeight in
-                                        currentLine.fontWeight = newWeight
-                                    }
-                                Spacer()
-                                CustomSliderView(offset: $offset, opacity: $pencilOpacity, selectedColor: $selectedColor).onChange(of: pencilOpacity) { newOpacity in
-                                    currentLine.lineOpacity = newOpacity
+                    VStack{
+                        HStack{
+                            Spacer()
+                            ColorPickerView(selectedColor: $selectedColor).padding(.leading, 18)
+                            
+                            ColorPicker("", selection: $selectedColor).labelsHidden()
+                                .padding(.horizontal, 7)
+                            
+                            Spacer()
+                            
+                            Image(systemName: "scribble.variable")
+                                .padding()
+                                .foregroundColor(.white)
+                                .font(.system(size: 22))
+                                .onTapGesture {
+                                    showPopover.toggle()
+                                }.iOSPopover(isPresented: $showPopover, arrowDirection: .down) {
+                                    VStack{
+                                        PencilWeightView(selectedWeight: $selectedWeightDouble, selectedIndex: $selectedIndex)
+                                            .onChange(of: selectedWeightDouble) { newWeight in
+                                                currentLine.fontWeight = newWeight
+                                            }
+                                        Spacer()
+                                        CustomSliderView(offset: $offset, opacity: $pencilOpacity, selectedColor: $selectedColor).onChange(of: pencilOpacity) { newOpacity in
+                                            currentLine.lineOpacity = newOpacity
+                                        }
+                                    }.padding(5)
                                 }
-                            }
-                            .padding(15)
+                            Spacer()
                         }
+                    }
                     Spacer()
                 }
             }
-            Spacer()
+            .navigationBarTitle("요망 꾸미기", displayMode: .inline)
+            .navigationBarItems(leading:
+                                    HStack{
+                Button {
+                    let last = lines.removeLast()
+                    deletedLines.append(last)
+                } label: {
+                    Image(systemName: "arrow.uturn.backward.circle")
+                        .resizable()
+                        .frame(width: 22, height: 22)
+                        .foregroundColor(Color(hex: 0xEBEBF5))
+                }.padding(.trailing, 5)
+                    .disabled(lines.count == 0)
+                    .colorMultiply(lines.count > 0 ? Color(hex: 0x7638F9) : .gray)
+                
+                
+                Button {
+                    let last = deletedLines.removeLast()
+                    lines.append(last)
+                } label: {
+                    Image(systemName: "arrow.uturn.forward.circle")
+                        .resizable()
+                        .frame(width: 22, height: 22)
+                        .foregroundColor(Color(hex: 0xEBEBF5))
+                }.padding(.leading, 5)
+                    .disabled(deletedLines.count == 0)
+                    .colorMultiply(deletedLines.count > 0 ? Color(hex: 0x7638F9) : .gray)
+            }
+                                , trailing: Button(action: {
+                let renderer = ImageRenderer(content: canvasImage)
+                renderer.scale = 3
+                if let renderedImage = renderer.uiImage {
+                    viewModel.renderedImage = Image(uiImage: renderedImage)
+                    NavigationUtil.popToRootView()
+                }
+            }){
+                Text("완료").foregroundColor(Color(hex: 0x7638F9)) .font(.system(size: 17, weight: .bold))
+            }
+            )
+            .toolbarBackground(Color(hex: 0x2F3031), for: .navigationBar)
+            .toolbarBackground(.visible, for: .navigationBar)
         }
+    }
+    
+    var canvasImage: some View {
+        Canvas { context, size in
+            for line in lines {
+                var path = Path()
+                path.addLines(line.points)
+                context.stroke(path, with: .color(line.color.opacity(line.lineOpacity)) , style: StrokeStyle(lineWidth: line.fontWeight, lineCap: .round, lineJoin: .round))
+            }
+        }.frame(width: 338, height: 354)
+            .background(savedImage != nil ? Image(uiImage: savedImage!) : nil).cornerRadius(20)
     }
 }
 
@@ -185,25 +164,24 @@ struct CustomSliderView: View {
         ZStack(alignment: Alignment(horizontal: .leading, vertical: .center), content: {
             Capsule()
                 .fill(LinearGradient(gradient: Gradient(colors: [selectedColor.opacity(0.1), selectedColor]), startPoint: .leading, endPoint: .trailing)).opacity(0.7)
-                .frame(width: 230, height: 25)
+                .frame(width: 230, height: 22)
             
             Circle()
                 .fill(Color.white)
-                .frame(width: 40, height: 40)
+                .frame(width: 35, height: 35)
                 .offset(x: offset)
-                .gesture(
-                    DragGesture()
-                        .onChanged{(value) in
-                            if (value.location.x > 23) && (value.location.x <= (UIScreen.main.bounds.width - 170)) {
-                                offset = value.location.x - 26
-                                opacity = abs(offset) / 180
-                                if opacity > 1.0 {
-                                    opacity = 1.0
-                                } else if opacity < 0.15 {
-                                    opacity = 0.15
-                                }
-                            }
-                        })
+                .gesture(DragGesture().onChanged({(value) in
+                    if value.location.x > 23 && value.location.x <=
+                        UIScreen.main.bounds.width - 160 {
+                        offset = value.location.x - 26
+                        opacity = abs(offset) / 180
+                        if opacity > 1.0 {
+                            opacity = 1.0
+                        } else if opacity < 0.15 {
+                            opacity = 0.15
+                        }
+                    }
+                }))
         })
     }
 }
@@ -275,11 +253,5 @@ class CustomHostingView<Content: View>: UIHostingController<Content>{
     override func viewDidLoad() {
         super.viewDidLoad()
         preferredContentSize = view.intrinsicContentSize
-    }
-}
-
-struct ImageMarkUpView_Previews: PreviewProvider {
-    static var previews: some View {
-        ImageMarkUpView()
     }
 }

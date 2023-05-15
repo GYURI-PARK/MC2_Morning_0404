@@ -10,23 +10,70 @@ import SwiftUI
 struct HomeView: View {
 
     let user: User?
-    @State var selectedTabTag = 1
+    @State var selectedTabTag = 0
+    @StateObject var animationViewModel = AnimationViewModel()
+    @ObservedObject var viewModel = YomangViewModel()
     
     var body: some View {
         NavigationView{
-            TabView(selection: $selectedTabTag) {
-                YourYomangView(imageUrl: user?.imageUrl ?? nil)
-                    .tag(0)
-                MyYomangView(user: user ?? nil)
-                    .tag(1)
-            }
-            .accentColor(Color.white)
-            .navigationTitle(selectedTabTag == 1 ? "나의 요망" : "너의 요망")
-            .tabViewStyle(.page(indexDisplayMode:.always))
-            .navigationBarTitleDisplayMode(.large)
-            .indexViewStyle(.page(backgroundDisplayMode: .always))
-            .navigationViewStyle(.stack)
-            .background(LinearGradient(colors: [Color.black, Color(hex: 0x221D35)], startPoint: .top, endPoint: .bottom))
+            ZStack {
+                HomeBackground().environmentObject(animationViewModel)
+                TabView(selection: $selectedTabTag) {
+                    MyYomangView(user: user ?? nil, viewModel: viewModel).environmentObject(animationViewModel)
+                        .tag(0)
+                    YourYomangView(imageUrl: user?.imageUrl ?? nil).environmentObject(animationViewModel)
+                        .tag(1)
+                }
+                .accentColor(Color.white)
+                .navigationTitle(selectedTabTag == 0 ? "나의 요망" : "너의 요망")
+                .tabViewStyle(.page(indexDisplayMode:.always))
+                .navigationBarTitleDisplayMode(.large)
+                .indexViewStyle(.page(backgroundDisplayMode: .always))
+                .navigationViewStyle(.stack)
+            }//ZStack
+        }//NavigationView
+    }
+}
+
+//Home 장면 배경_우측
+struct HomeBackground: View {
+    
+    @EnvironmentObject var ani: AnimationViewModel
+    @State private var isChanged:Bool = false
+
+    var body: some View {
+        
+        ZStack {
+            Rectangle()
+                .fill(Color.black)
+            
+            Rectangle()
+                .fill(LinearGradient(colors: [Color.black, Color.main500], startPoint: .top, endPoint: .bottom))
+                .opacity(isChanged ? 0.1 : 0.3)
+                .onChange(of: ani.isImageUploaded) { isImageUploaded in
+                    withAnimation(.easeInOut(duration: (ani.timeFromStart/300))) {
+                        isChanged = isImageUploaded
+                    }
+                }
+            
+            Rectangle()
+                .fill(LinearGradient(colors: [Color.black, Color.white], startPoint: .top, endPoint: .bottom))
+                .opacity(isChanged ? 0.4 : 0.1)
+                .onChange(of: ani.isImageUploaded) { isImageUploaded in
+                    withAnimation(.easeInOut(duration: (ani.timeFromStart/300))) {
+                        isChanged = isImageUploaded
+                    }
+                }
+            
+            Rectangle()
+                .fill(LinearGradient(colors: [Color.main200, Color.blue500], startPoint: .top, endPoint: .bottom))
+                .opacity(isChanged ? 0.5 : 0)
+                .onChange(of: ani.isImageUploaded) { isImageUploaded in
+                    withAnimation(.easeInOut(duration: (ani.timeFromStart/300))) {
+                        isChanged = isImageUploaded
+                    }
+                }
         }
+        .edgesIgnoringSafeArea(.all)
     }
 }

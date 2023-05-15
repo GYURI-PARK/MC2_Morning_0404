@@ -3,7 +3,6 @@ import FirebaseCore
 import BackgroundTasks
 import FirebaseFirestore
 
-
 @main
 struct YomangApp: App {
     
