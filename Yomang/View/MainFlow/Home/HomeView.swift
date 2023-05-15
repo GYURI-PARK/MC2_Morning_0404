@@ -17,7 +17,7 @@ struct HomeView: View {
     var body: some View {
         NavigationView{
             ZStack {
-                HomeBackground().environmentObject(animationViewModel)
+                
                 TabView(selection: $selectedTabTag) {
                     MyYomangView(user: user ?? nil, viewModel: viewModel).environmentObject(animationViewModel)
                         .tag(0)

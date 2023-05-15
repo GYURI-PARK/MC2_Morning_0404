@@ -185,7 +185,7 @@ struct YourYomangMoon: View {
         GeometryReader { proxy in
             VStack {
                 
-                Image("Image_Moon1")
+                Image("Image_Moon2")
                     .resizable()
                     .scaledToFit()
                     .frame(width: ani.moonSize, height: ani.moonSize)

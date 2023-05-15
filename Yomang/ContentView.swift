@@ -70,7 +70,7 @@ extension ContentView {
         ZStack {
             Color(hex: 0x18181C)
                 .edgesIgnoringSafeArea(.all)
-            Image("Moon1")
+            Image("Moon2")
                 .resizable()
                 .scaledToFit()
                 .frame(width: 120, height: 120)
