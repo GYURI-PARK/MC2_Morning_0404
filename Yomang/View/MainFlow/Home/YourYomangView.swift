@@ -72,14 +72,16 @@ struct YourYomangImageView: View {
                     .frame(width: WIDGET_WIDTH, height: WIDGET_HEIGHT)
                     .background(RoundedRectangle(cornerRadius: 22).fill(Color.neu500))
                     .overlay {
-                        RoundedRectangle(cornerRadius: 22)
-                            .stroke(Color.white, lineWidth: 1)
                         if let imageUrl = imageUrl {
                             KFImage(URL(string: imageUrl)!)
                                 .resizable()
                                 .scaledToFit()
                                 .frame(width: WIDGET_WIDTH, height: WIDGET_HEIGHT)
+                                .clipShape(RoundedRectangle(cornerRadius: 22))
                         }
+                        
+                        RoundedRectangle(cornerRadius: 22)
+                            .stroke(Color.white, lineWidth: 1)
                     }
                     .scaleEffect(isPressed ? 1 : 0.8)
                     .offset(y: isHovering ? 10 : -10)

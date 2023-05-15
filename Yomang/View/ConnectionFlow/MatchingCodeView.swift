@@ -180,12 +180,12 @@ struct MatchingCodeView: View {
     }
 }
 
-//프리뷰
-struct MatchingCodeView_Previews: PreviewProvider {
-    static var previews: some View {
-        MatchingCodeView(user: User(uuid: "", userId: "", isConnected: false))
-    }
-}
+////프리뷰
+//struct MatchingCodeView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        MatchingCodeView(user: User(uuid: "", userId: "", isConnected: false))
+//    }
+//}
 
 //MatchingCode 장면 배경
 struct MatchingCodeBackgroundView: View {

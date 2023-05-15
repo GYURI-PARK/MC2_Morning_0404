@@ -20,14 +20,14 @@ struct MyYomangView: View {
             MyYomangBackgroundObject()
             //이미지가 들어있다면 달이 떠있다.
             if let user = user {
-                if let _ = user.imageUrl {
+                if !user.imageUrl.isEmpty {
                     MyYomangMoon().environmentObject(ani)
-                    MyYomangImageView(user: user, viewModel: viewModel)
+                    MyYomangImageView(imageUrl: user.imageUrl, viewModel: viewModel)
                 } else {
-                    MyYomangImageView(user: user, viewModel: viewModel)
+                    MyYomangImageView(imageUrl: nil, viewModel: viewModel)
                 }
             } else {
-                MyYomangImageView(user: nil, viewModel: viewModel)
+                MyYomangImageView(imageUrl: nil, viewModel: viewModel)
                     .overlay(
                         Text("이곳을 눌러\n파트너와 연결해 보세요")
                             .font(.title)
@@ -42,7 +42,7 @@ struct MyYomangView: View {
 
 struct MyYomangImageView: View {
     
-    let user: User?
+    let imageUrl: String?
     
     @State private var isPressed = false
     @State private var isHovering = false
@@ -74,14 +74,16 @@ struct MyYomangImageView: View {
                     .frame(width: WIDGET_WIDTH, height: WIDGET_HEIGHT)
                     .background(RoundedRectangle(cornerRadius: 22).fill(Color.main500))
                     .overlay {
-                        RoundedRectangle(cornerRadius: 22)
-                            .stroke(Color.white, lineWidth: 1)
-                        if let imageUrl = user?.imageUrl {
-                            KFImage(URL(string: imageUrl)!)
+                        if let url = imageUrl {
+                            KFImage(URL(string: url)!)
                                 .resizable()
                                 .scaledToFit()
                                 .frame(width: WIDGET_WIDTH, height: WIDGET_HEIGHT)
+                                .clipShape(RoundedRectangle(cornerRadius: 22))
                         }
+                        
+                        RoundedRectangle(cornerRadius: 22)
+                            .stroke(Color.white, lineWidth: 1)
                     }
                     .scaleEffect(isPressed ? 1 : 0.8)
                     .offset(y: isHovering ? 10 : -10)

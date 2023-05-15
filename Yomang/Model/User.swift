@@ -18,5 +18,5 @@ struct User: Decodable {
     var isConnected: Bool
 
     // 본인이 설정한 이미지
-    var imageUrl: String?
+    var imageUrl: String
 }
