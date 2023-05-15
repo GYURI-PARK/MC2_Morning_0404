@@ -132,7 +132,9 @@ struct ImageMarkUpView: View {
                 if let renderedImage = renderer.uiImage {
                     isPressed = false
                     viewModel.renderedImage = Image(uiImage: renderedImage)
-                    NavigationUtil.popToRootView()
+                    AuthViewModel.shared.uploadImage(image: renderedImage) {
+                        NavigationUtil.popToRootView()
+                    }
                 }
             }){
                 Text("완료")

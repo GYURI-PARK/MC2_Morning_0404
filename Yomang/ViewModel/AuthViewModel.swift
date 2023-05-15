@@ -126,7 +126,7 @@ class AuthViewModel: ObservableObject{
         }
     }
     
-    func uploadImage(image: UIImage, completion: @escaping(String) -> Void) {
+    func uploadImage(image: UIImage, completion: @escaping() -> Void) {
         guard let uid  = self.user?.userId else { return }
         guard let imageData = image.jpegData(compressionQuality: 0.5) else { return }
         
@@ -143,7 +143,7 @@ class AuthViewModel: ObservableObject{
             ref.downloadURL { url , _ in
                 guard let imageUrl = url?.absoluteString else { return }
                 db.document(uid).updateData(["imageUrl": imageUrl])
-                completion(imageUrl)
+                completion()
             }
         }
     }
