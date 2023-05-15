@@ -24,7 +24,7 @@ struct YomangApp: App {
                     default: break
                     }
                 }
-        .backgroundTask(.appRefresh("pos.young.Yomang.updateWidget")) {
+        .backgroundTask(.appRefresh("pos.youngsa.Yomang.updateWidget")) {
             scheduleAppRefresh()
             await fetchImageUrl()
             notify()
@@ -36,7 +36,7 @@ struct YomangApp: App {
         let noonComponent = DateComponents(second: 10)
         let noon = Calendar.current.date(byAdding: noonComponent, to: today)
         
-        let request = BGAppRefreshTaskRequest(identifier: "pos.young.Yomang.updateWidge")
+        let request = BGAppRefreshTaskRequest(identifier: "pos.youngsa.Yomang.updateWidget")
         request.earliestBeginDate = noon
         try? BGTaskScheduler.shared.submit(request)
     }

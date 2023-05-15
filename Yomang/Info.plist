@@ -4,7 +4,7 @@
 <dict>
 	<key>BGTaskSchedulerPermittedIdentifiers</key>
 	<array>
-		<string>pos.young.Yomang.updateWidge</string>
+		<string>pos.youngsa.Yomang.updateWidget</string>
 	</array>
 	<key>UIBackgroundModes</key>
 	<array>
