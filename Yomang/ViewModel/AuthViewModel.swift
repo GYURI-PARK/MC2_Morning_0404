@@ -143,6 +143,7 @@ class AuthViewModel: ObservableObject{
             ref.downloadURL { url , _ in
                 guard let imageUrl = url?.absoluteString else { return }
                 db.document(uid).updateData(["imageUrl": imageUrl])
+                self.user?.imageUrl = imageUrl
                 completion()
             }
         }

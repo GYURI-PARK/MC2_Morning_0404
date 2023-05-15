@@ -7,6 +7,7 @@
 
 import SwiftUI
 import PhotosUI
+import Kingfisher
 
 struct MyYomangView: View {
     
@@ -18,15 +19,15 @@ struct MyYomangView: View {
         ZStack {
             MyYomangBackgroundObject()
             //이미지가 들어있다면 달이 떠있다.
-            if let _ = user {
-                if let renderedImage = viewModel.renderedImage {
+            if let user = user {
+                if let _ = user.imageUrl {
                     MyYomangMoon().environmentObject(ani)
-                    MyYomangImageView(viewModel: viewModel)
+                    MyYomangImageView(user: user, viewModel: viewModel)
                 } else {
-                    MyYomangImageView(viewModel: viewModel)
+                    MyYomangImageView(user: user, viewModel: viewModel)
                 }
             } else {
-                MyYomangImageView(viewModel: viewModel)
+                MyYomangImageView(user: nil, viewModel: viewModel)
                     .overlay(
                         Text("이곳을 눌러\n파트너와 연결해 보세요")
                             .font(.title)
@@ -40,6 +41,8 @@ struct MyYomangView: View {
 }
 
 struct MyYomangImageView: View {
+    
+    let user: User?
     
     @State private var isPressed = false
     @State private var isHovering = false
@@ -73,8 +76,8 @@ struct MyYomangImageView: View {
                     .overlay {
                         RoundedRectangle(cornerRadius: 22)
                             .stroke(Color.white, lineWidth: 1)
-                        if let renderedImage = viewModel.renderedImage {
-                            renderedImage
+                        if let imageUrl = user?.imageUrl {
+                            KFImage(URL(string: imageUrl)!)
                                 .resizable()
                                 .scaledToFit()
                                 .frame(width: WIDGET_WIDTH, height: WIDGET_HEIGHT)
