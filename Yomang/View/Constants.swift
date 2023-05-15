@@ -17,4 +17,4 @@ struct Constants {
 }
 
 let WIDGET_WIDTH: CGFloat = 338
-let WIDGET_HEIGHT: CGFloat = 314
+let WIDGET_HEIGHT: CGFloat = 354

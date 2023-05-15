@@ -36,21 +36,21 @@ struct ImageMarkUpView: View {
                 Spacer(minLength: 160)
                 //  사진
                 canvasImage
-                    .frame(width: 338, height: 354)
+                    .frame(width: WIDGET_WIDTH, height: WIDGET_HEIGHT)
                     .gesture(DragGesture(minimumDistance: 0, coordinateSpace: .local)
-                        .onChanged({ value in
-                            let newPoint = value.location
-                            if value.translation.width + value.translation.height == 0 {
-                                lines.append(Line(points: [newPoint], color: selectedColor, lineOpacity: pencilOpacity, fontWeight: selectedWeightDouble))
-                            } else {
-                                let index = lines.count - 1
-                                lines[index].points.append(newPoint)
-                            }
-                        })
-                            .onEnded({ value in
-                                self.currentLine = Line(points: [], color: selectedColor, lineOpacity: pencilOpacity, fontWeight: selectedWeightDouble)
-                            })
-                    )
+                    .onChanged({ value in
+                        let newPoint = value.location
+                        if value.translation.width + value.translation.height == 0 {
+                            lines.append(Line(points: [newPoint], color: selectedColor, lineOpacity: pencilOpacity, fontWeight: selectedWeightDouble))
+                        } else {
+                            let index = lines.count - 1
+                            lines[index].points.append(newPoint)
+                        }
+                    })
+                    .onEnded({ value in
+                        self.currentLine = Line(points: [], color: selectedColor, lineOpacity: pencilOpacity, fontWeight: selectedWeightDouble)
+                    })
+                )
                 
                 Spacer(minLength: 140)
                 
@@ -60,9 +60,11 @@ struct ImageMarkUpView: View {
                     VStack{
                         HStack{
                             Spacer()
-                            ColorPickerView(selectedColor: $selectedColor).padding(.leading, 18)
+                            ColorPickerView(selectedColor: $selectedColor)
+                                .padding(.leading, 18)
                             
-                            ColorPicker("", selection: $selectedColor).labelsHidden()
+                            ColorPicker("", selection: $selectedColor)
+                                .labelsHidden()
                                 .padding(.horizontal, 7)
                             
                             Spacer()
@@ -73,7 +75,8 @@ struct ImageMarkUpView: View {
                                 .font(.system(size: 22))
                                 .onTapGesture {
                                     showPopover.toggle()
-                                }.iOSPopover(isPresented: $showPopover, arrowDirection: .down) {
+                                }
+                                .iOSPopover(isPresented: $showPopover, arrowDirection: .down) {
                                     VStack{
                                         PencilWeightView(selectedWeight: $selectedWeightDouble, selectedIndex: $selectedIndex)
                                             .onChange(of: selectedWeightDouble) { newWeight in
@@ -83,7 +86,8 @@ struct ImageMarkUpView: View {
                                         CustomSliderView(offset: $offset, opacity: $pencilOpacity, selectedColor: $selectedColor).onChange(of: pencilOpacity) { newOpacity in
                                             currentLine.lineOpacity = newOpacity
                                         }
-                                    }.padding(5)
+                                    }
+                                    .padding(5)
                                 }
                             Spacer()
                         }
@@ -115,9 +119,10 @@ struct ImageMarkUpView: View {
                         .resizable()
                         .frame(width: 22, height: 22)
                         .foregroundColor(Color(hex: 0xEBEBF5))
-                }.padding(.leading, 5)
-                    .disabled(deletedLines.count == 0)
-                    .colorMultiply(deletedLines.count > 0 ? Color(hex: 0x7638F9) : .gray)
+                }
+                .padding(.leading, 5)
+                .disabled(deletedLines.count == 0)
+                .colorMultiply(deletedLines.count > 0 ? Color(hex: 0x7638F9) : .gray)
             }
                                 , trailing: Button(action: {
                 let renderer = ImageRenderer(content: canvasImage)
@@ -127,7 +132,9 @@ struct ImageMarkUpView: View {
                     NavigationUtil.popToRootView()
                 }
             }){
-                Text("완료").foregroundColor(Color(hex: 0x7638F9)) .font(.system(size: 17, weight: .bold))
+                Text("완료")
+                    .foregroundColor(Color(hex: 0x7638F9))
+                    .font(.system(size: 17, weight: .bold))
             }
             )
             .toolbarBackground(Color(hex: 0x2F3031), for: .navigationBar)
@@ -142,15 +149,16 @@ struct ImageMarkUpView: View {
                 path.addLines(line.points)
                 context.stroke(path, with: .color(line.color.opacity(line.lineOpacity)) , style: StrokeStyle(lineWidth: line.fontWeight, lineCap: .round, lineJoin: .round))
             }
-        }.frame(width: 338, height: 354)
-            .background {
-                if let savedImage = savedImage {
-                    Image(uiImage: savedImage)
-                        .resizable()
-                        .scaledToFill()
-                        .cornerRadius(20)
-                }
+        }
+        .frame(width: WIDGET_WIDTH, height: WIDGET_HEIGHT)
+        .background {
+            if let savedImage = savedImage {
+                Image(uiImage: savedImage)
+                    .resizable()
+                    .scaledToFill()
+                    .cornerRadius(20)
             }
+        }
     }
 }
 
