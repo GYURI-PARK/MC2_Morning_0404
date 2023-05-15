@@ -32,37 +32,6 @@ struct YomangImage: View {
     }
 }
 
-// MARK: - 요망 선택하기
-struct EditableYomangImage: View {
-    @ObservedObject var viewModel: YomangViewModel
-    @State var selected: Bool = false
-    @State var cancel: Bool = false
-    
-    var body: some View {
-        
-        ZStack{
-            VStack(){
-                Spacer()
-                PhotosPicker(selection: $viewModel.imageSelection,
-                             matching: .images,
-                             photoLibrary: .shared()) {
-                    //TODO: 요망 선택하기 버튼
-                    Text("요망 선택하기")
-                        .symbolRenderingMode(.multicolor)
-                        .font(.system(size: 15))
-                        .foregroundColor(.accentColor)
-                }
-                
-                
-            }.onChange(of: viewModel.imageSelection){ (imageState) in
-                selected = true
-            }
-            NavigationLink("", destination: CropYomangView(viewModel: viewModel), isActive: $selected)
-        }.photosPicker(isPresented: $viewModel.cancel, selection: $viewModel.imageSelection, matching: .images,
-                       photoLibrary: .shared())
-    }
-}
-
 // MARK: - 0507 Jose Add
 struct CropYomangView: View {
     @ObservedObject var viewModel: YomangViewModel
@@ -83,6 +52,8 @@ struct CropYomangView: View {
     @State var cropped: Bool = false
     
     private let barHeightFactor = 0.15
+    
+    @Binding var isPressed: Bool // from MyYomangView
     
     var body: some View {
         
@@ -209,10 +180,7 @@ struct CropYomangView: View {
                                                 width: WIDGET_WIDTH * viewScale,
                                                 height: WIDGET_HEIGHT *  viewScale ))
         
-        guard let cutImageRef: CGImage = inputImage.cgImage?.cropping(to:cropZone)
-        else {
-            return nil
-        }
+        guard let cutImageRef: CGImage = inputImage.cgImage?.cropping(to:cropZone) else { return nil }
         
         let data = UIImage(cgImage: cutImageRef, scale: inputImage.imageRendererFormat.scale, orientation: inputImage.imageOrientation)
         
@@ -234,11 +202,8 @@ struct CropYomangView: View {
         return normalizedImage
     }
     
-    
-    
     private func bottomButtonsView() -> some View {
         HStack(spacing: 60) {
-            
             
             Button(action: {
                 // back button
@@ -270,9 +235,11 @@ struct CropYomangView: View {
                     cropped = true
                 }){
                     ZStack{
-                        Text("꾸미기").foregroundColor(.yellow).padding()
+                        Text("꾸미기")
+                            .foregroundColor(.yellow)
+                            .padding()
                         
-                        NavigationLink("", destination: ImageMarkUpView(viewModel: viewModel, savedImage: $viewModel.savedImage), isActive: $cropped)
+                        NavigationLink("", destination: ImageMarkUpView(viewModel: viewModel, savedImage: $viewModel.savedImage, isPressed: $isPressed), isActive: $cropped)
                     }
                 }
             }
