@@ -143,7 +143,14 @@ struct ImageMarkUpView: View {
                 context.stroke(path, with: .color(line.color.opacity(line.lineOpacity)) , style: StrokeStyle(lineWidth: line.fontWeight, lineCap: .round, lineJoin: .round))
             }
         }.frame(width: 338, height: 354)
-            .background(savedImage != nil ? Image(uiImage: savedImage!) : nil).cornerRadius(20)
+            .background {
+                if let savedImage = savedImage {
+                    Image(uiImage: savedImage)
+                        .resizable()
+                        .scaledToFill()
+                        .cornerRadius(20)
+                }
+            }
     }
 }
 
