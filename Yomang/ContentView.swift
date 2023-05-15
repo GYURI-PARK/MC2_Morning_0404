@@ -41,7 +41,7 @@ struct ContentView: View {
                     Text("잠시만 기다려 주세요.")
                 } else {
                     if let user = viewModel.user {
-                        if user.isConnected {
+                        if !user.isConnected {
                             MatchingCodeView(user: user)
                                 .onChange(of: user.isConnected) { _ in
                                     connected = true
