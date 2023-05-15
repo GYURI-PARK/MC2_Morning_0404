@@ -41,6 +41,13 @@ struct MyYomangView: View {
                     }
             }
         }//ZStack
+        .onAppear() {
+            
+            // MARK: 데모용 마이요망뷰에서 파트너 이미지를 fetch해옴
+//                    Task {
+//                        await AuthViewModel.shared.fetchImageUrl()
+//                    }
+        }
     }
 }
 
