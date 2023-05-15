@@ -29,7 +29,7 @@ struct MatchingLoadingView: View {
                     
                     Image("Moon_Half")
                         .resizable()
-                        .frame(width: 120, height: 120)
+                        .frame(width: 110, height: 110)
                         .opacity(isChanged ? 0 : 1)
                         .offset(y: -(proxy.size.height * 0.13))
                     
@@ -43,13 +43,13 @@ struct MatchingLoadingView: View {
                     
                     Image("Moon_Half")
                         .resizable()
-                        .frame(width: 120, height: 120)
+                        .frame(width: 110, height: 110)
                         .opacity(isChanged ? 0 : 0.5)
                         .offset(y: -(proxy.size.height * 0.13))
                     
                     Image("Moon_Full")
                         .resizable()
-                        .frame(width: 120, height: 120)
+                        .frame(width: 110, height: 110)
                         .opacity(isChanged ? 1 : 0)
                         .offset(y: -(proxy.size.height * 0.13))
                     
