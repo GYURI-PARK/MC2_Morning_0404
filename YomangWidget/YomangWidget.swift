@@ -19,21 +19,31 @@ struct Provider: TimelineProvider {
     }
 
     func getTimeline(in context: Context, completion: @escaping (Timeline<Entry>) -> ()) {
-        var entries: [SimpleEntry] = []
-
-        // Generate a timeline consisting of five entries an hour apart, starting from the current date.
-        let currentDate = Date()
-        for secondOffset in 0 ..< 2 {
-            let entryDate = Calendar.current.date(byAdding: .minute, value: secondOffset, to: currentDate)!
-            if let widgetImageData = UserDefaults(suiteName: "group.youngsa.Yomang")?.data(forKey: "widgetImage"),
-               let widgetImage = UIImage(data: widgetImageData) {
-                entries.append(SimpleEntry(date: entryDate, image: widgetImage))
-            } else {
-                entries.append(SimpleEntry(date: entryDate, image: UIImage(named: "preview") ?? UIImage()))
-            }
+        let entryDate = Date()
+        var entry: SimpleEntry
+        if let widgetImageData = UserDefaults(suiteName: "group.youngsa.Yomang")?.data(forKey: "widgetImage"),
+           let widgetImage = UIImage(data: widgetImageData) {
+            entry = SimpleEntry(date: entryDate, image: widgetImage)
+        } else {
+            entry = SimpleEntry(date: entryDate, image: UIImage(named: "preview") ?? UIImage())
         }
 
-        let timeline = Timeline(entries: entries, policy: .atEnd)
+        // 현재 날짜 및 시간 가져오기
+        let components = Calendar.current.dateComponents(in: TimeZone(identifier: "Asia/Seoul")!, from: Date())
+
+        // 매일 오전 5시로 설정
+        var targetComponents = DateComponents()
+        targetComponents.year = components.year
+        targetComponents.month = components.month
+        targetComponents.day = components.day
+        targetComponents.hour = 5
+        targetComponents.minute = 0
+        targetComponents.second = 0
+        targetComponents.timeZone = TimeZone(identifier: "Asia/Seoul")!
+
+        let targetDate = Calendar.current.date(from: targetComponents)!
+        let nextRefresh = Calendar.current.date(byAdding: .day, value: 1, to: targetDate)!
+        let timeline = Timeline(entries: [entry], policy: .after(nextRefresh))
         completion(timeline)
     }
 }
