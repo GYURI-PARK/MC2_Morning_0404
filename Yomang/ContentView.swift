@@ -39,8 +39,8 @@ struct ContentView: View {
                                 showOnBoarding = !user.isConnected
                             }
                         }
-//                        viewModel.signOut()
-                }
+                        //                        viewModel.signOut()
+                    }
             } else { // hide splash
                 if !successFetchUser {
                     // TODO: 로그인때문에 지연되는 화면 필요해요
@@ -49,12 +49,12 @@ struct ContentView: View {
                 } else {
                     if let user = viewModel.user {
                         HomeView(user: user, showMatchingCode: $showMatchingCode)
-                            .fullScreenCover(isPresented: $showMatchingCode, content: {
-                                MatchingCodeView(user: user, showMatchingCode: $showMatchingCode)
-                            })
                             .fullScreenCover(isPresented: $showOnBoarding) {
                                 OnBoardingView(showOnBoarding: $showOnBoarding)
                             }
+                            .sheet(isPresented: $showMatchingCode, content: {
+                                MatchingCodeView(user: user, showMatchingCode: $showMatchingCode)
+                            })
                     } else {
                         // TODO: 예외처리
                         Text("예외처리")
@@ -72,14 +72,28 @@ struct ContentView: View {
 }
 
 extension ContentView {
+    
     var splashView: some View {
         ZStack {
-            Color(hex: 0x18181C)
-                .edgesIgnoringSafeArea(.all)
+            
+            Rectangle()
+                .fill(LinearGradient(colors: [Color.black, Color(hex: 0x2F2745)], startPoint: .top, endPoint: .bottom))
+            
+            LottieView(name: Constants.Animations.splash, loopMode: .playOnce, animationSpeed: 1, contentMode: .scaleAspectFill)
+        
+            Text("Yomang")
+                .font(.system(size: 48))
+                .bold()
+                .foregroundColor(.white)
+                .offset(y: -200)
+            
             Image("Moon2")
                 .resizable()
                 .scaledToFit()
-                .frame(width: 120, height: 120)
-        }
+                .frame(width: 130, height: 130)
+                .offset(y: -50)
+                
+        }.ignoresSafeArea()
     }
 }
+

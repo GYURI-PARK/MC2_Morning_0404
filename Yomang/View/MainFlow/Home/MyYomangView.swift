@@ -15,6 +15,8 @@ struct MyYomangView: View {
     @EnvironmentObject var ani: AnimationViewModel
     @ObservedObject var viewModel: YomangViewModel
     @Binding var showMatchingCode: Bool
+    @State private var isPressed:Bool = false
+    @State private var isBlinking: Bool = false
     
     var body: some View {
         ZStack {
@@ -22,20 +24,40 @@ struct MyYomangView: View {
             //이미지가 들어있다면 달이 떠있다.
             
             MyYomangMoon().environmentObject(ani)
-            MyYomangImageView(user: user, imageUrl: user.imageUrl.isEmpty ? nil : user.imageUrl, viewModel: viewModel)
+            MyYomangImageView(user: user, imageUrl: user.imageUrl.isEmpty ? nil : user.imageUrl, isPressed: $isPressed, viewModel: viewModel)
                 .environmentObject(ani)
                 .overlay {
                     if !user.isConnected {
-                        Text("이곳을 눌러\n파트너와 연결해 보세요")
-                            .font(.title)
-                            .fontWeight(.bold)
+                            RoundedRectangle(cornerRadius: 20)
+                                .frame(width: 250, height: 80)
+                                .foregroundColor(.white)
+                                .opacity(0.8)
+                                .overlay(
+                            Text("이 버튼을 눌러\n**파트너와 연결해 보세요**")
+                                .font(.title3)
+                                .fontWeight(.bold)
+                                .foregroundColor(.black)
+                                .multilineTextAlignment(.center)
+                                )
+                                .offset(y: -150)
+                                .opacity(isPressed ? 0 : 1)
+                                .onTapGesture {
+                                    showMatchingCode = true
+                                }
+                    } else {
+                        Text("아래 위젯을 눌러서\n상대에게 보낼 **요망을 만들어봐요**")
+                            .font(.title3)
+                            .fontWeight(.light)
                             .multilineTextAlignment(.center)
                             .foregroundColor(.white)
-                    }
-                }
-                .onTapGesture {
-                    if !user.isConnected {
-                        showMatchingCode = true
+                            .offset(y: -150)
+                            .opacity(isBlinking ? 1 : 0.5)
+                            .opacity(isPressed ? 0 : 1)
+                            .onAppear {
+                                withAnimation(.easeInOut(duration: 1).repeatForever(autoreverses: true)){
+                                    isBlinking = true
+                                }
+                            }
                     }
                 }
                 .onAppear() {
@@ -54,7 +76,7 @@ struct MyYomangImageView: View {
     let user: User
     let imageUrl: String?
     
-    @State private var isPressed = false
+    @Binding var isPressed: Bool
     @State private var isHovering = false
     @State private var hoverSpeed = 1.2
     @State private var selected = false
@@ -157,14 +179,16 @@ struct MyYomangImageView: View {
                                 
                                 RoundedRectangle(cornerRadius: 16)
                                     .fill(Color.main500)
-                                    .frame(width: 100, height: 50)
+                                    .frame(width: 120, height: 50)
                                     .padding(.horizontal)
                                     .overlay(
-                                        Text("편집")
+                                        Text("요망 만들기")
                                             .font(.body)
+                                            .bold()
                                             .foregroundColor(.white.opacity(1))
                                             .padding()
                                     )
+                                    .offset(x: -12)
                             }
                              .onChange(of: viewModel.imageSelection){ (imageState) in
                                  selected = true

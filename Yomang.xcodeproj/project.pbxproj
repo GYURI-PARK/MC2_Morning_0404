@@ -39,6 +39,7 @@
 		8AEF73702A125CC80006D7A8 /* LottieView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AEF736F2A125CC80006D7A8 /* LottieView.swift */; };
 		8AEF737B2A1286850006D7A8 /* MatchingComplete.json in Resources */ = {isa = PBXBuildFile; fileRef = 8AEF73792A1286850006D7A8 /* MatchingComplete.json */; };
 		8AEF737C2A1286850006D7A8 /* MatchingLoading.json in Resources */ = {isa = PBXBuildFile; fileRef = 8AEF737A2A1286850006D7A8 /* MatchingLoading.json */; };
+		8AEF737E2A13C9B30006D7A8 /* Splash.json in Resources */ = {isa = PBXBuildFile; fileRef = 8AEF737D2A13C9B30006D7A8 /* Splash.json */; };
 		8AF480ED2A109A36003F4A5B /* AnimationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF480EC2A109A36003F4A5B /* AnimationViewModel.swift */; };
 		AD05EF552A0A789E007504C2 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AD05EF542A0A789E007504C2 /* WidgetKit.framework */; };
 		AD05EF572A0A789E007504C2 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AD05EF562A0A789E007504C2 /* SwiftUI.framework */; };
@@ -100,6 +101,7 @@
 		8AEF736F2A125CC80006D7A8 /* LottieView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LottieView.swift; sourceTree = "<group>"; };
 		8AEF73792A1286850006D7A8 /* MatchingComplete.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = MatchingComplete.json; sourceTree = "<group>"; };
 		8AEF737A2A1286850006D7A8 /* MatchingLoading.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = MatchingLoading.json; sourceTree = "<group>"; };
+		8AEF737D2A13C9B30006D7A8 /* Splash.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Splash.json; sourceTree = "<group>"; };
 		8AF480EC2A109A36003F4A5B /* AnimationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationViewModel.swift; sourceTree = "<group>"; };
 		AD05EF532A0A789E007504C2 /* YomangWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = YomangWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		AD05EF542A0A789E007504C2 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
@@ -261,6 +263,7 @@
 			children = (
 				8AEF73792A1286850006D7A8 /* MatchingComplete.json */,
 				8AEF737A2A1286850006D7A8 /* MatchingLoading.json */,
+				8AEF737D2A13C9B30006D7A8 /* Splash.json */,
 				AD05EF6A2A0A89B6007504C2 /* UserDefaults+Extension.swift */,
 				4B19E0D32A088E9F00CF3F42 /* Color+Extension.swift */,
 			);
@@ -403,6 +406,7 @@
 			files = (
 				68F7D24A2A038B3800D7B874 /* Preview Assets.xcassets in Resources */,
 				8AEF737B2A1286850006D7A8 /* MatchingComplete.json in Resources */,
+				8AEF737E2A13C9B30006D7A8 /* Splash.json in Resources */,
 				8AEF737C2A1286850006D7A8 /* MatchingLoading.json in Resources */,
 				68F7D2472A038B3800D7B874 /* Assets.xcassets in Resources */,
 				C167018E2A051BDA00D3DFB4 /* GoogleService-Info.plist in Resources */,
@@ -592,7 +596,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Yomang/Preview Content\"";
-				DEVELOPMENT_TEAM = 7D5PZJWQ9T;
+				DEVELOPMENT_TEAM = GBQ3ZW8V84;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Yomang/Info.plist;
@@ -656,7 +660,7 @@
 				CODE_SIGN_ENTITLEMENTS = YomangWidgetExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 7D5PZJWQ9T;
+				DEVELOPMENT_TEAM = GBQ3ZW8V84;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = YomangWidget/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = YomangWidget;
