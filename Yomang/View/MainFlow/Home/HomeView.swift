@@ -32,6 +32,12 @@ struct HomeView: View {
                 .navigationBarTitleDisplayMode(.large)
                 .indexViewStyle(.page(backgroundDisplayMode: .always))
                 .navigationViewStyle(.stack)
+                .navigationBarItems(trailing: Button(action: {
+                    AuthViewModel.shared.signOut()
+                }, label: {
+                    Text("hi")
+                        .foregroundColor(.clear)
+                }))
             }//ZStack
         }//NavigationView
     }

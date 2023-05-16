@@ -17,6 +17,7 @@ struct ContentView: View {
     @State private var showSplash = true
     // TODO: 처음에 스플래시보이고 모달이 슥 보임
     @State private var showMatchingCode = true
+    @State private var showOnBoarding = true
     @State private var successFetchUser = false
     @EnvironmentObject var viewModel: AuthViewModel
     @State private var connected: Bool = false
@@ -34,6 +35,9 @@ struct ContentView: View {
                             } else {
                                 successFetchUser = true
                             }
+                            if let user = viewModel.user {
+                                showOnBoarding = !user.isConnected
+                            }
                         }
 //                        viewModel.signOut()
                 }
@@ -48,6 +52,9 @@ struct ContentView: View {
                             .fullScreenCover(isPresented: $showMatchingCode, content: {
                                 MatchingCodeView(user: user, showMatchingCode: $showMatchingCode)
                             })
+                            .fullScreenCover(isPresented: $showOnBoarding) {
+                                OnBoardingView(showOnBoarding: $showOnBoarding)
+                            }
                     } else {
                         // TODO: 예외처리
                         Text("예외처리")

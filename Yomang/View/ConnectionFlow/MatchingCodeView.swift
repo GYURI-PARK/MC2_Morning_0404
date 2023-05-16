@@ -178,6 +178,7 @@ struct MatchingCodeView: View {
                 }
             }//ZStack
         }//NavigationView
+        .foregroundColor(.white)
         .accentColor(.main500)
     }
 }

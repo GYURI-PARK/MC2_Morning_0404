@@ -158,6 +158,7 @@ struct ImageMarkUpView: View {
             )
             .toolbarBackground(Color(hex: 0x2F3031), for: .navigationBar)
             .toolbarBackground(.visible, for: .navigationBar)
+            .accentColor(.main500)
         }
     }
     

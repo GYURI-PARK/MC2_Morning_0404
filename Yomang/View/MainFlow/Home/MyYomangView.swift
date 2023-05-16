@@ -21,7 +21,6 @@ struct MyYomangView: View {
             MyYomangBackgroundObject()
             //이미지가 들어있다면 달이 떠있다.
             
-            
             MyYomangMoon().environmentObject(ani)
             MyYomangImageView(user: user, imageUrl: user.imageUrl.isEmpty ? nil : user.imageUrl, viewModel: viewModel)
                 .environmentObject(ani)
@@ -44,11 +43,8 @@ struct MyYomangView: View {
                 }
         }//ZStack
         .onAppear() {
-            
             // MARK: 데모용 마이요망뷰에서 파트너 이미지를 fetch해옴
-//                    Task {
-//                        await AuthViewModel.shared.fetchImageUrl()
-//                    }
+            AuthViewModel.shared.fetchImageUrl()
         }
     }
 }
@@ -235,7 +231,7 @@ struct MyYomangBackgroundObject: View {
 struct MyYomangMoon: View {
     
     //TODO: every값 조정해서 받아오는 주기 조절
-    let timer = Timer.publish(every: 0.5, on: .main, in: .common).autoconnect()
+    let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
     @EnvironmentObject var ani: AnimationViewModel
     
     var body: some View {
@@ -259,7 +255,7 @@ struct MyYomangMoon: View {
                             if ani.isImageUploaded {
                                 if ani.moonAngle < ani.limitAngle {
                                     DispatchQueue.main.async {
-                                        withAnimation(.linear(duration: 0.5)) { ani.moonAngle += (ani.limitAngle * 2 - ani.startAngle) / (ani.timeFromStart/700)}
+                                        withAnimation(.linear(duration: 1)) { ani.moonAngle += (ani.limitAngle * 2 - ani.startAngle) / (ani.timeFromStart/700)}
                                     }
                                     
                                 } else {

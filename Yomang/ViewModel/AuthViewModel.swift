@@ -197,6 +197,8 @@ class AuthViewModel: ObservableObject{
             for key in UserDefaults.shared.dictionaryRepresentation().keys {
                 UserDefaults.shared.removeObject(forKey: key.description)
             }
+            self.user = nil
+            self.registerUser { _ in }
         } catch {
             print("== DEBUG: Error signing out \(error.localizedDescription)")
         }

@@ -10,6 +10,7 @@ import Kingfisher
 
 struct YourYomangView: View {
     @EnvironmentObject var ani: AnimationViewModel
+    @State var imageUrl: String?
     
     var body: some View {
         ZStack {
@@ -17,7 +18,7 @@ struct YourYomangView: View {
             YourYomangMoon().environmentObject(ani)
             
             //이미지가 들어있다면 달이 떠있다.
-            if let imageUrl = UserDefaults.shared.string(forKey: "imageUrl") {
+            if let _ = imageUrl {
                 YourYomangImageView(imageUrl: imageUrl)
             } else {
                 YourYomangImageView(imageUrl: nil)
@@ -36,6 +37,9 @@ struct YourYomangView: View {
                 }
             }
         }//ZStack
+        .onChange(of: UserDefaults.shared.string(forKey: "imageUrl")) { newUrl in
+            imageUrl = newUrl
+        }
     }
 }
 
@@ -138,9 +142,7 @@ struct YourYomangImageView: View {
                 Spacer().frame(height: 100)
             }//VStack
             .onAppear {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 10) {
                     AuthViewModel.shared.fetchImageUrl()
-                }
             }
         }//ZStack
     }
