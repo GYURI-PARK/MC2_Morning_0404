@@ -11,14 +11,15 @@ class AnimationViewModel: ObservableObject{
     //MyYomangView와 YourYomangView에서 공유하는 변수입니다.
     //TODO: 사진을 업로드 완료하는 버튼에 true로 변환합니다.
     @Published var isImageUploaded: Bool = false
+    @Published var isBackgroundChanging: Bool = false
     //앱을 켰을 때 지정시간까지 남은 시간을 담습니다. 시작시점과 지금시점 차이를 계산해 현재 시점에 좌표가 어디인지 계산합니다.
     @Published var timeFromNow: Double = 0.0
     @Published var timeFromStart: Double = 0.0
-    @Published var moonSize: Double = 180
+    @Published var moonSize: Double = 120
     @Published var moonAngle: Double = -30
     @Published var limitAngle: Double = 0.0
     @Published var offsetY: Double = 180.0
-    @Published var startAngle: Double = 18.0
+    @Published var startAngle: Double = 15.0
 
     
     

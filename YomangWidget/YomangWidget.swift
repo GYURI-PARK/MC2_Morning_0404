@@ -42,10 +42,10 @@ struct Provider: TimelineProvider {
         targetComponents.timeZone = TimeZone(identifier: "Asia/Seoul")!
 
         let targetDate = Calendar.current.date(from: targetComponents)!
-        let nextRefresh = Calendar.current.date(byAdding: .day, value: 1, to: targetDate)!
+//        let nextRefresh = Calendar.current.date(byAdding: .day, value: 1, to: targetDate)!
         
         // MARK: 데모용 위젯 리프레시 타임을 1분으로 줄이는 코드
-//        let nextRefresh = Calendar.current.date(byAdding: .minute, value: 1, to: targetDate)!
+        let nextRefresh = Calendar.current.date(byAdding: .minute, value: 10, to: targetDate)!
         let timeline = Timeline(entries: [entry], policy: .after(nextRefresh))
         completion(timeline)
     }

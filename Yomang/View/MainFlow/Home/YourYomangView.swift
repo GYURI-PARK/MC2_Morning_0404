@@ -14,10 +14,10 @@ struct YourYomangView: View {
     var body: some View {
         ZStack {
             YourYomangBackgroundObject()
+            YourYomangMoon().environmentObject(ani)
             
             //이미지가 들어있다면 달이 떠있다.
             if let imageUrl = UserDefaults.shared.string(forKey: "imageUrl") {
-                YourYomangMoon().environmentObject(ani)
                 YourYomangImageView(imageUrl: imageUrl)
             } else {
                 YourYomangImageView(imageUrl: nil)
@@ -114,28 +114,34 @@ struct YourYomangImageView: View {
                     }
                 
                 //이미지 눌렀을 때 저장버튼 생성
-                if isPressed {
-                    Button(action: {
-                    }) {
-                        HStack {
-                            Spacer()
-                        
-                            RoundedRectangle(cornerRadius: 16)
-                                .fill(Color.main200)
-                                .frame(width: 100, height: 50)
-                                .padding(.horizontal)
-                                .overlay(
-                                    Text("저장")
-                                        .font(.body)
-                                        .foregroundColor(.white.opacity(1))
-                                        .padding()
-                                )
-                        }.padding(.horizontal)
-                    }
-                }
+                //TODO: 기능 부여하기
+//                if isPressed {
+//                    Button(action: {
+//                    }) {
+//                        HStack {
+//                            Spacer()
+//
+//                            RoundedRectangle(cornerRadius: 16)
+//                                .fill(Color.main200)
+//                                .frame(width: 100, height: 50)
+//                                .padding(.horizontal)
+//                                .overlay(
+//                                    Text("저장")
+//                                        .font(.body)
+//                                        .foregroundColor(.white.opacity(1))
+//                                        .padding()
+//                                )
+//                        }.padding(.horizontal)
+//                    }
+//                }
                 
                 Spacer().frame(height: 100)
             }//VStack
+            .onAppear {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 10) {
+                    AuthViewModel.shared.fetchImageUrl()
+                }
+            }
         }//ZStack
     }
 }

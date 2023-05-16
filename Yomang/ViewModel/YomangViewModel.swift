@@ -14,7 +14,7 @@ class YomangViewModel: ObservableObject {
 
     @Published var currentOffset: CGSize = CGSize.zero
     @Published var imageDirection:Bool = false
-
+    
     enum ImageState {
         case empty
         case loading(Progress)

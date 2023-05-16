@@ -43,7 +43,6 @@ struct HomeView: View {
 struct HomeBackground: View {
     
     @EnvironmentObject var ani: AnimationViewModel
-    @State private var isChanged:Bool = false
     
     var body: some View {
         
@@ -53,28 +52,34 @@ struct HomeBackground: View {
             
             Rectangle()
                 .fill(LinearGradient(colors: [Color.black, Color.main500], startPoint: .top, endPoint: .bottom))
-                .opacity(isChanged ? 0.1 : 0.3)
+                .opacity(ani.isBackgroundChanging ? 0.1 : 0.3)
                 .onChange(of: ani.isImageUploaded) { isImageUploaded in
-                    withAnimation(.easeInOut(duration: (ani.timeFromStart/700))) {
-                        isChanged = isImageUploaded
+                    DispatchQueue.main.async {
+                        withAnimation(.easeInOut(duration: (ani.timeFromStart/700))) {
+                            ani.isBackgroundChanging = isImageUploaded
+                        }
                     }
                 }
             
             Rectangle()
                 .fill(LinearGradient(colors: [Color.black, Color.white], startPoint: .top, endPoint: .bottom))
-                .opacity(isChanged ? 0.4 : 0.1)
+                .opacity(ani.isBackgroundChanging ? 0.4 : 0.1)
                 .onChange(of: ani.isImageUploaded) { isImageUploaded in
-                    withAnimation(.easeInOut(duration: (ani.timeFromStart/700))) {
-                        isChanged = isImageUploaded
+                    DispatchQueue.main.async {
+                        withAnimation(.easeInOut(duration: (ani.timeFromStart/700))) {
+                            ani.isBackgroundChanging = isImageUploaded
+                        }
                     }
                 }
             
             Rectangle()
                 .fill(LinearGradient(colors: [Color.main200, Color.blue500], startPoint: .top, endPoint: .bottom))
-                .opacity(isChanged ? 0.5 : 0)
+                .opacity(ani.isBackgroundChanging ? 0.5 : 0)
                 .onChange(of: ani.isImageUploaded) { isImageUploaded in
-                    withAnimation(.easeInOut(duration: (ani.timeFromStart/700))) {
-                        isChanged = isImageUploaded
+                    DispatchQueue.main.async {
+                        withAnimation(.easeInOut(duration: (ani.timeFromStart/700))) {
+                            ani.isBackgroundChanging = isImageUploaded
+                        }
                     }
                 }
             
