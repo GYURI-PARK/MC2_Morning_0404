@@ -149,33 +149,31 @@ class AuthViewModel: ObservableObject{
         }
     }
     
-    func fetchImageUrl() async {
+    func fetchImageUrl() {
         
         guard let _ = UserDefaults.shared.string(forKey: "userId") else { return }
         guard let partnerId = UserDefaults.shared.string(forKey: "partnerId") else { return }
         
-        await withCheckedContinuation { continuation in
-            Firestore.firestore().collection("TestCollection").document(partnerId).getDocument{ document, error in
+        Firestore.firestore().collection("TestCollection").document(partnerId).getDocument{ document, error in
+            
+            if let _ = error {
+                UserDefaults.shared.set("에러가 발생해 이미지를 불러오지 못했습니다. DEBUG #1", forKey: "notiMessage")
+            } else {
                 
-                if let _ = error {
-                    UserDefaults.shared.set("에러가 발생해 이미지를 불러오지 못했습니다. DEBUG #1", forKey: "notiMessage")
-                } else {
-                    
-                    UserDefaults.shared.set("에러가 발생해 이미지를 불러오지 못했습니다. DEBUG #2", forKey: "notiMessage")
-                    if let document = document,
-                       let data = document.data() {
-                        if let partnerImageUrl = data["imageUrl"] as? String {
-                            UserDefaults.shared.set("요망이 업데이트되었습니다. 확인요망!", forKey: "notiMessage")
-                            UserDefaults.shared.set(partnerImageUrl, forKey: "imageUrl")
-                            
-                            /// NSData로 변환해 저장
-                            guard let url = URL(string: partnerImageUrl) else { return }
-                            URLSession.shared.dataTask(with: url) { data, response, error in
-                                guard let data = data, error == nil else { return }
-                                self.setImageInUserDefaults(UIImage: UIImage(data: data) ?? UIImage(), "widgetImage")
-                                continuation.resume()
-                            }.resume()
-                        }
+                UserDefaults.shared.set("에러가 발생해 이미지를 불러오지 못했습니다. DEBUG #2", forKey: "notiMessage")
+                if let document = document,
+                   let data = document.data() {
+                    if let partnerImageUrl = data["imageUrl"] as? String {
+                        UserDefaults.shared.set("요망이 업데이트되었습니다. 확인요망!", forKey: "notiMessage")
+                        UserDefaults.shared.set(partnerImageUrl, forKey: "imageUrl")
+                        print("DEBUG: image url \(partnerImageUrl)")
+                        
+                        /// NSData로 변환해 저장
+                        guard let url = URL(string: partnerImageUrl) else { return }
+                        URLSession.shared.dataTask(with: url) { data, response, error in
+                            guard let data = data, error == nil else { return }
+                            self.setImageInUserDefaults(UIImage: UIImage(data: data) ?? UIImage(), "widgetImage")
+                        }.resume()
                     }
                 }
             }
@@ -196,11 +194,14 @@ class AuthViewModel: ObservableObject{
     func signOut() {
         do {
             try Auth.auth().signOut()
+            for key in UserDefaults.shared.dictionaryRepresentation().keys {
+                UserDefaults.shared.removeObject(forKey: key.description)
+            }
         } catch {
             print("== DEBUG: Error signing out \(error.localizedDescription)")
         }
     }
-
+    
     
 }
 

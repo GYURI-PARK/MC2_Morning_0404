@@ -20,6 +20,7 @@ struct ImageMarkUpView: View {
     @State var selectedIndex: Int = 2
     
     @ObservedObject var viewModel: YomangViewModel
+    @EnvironmentObject var ani: AnimationViewModel
     @Binding var savedImage: UIImage?
     
     @State var test = true
@@ -61,15 +62,15 @@ struct ImageMarkUpView: View {
                     
                     VStack{
                         HStack{
-                            Spacer()
+                            Spacer(minLength: 50)
                             ColorPickerView(selectedColor: $selectedColor)
-                                .padding(.leading, 18)
+                                //.padding(.leading, 18)
                             
                             ColorPicker("", selection: $selectedColor)
                                 .labelsHidden()
-                                .padding(.horizontal, 7)
+                                .padding(.leading, 5)
                             
-                            Spacer()
+//                            Spacer()
                             
                             Image(systemName: "scribble.variable")
                                 .padding()
@@ -91,7 +92,7 @@ struct ImageMarkUpView: View {
                                     }
                                     .padding(5)
                                 }
-                            Spacer()
+                            Spacer(minLength: 50)
                         }
                     }
                     Spacer()
@@ -127,6 +128,19 @@ struct ImageMarkUpView: View {
                 .colorMultiply(deletedLines.count > 0 ? Color(hex: 0x7638F9) : .gray)
             }
                                 , trailing: Button(action: {
+                ani.loadSavedData()
+                ani.isBackgroundChanging = false
+                ani.moonAngle = 0 - ani.limitAngle
+                ani.timeFromStart = 0.0
+                ani.isImageUploaded = true
+                DispatchQueue.main.async {
+                    withAnimation(.easeInOut(duration: 1)) {
+                        ani.moonAngle = -ani.limitAngle + ani.startAngle
+                    }
+                }
+                ani.calculateTimeLeft()
+                ani.timeFromStart = ani.timeFromNow
+                ani.saveData()
                 let renderer = ImageRenderer(content: canvasImage)
                 renderer.scale = 3
                 if let renderedImage = renderer.uiImage {

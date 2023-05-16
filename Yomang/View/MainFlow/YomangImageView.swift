@@ -35,6 +35,7 @@ struct YomangImage: View {
 // MARK: - 0507 Jose Add
 struct CropYomangView: View {
     @ObservedObject var viewModel: YomangViewModel
+    @EnvironmentObject var ani: AnimationViewModel
     
     // navigation back button
     @Environment(\.dismiss) private var dismiss
@@ -294,7 +295,7 @@ struct CropYomangView: View {
                             .foregroundColor(.yellow)
                             .padding()
                         
-                        NavigationLink("", destination: ImageMarkUpView(viewModel: viewModel, savedImage: $viewModel.savedImage, isPressed: $isPressed), isActive: $cropped)
+                        NavigationLink("", destination: ImageMarkUpView(viewModel: viewModel, savedImage: $viewModel.savedImage, isPressed: $isPressed).environmentObject(ani), isActive: $cropped)
                     }
                 }
             }

@@ -11,251 +11,120 @@
 import SwiftUI
 
 struct MatchingLoadingView: View {
-   
+    
     let user: User
+    @State private var isConnected = false // user가 상대방과 연결되었는지
     
-    //뷰모델에서 선언예정
-    @State var colorButtonGradient1: LinearGradient = LinearGradient(
-        gradient: Gradient(colors: [Color(red: 118/255, green: 56/255, blue: 249/255), Color(red: 0/255, green: 139/255, blue: 255/255)]),
-        startPoint: .top,
-        endPoint: .bottom)
-    @State var colorButtonDisabled = LinearGradient(colors: [.white.opacity(0.3)], startPoint: .top, endPoint: .bottom)
-    @State private var connected: Bool = false
+    // isCompleteAnimationPlayed는 Lottie 애니메이션 실행하고, isCompleteAnimationPlayedWithDelay는 딜레이 후에 버튼과 배경바꾼다.
+    @State private var isCompleteAnimationPlayed: Bool = false
+    @State private var isCompleteAnimationPlayedWithDelay: Bool = false
+    
+    @Binding var showMatchingCode: Bool
     
     var body: some View {
-        GeometryReader { proxy in
-            ZStack(alignment: .center) {
-                
-                //MatchingLoading 배경
-                MatchingLoadingBackgroundView()
-                
-                VStack(alignment: .center) {
-                    HStack(alignment: .top) {
+        ZStack {
+            GeometryReader { proxy in
+                ZStack(alignment: .center) {
+                    
+                    MatchingViewBackground(isCompleteAnimationPlayedWithDelay: $isCompleteAnimationPlayedWithDelay)
+                    
+                    
+                    Image("Moon_Half")
+                        .resizable()
+                        .frame(width: 110, height: 110)
+                        .opacity(isCompleteAnimationPlayedWithDelay ? 0 : 1)
+                        .offset(y: -(proxy.size.height * 0.13))
+                    
+                    if !isCompleteAnimationPlayed {
+                        LottieView(name: Constants.Animations.matchingLoading, loopMode: .loop, animationSpeed: 1, contentMode: .scaleAspectFill)
                         
-                        Spacer()
-                    }
-                    
-                    Spacer()
-                    
-                    //로딩뷰와 매칭완료뷰 전환(애니메이션장면)
-                    if connected == false {
-                        if let currentUser = AuthViewModel.shared.user {
-                            LoadingView()
-                                .onChange(of: currentUser.isConnected){ newValue in
-                                    connected = newValue
-                                    print("\(newValue)매칭 부울값")
-                                }
-                        }
                     } else {
-                        CompleteView()
+                        LottieView(name: Constants.Animations.matchingComplete, loopMode: .playOnce, animationSpeed: 1, contentMode: .scaleAspectFill)
                         
                     }
                     
-                    //파트너 일러스트 이미지
-                    Image("Image_Partners_White")
-                        .opacity(0.8)
-                    Spacer().frame(height: proxy.size.height * 0.08)
+                    Image("Moon_Half")
+                        .resizable()
+                        .frame(width: 110, height: 110)
+                        .opacity(isCompleteAnimationPlayedWithDelay ? 0 : 0.5)
+                        .offset(y: -(proxy.size.height * 0.13))
                     
-                    VStack(alignment: .center) {
-                        
-                        //서버에서 매칭 완료 시 버튼 활성화
-                        // TODO: 현재는 서버값 없으므로 버튼 자체에 매칭완료 기능 부여함, 나중에는 다음뷰로 넘어가는 기능 부여해야함
-                        Button(action: {
-                        }, label: {
-                            RoundedRectangle(cornerRadius: 20)
-                                .fill(connected ? colorButtonGradient1 : colorButtonDisabled)
-                                .frame(height: 70)
-                                .overlay(
-                                    Text(connected ? "연결완료" : "연결중…")
-                                        .font(.title3)
-                                        .bold()
-                                        .foregroundColor(connected ? .white.opacity(1) : .white.opacity(0.5))
-                                )//overlay
-                        })//Button
-                        Spacer().frame(height: proxy.size.height * 0.03)
-                    }//VStack
-                    .frame(width: proxy.size.width * 0.88)
-                }//VStack
-            }//ZStack
-            .onAppear{
-                connected = user.isConnected
-                print("onAppear, connected 변수에 값 \(connected) 들어감")
-            }
-            .onDisappear {
-                // TODO: 매칭 취소 기능 넣기
-                print("Matching Canceled")
-            }
-        }//GeometryReader
-    }
-}
-
-////프리뷰
-//struct MatchingLoadingView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        MatchingLoadingView(user: User(uuid: "", userId: "", isConnected: false))
-//    }
-//}
-
-//로딩 애니메이션 뷰
-struct LoadingView: View {
-    
-    //뷰 내부 변수
-    @State private var circleOpacityToggle: [Bool] = Array(repeating: false, count: 5)
-    @State private var circleSizeToggle: [Bool] = Array(repeating: false, count: 5)
-    
-    var body: some View {
-        ZStack(alignment: .center) {
-            
-            //원Shape 애니메이션 배열_ 하위 뷰로 값을 넘겨줘서 표시한다
-            ForEach (0 ..< 5) { index in
-                CircleLoadingView(circleOpacityToggle: circleOpacityToggle[index], circleSizeToggle: circleSizeToggle[index], delayTime: 0.2 * Double(index))
-            }
-        }//ZStack
-        .frame(width: 350, height: 350)
-    }
-}
-
-//매칭완료 애니메이션 뷰
-struct CompleteView: View {
-    
-    //뷰 내부 변수
-    @State private var circleOpacityToggle: [Bool] = Array(repeating: false, count: 5)
-    @State private var circleSizeToggle: [Bool] = Array(repeating: false, count: 5)
-    @State private var showCheckmark = 0.0
-    
-    var body: some View {
-        ZStack(alignment: .center) {
-            ZStack(alignment: .center) {
-                
-                //원Shape 애니메이션 배열_ 하위 뷰로 값을 넘겨줘서 표시한다
-                ForEach (0 ..< 5) { index in
-                    CircleCompleteView(circleOpacityToggle: circleOpacityToggle[index], circleSizeToggle: circleSizeToggle[index], delayTime: 0.1 * Double(index))
+                    Image("Moon_Full")
+                        .resizable()
+                        .frame(width: 110, height: 110)
+                        .opacity(isCompleteAnimationPlayedWithDelay ? 1 : 0)
+                        .offset(y: -(proxy.size.height * 0.13))
+                    
                 }
-            }//ZStack
-            .frame(width: 250, height: 250)
+                // TODO: 강제 언래핑 조심
+                .onChange(of: AuthViewModel.shared.user!.isConnected) { connected in
+                    isConnected = connected
+                    isCompleteAnimationPlayed.toggle()
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 5, execute: {
+                        withAnimation(Animation.easeInOut(duration: 2)) {
+                            isCompleteAnimationPlayedWithDelay.toggle()
+                        }
+                    })
+                }
+            }.ignoresSafeArea()
             
-            //체크Shape 애니메이션
-            Path { path in
-                path.move(to: CGPoint(x: -1, y: -1))
-                path.addCurve(to: CGPoint(x: 21, y: 26), control1: CGPoint(x: -1, y: -1), control2: CGPoint(x: 22, y: 26))
-                path.addCurve(to: CGPoint(x: 56, y: -28), control1: CGPoint(x: 20, y: 26), control2: CGPoint(x: 56, y: -28))
-            }
-            .trim(from: /*@START_MENU_TOKEN@*/0.0/*@END_MENU_TOKEN@*/, to: CGFloat(showCheckmark))
-            .stroke(style: StrokeStyle(lineWidth: 16, lineCap: .round, lineJoin: .round))
-            .foregroundColor(Color.white)
-            .offset(x: 150, y: 175)
-            .onAppear() {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0) {
-                    withAnimation(.easeInOut(duration: 0.4).delay(0.8)) {
-                        showCheckmark = 1
+            VStack {
+                Spacer()
+                
+                
+                
+                //서버에서 매칭 완료 시 버튼 활성화
+                // TODO: 현재는 서버값 없으므로 버튼 자체에 매칭완료 기능 부여함, 나중에는 다음뷰로 넘어가는 기능 부여해야함
+                Button(action: {
+                    if isConnected {
+                        showMatchingCode = false
                     }
-                }
-                
-                //햅틱 피드백_ 체크Shape 표시 타이밍에 작동_ 딸깍!
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.9) {
-                    let impactMed = UIImpactFeedbackGenerator(style: .heavy)
-                    impactMed.impactOccurred()
-                }
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1.1) {
-                    let impactMed = UIImpactFeedbackGenerator(style: .heavy)
-                    impactMed.impactOccurred()
-                }
+                }, label: {
+                    RoundedRectangle(cornerRadius: 20)
+                        .fill(isCompleteAnimationPlayedWithDelay ? Color.main500 : Color.neu500)
+                        .frame(height: 70)
+                        .padding()
+                        .overlay(
+                            Text(isCompleteAnimationPlayedWithDelay ? "연결완료" : "연결중…")
+                                .font(.title3)
+                                .bold()
+                                .foregroundColor(isCompleteAnimationPlayedWithDelay ? .white.opacity(1) : .white.opacity(0.5))
+                        )
+                })//Button
             }
         }//ZStack
-        .frame(width: 350, height: 350)
+        
     }
 }
 
-//원Shape_로딩_상위뷰에서 받아온 input에 따라 뷰 표시됨.
-struct CircleLoadingView: View {
+
+
+struct MatchingViewBackground: View {
     
-    @State var circleOpacityToggle: Bool
-    @State var circleSizeToggle: Bool
-    let delayTime: Double
+    @EnvironmentObject var ani: AnimationViewModel
+    @Binding var isCompleteAnimationPlayedWithDelay: Bool
     
     var body: some View {
         
-        //원 Fill
-        Circle()
-            .scaleEffect(circleSizeToggle ? 1.2 : 0)
-            .foregroundColor(.white)
-            .opacity(circleOpacityToggle ? 0 : 0.3)
-            .overlay(
-                
-                //원 Stroke
-                Circle()
-                    .stroke(Color.white, lineWidth: 1)
-                    .scaleEffect(circleSizeToggle ? 1.2 : 0)
-                    .opacity(circleOpacityToggle ? 0 : 1)
-            )//overlay
-            .onAppear {
-                DispatchQueue.main.asyncAfter(deadline: .now() + delayTime) {
-                    withAnimation(.easeOut(duration: 1.5).repeatForever(autoreverses: false)) {
-                        circleOpacityToggle = true
-                        circleSizeToggle = true
-                    }
-                }
-            }
-    }
-}
-
-
-//원Shape_매칭완료_상위뷰에서 받아온 input에 따라 뷰 표시됨.
-struct CircleCompleteView: View {
-    
-    //뷰모델에서 받아올 컬러
-    @State var colorButtonGradient1: LinearGradient = LinearGradient(
-        gradient: Gradient(colors: [Color(red: 118/255, green: 56/255, blue: 249/255), Color(red: 0/255, green: 139/255, blue: 255/255)]),
-        startPoint: .top,
-        endPoint: .bottom)
-    @State var colorButtonDisabled = LinearGradient(colors: [.white.opacity(0.3)], startPoint: .top, endPoint: .bottom)
-    
-    //뷰 내부 변수
-    @State var circleOpacityToggle: Bool
-    @State var circleSizeToggle: Bool
-    let delayTime: Double
-    
-    var body: some View {
+        ZStack {
+            Rectangle()
+                .fill(Color.black)
+            
+            Rectangle()
+                .fill(LinearGradient(colors: [Color.black, Color.main500], startPoint: .top, endPoint: .bottom))
+                .opacity(isCompleteAnimationPlayedWithDelay ? 0.3 : 0.3)
+            
+            
+            Rectangle()
+                .fill(LinearGradient(colors: [Color.black, Color.white], startPoint: .top, endPoint: .bottom))
+                .opacity(isCompleteAnimationPlayedWithDelay ? 0.2 : 0.1)
+            
+            
+            Rectangle()
+                .fill(LinearGradient(colors: [Color.main200, Color.blue500], startPoint: .top, endPoint: .bottom))
+                .opacity(isCompleteAnimationPlayedWithDelay ? 0.1 : 0)
+            
+        }.edgesIgnoringSafeArea(.all)
         
-        //원 Fill
-        Circle()
-            .fill(circleOpacityToggle ? colorButtonGradient1 : colorButtonDisabled)
-            .scaleEffect(circleSizeToggle ? 0.8 : 0)
-            .opacity(circleOpacityToggle ? 0.1 : 0.3)
-            .overlay(
-                
-                //원 Stroke
-                Circle()
-                    .stroke(circleOpacityToggle ? colorButtonGradient1 : colorButtonDisabled, lineWidth: circleSizeToggle ? 12 : 1)
-                    .scaleEffect(circleSizeToggle ? 0.8 : 0)
-                    .opacity(circleOpacityToggle ? 1 : 0.2)
-            )//overlay
-            .onAppear {
-                DispatchQueue.main.asyncAfter(deadline: .now() + delayTime) {
-                    withAnimation(.easeOut(duration: 0.5)) {
-                        circleOpacityToggle = true
-                        circleSizeToggle = true
-                    }
-                }
-            }
     }
 }
-
-//MatchingLoading 장면 배경_ MatchingCode 배경과 동일하게 된다면 삭제하고 통합 가능
-struct MatchingLoadingBackgroundView: View {
-    
-    //뷰모델에서 컬러 선언
-    @State var colorBackgroundGradient1: LinearGradient = LinearGradient(
-        gradient: Gradient(colors: [Color(red: 118/255, green: 56/255, blue: 249/255), Color(red: 0/255, green: 0/255, blue: 0/255)]),
-        startPoint: .top,
-        endPoint: .bottom)
-    
-    var body: some View {
-        Rectangle()
-            .fill(colorBackgroundGradient1)
-            .opacity(0.6)
-            .background(Color.black)
-            .ignoresSafeArea()
-    }
-}
-

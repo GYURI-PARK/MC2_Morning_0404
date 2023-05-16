@@ -21,6 +21,8 @@ struct MatchingCodeView: View {
     @State private var showAlert1: Bool = false
     @State private var showAlert2: Bool = false
     @State private var isMyCodeShared: Bool = false
+    
+    @Binding var showMatchingCode: Bool
 
     @State var myCode: String = " "
     @State var yourCode: String = ""
@@ -131,7 +133,7 @@ struct MatchingCodeView: View {
                     
                     //연결하기 버튼_조건 미충족 시 Button to Alert, 조건 충족 시 NavigationLink 활성화
                     if isMyCodeShared && yourCode.count == 28 && yourCode != myCode {
-                        NavigationLink(destination: MatchingLoadingView(user: self.user)) {
+                        NavigationLink(destination: MatchingLoadingView(user: self.user, showMatchingCode: $showMatchingCode)) {
                             RoundedRectangle(cornerRadius: 16)
                                 .fill(Color.main500)
                                 .frame(height: 70)

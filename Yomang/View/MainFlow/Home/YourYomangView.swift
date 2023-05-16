@@ -14,14 +14,13 @@ struct YourYomangView: View {
     var body: some View {
         ZStack {
             YourYomangBackgroundObject()
+            YourYomangMoon().environmentObject(ani)
             
             //이미지가 들어있다면 달이 떠있다.
             if let imageUrl = UserDefaults.shared.string(forKey: "imageUrl") {
-                YourYomangMoon().environmentObject(ani)
                 YourYomangImageView(imageUrl: imageUrl)
             } else {
                 YourYomangImageView(imageUrl: nil)
-                
                 VStack (alignment: .center) {
                     Text("대기 중")
                         .font(.title)
@@ -79,7 +78,6 @@ struct YourYomangImageView: View {
                                 .frame(width: WIDGET_WIDTH, height: WIDGET_HEIGHT)
                                 .clipShape(RoundedRectangle(cornerRadius: 22))
                         }
-                        
                         RoundedRectangle(cornerRadius: 22)
                             .stroke(Color.white, lineWidth: 1)
                     }
@@ -116,28 +114,34 @@ struct YourYomangImageView: View {
                     }
                 
                 //이미지 눌렀을 때 저장버튼 생성
-                if isPressed {
-                    Button(action: {
-                    }) {
-                        HStack {
-                            Spacer()
-                        
-                            RoundedRectangle(cornerRadius: 16)
-                                .fill(Color.blue500)
-                                .frame(width: 100, height: 50)
-                                .padding(.horizontal)
-                                .overlay(
-                                    Text("저장")
-                                        .font(.body)
-                                        .foregroundColor(.white.opacity(1))
-                                        .padding()
-                                )
-                        }.padding(.horizontal)
-                    }
-                }
+                //TODO: 기능 부여하기
+//                if isPressed {
+//                    Button(action: {
+//                    }) {
+//                        HStack {
+//                            Spacer()
+//
+//                            RoundedRectangle(cornerRadius: 16)
+//                                .fill(Color.main200)
+//                                .frame(width: 100, height: 50)
+//                                .padding(.horizontal)
+//                                .overlay(
+//                                    Text("저장")
+//                                        .font(.body)
+//                                        .foregroundColor(.white.opacity(1))
+//                                        .padding()
+//                                )
+//                        }.padding(.horizontal)
+//                    }
+//                }
                 
                 Spacer().frame(height: 100)
             }//VStack
+            .onAppear {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 10) {
+                    AuthViewModel.shared.fetchImageUrl()
+                }
+            }
         }//ZStack
     }
 }
@@ -147,12 +151,40 @@ struct YourYomangImageView: View {
 //YourYomang 장면 배경오브젝트_좌측
 struct YourYomangBackgroundObject: View {
     
+    @State private var isChanged:Bool = false
+
     var body: some View {
-        VStack {
-            Spacer()
-            Text("너의 요망 배경요소들")
-                .foregroundColor(.white)
-        }
+        ZStack {
+            Image("Image_Stars1")
+                .resizable()
+                .scaledToFit()
+                .opacity(isChanged ? 0.6 : 0.3)
+                .onAppear {
+                    withAnimation(.easeInOut(duration: 1).repeatForever(autoreverses: true)) {
+                        isChanged.toggle()
+                    }
+                }
+            
+            Image("Image_Stars2")
+                .resizable()
+                .scaledToFit()
+                .opacity(isChanged ? 0.3 : 0.7)
+                .onAppear {
+                    withAnimation(.easeInOut(duration: 2).repeatForever(autoreverses: true)) {
+                        isChanged.toggle()
+                    }
+                }
+            
+            Image("Image_Stars3")
+                .resizable()
+                .scaledToFit()
+                .opacity(isChanged ? 0.6 : 0.4)
+                .onAppear {
+                    withAnimation(.easeInOut(duration: 3).repeatForever(autoreverses: true)) {
+                        isChanged.toggle()
+                    }
+                }
+        }.edgesIgnoringSafeArea(.all)
     }
 }
 
@@ -165,7 +197,7 @@ struct YourYomangMoon: View {
         GeometryReader { proxy in
             VStack {
                 
-                Image("Moon1")
+                Image("Moon2")
                     .resizable()
                     .scaledToFit()
                     .frame(width: ani.moonSize, height: ani.moonSize)

@@ -14,6 +14,11 @@ struct Constants {
         static let circleFill = "circle.fill"
         static var circleCircleFill = "circle.inset.filled"
     }
+    
+    struct Animations {
+        static var matchingLoading = "MatchingLoading"
+        static var matchingComplete = "MatchingComplete"
+    }
 }
 
 let WIDGET_WIDTH: CGFloat = 338
