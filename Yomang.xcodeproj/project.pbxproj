@@ -47,8 +47,8 @@
 		AD05EF5E2A0A789F007504C2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AD05EF5D2A0A789F007504C2 /* Assets.xcassets */; };
 		AD05EF622A0A789F007504C2 /* YomangWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = AD05EF532A0A789E007504C2 /* YomangWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		AD05EF6B2A0A89B6007504C2 /* UserDefaults+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD05EF6A2A0A89B6007504C2 /* UserDefaults+Extension.swift */; };
-		AD24FFB82A0C7A340098DCA9 /* ImageTemplateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD24FFB72A0C7A340098DCA9 /* ImageTemplateView.swift */; };
 		AD24FFC92A0D34280098DCA9 /* MatchingCodeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD24FFC82A0D34270098DCA9 /* MatchingCodeViewModel.swift */; };
+		AD2919162A1263480069DA62 /* BackgroundTasks.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AD2919152A1263470069DA62 /* BackgroundTasks.framework */; };
 		C1404C732A0F4CF80018FBF9 /* NavigationUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1404C722A0F4CF80018FBF9 /* NavigationUtil.swift */; };
 		C16701882A051A4C00D3DFB4 /* ImageMarkUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C16701872A051A4C00D3DFB4 /* ImageMarkUpView.swift */; };
 		C167018E2A051BDA00D3DFB4 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C167018D2A051BDA00D3DFB4 /* GoogleService-Info.plist */; };
@@ -110,9 +110,9 @@
 		AD05EF672A0A88FD007504C2 /* Yomang.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Yomang.entitlements; sourceTree = "<group>"; };
 		AD05EF682A0A893A007504C2 /* YomangWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = YomangWidgetExtension.entitlements; sourceTree = "<group>"; };
 		AD05EF6A2A0A89B6007504C2 /* UserDefaults+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserDefaults+Extension.swift"; sourceTree = "<group>"; };
-		AD24FFB72A0C7A340098DCA9 /* ImageTemplateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageTemplateView.swift; sourceTree = "<group>"; };
 		AD24FFC82A0D34270098DCA9 /* MatchingCodeViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MatchingCodeViewModel.swift; sourceTree = "<group>"; };
 		AD25E7982A0F28C500569F67 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		AD2919152A1263470069DA62 /* BackgroundTasks.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BackgroundTasks.framework; path = System/Library/Frameworks/BackgroundTasks.framework; sourceTree = SDKROOT; };
 		C1404C722A0F4CF80018FBF9 /* NavigationUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationUtil.swift; sourceTree = "<group>"; };
 		C16701872A051A4C00D3DFB4 /* ImageMarkUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageMarkUpView.swift; sourceTree = "<group>"; };
 		C167018D2A051BDA00D3DFB4 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -134,6 +134,7 @@
 				68F7D2712A0390EA00D7B874 /* FirebaseStorageCombine-Community in Frameworks */,
 				68F7D2692A0390EA00D7B874 /* FirebaseFirestoreCombine-Community in Frameworks */,
 				68F7D25D2A0390EA00D7B874 /* FirebaseAppCheck in Frameworks */,
+				AD2919162A1263480069DA62 /* BackgroundTasks.framework in Frameworks */,
 				68F7D26F2A0390EA00D7B874 /* FirebaseStorage in Frameworks */,
 				68F7D26B2A0390EA00D7B874 /* FirebaseFirestoreSwift in Frameworks */,
 				68F7D2592A0390EA00D7B874 /* FirebaseAnalytics in Frameworks */,
@@ -158,6 +159,7 @@
 		2FD8C99E2A04F4B900666609 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				AD2919152A1263470069DA62 /* BackgroundTasks.framework */,
 				AD05EF542A0A789E007504C2 /* WidgetKit.framework */,
 				AD05EF562A0A789E007504C2 /* SwiftUI.framework */,
 			);
@@ -222,7 +224,6 @@
 		68F7D2512A038B5400D7B874 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				68F7D27E2A05001100D7B874 /* YomangImageView.swift */,
 				AD24FFC42A0D32B20098DCA9 /* ConnectionFlow */,
 				AD24FFC32A0D32AA0098DCA9 /* MainFlow */,
 				C19ADC312A064AA20081F760 /* Constants.swift */,
@@ -270,6 +271,7 @@
 				AD24FFC52A0D330E0098DCA9 /* Home */,
 				C16701872A051A4C00D3DFB4 /* ImageMarkUpView.swift */,
 				C19ADC2F2A064A7B0081F760 /* ColorPickerView.swift */,
+				68F7D27E2A05001100D7B874 /* YomangImageView.swift */,
 			);
 			path = MainFlow;
 			sourceTree = "<group>";
@@ -289,7 +291,6 @@
 				4B19E0CF2A088BFF00CF3F42 /* HomeView.swift */,
 				4B19E0D52A09EEC200CF3F42 /* MyYomangView.swift */,
 				4BE70B4B2A0398E000D7D588 /* YourYomangView.swift */,
-				AD24FFB72A0C7A340098DCA9 /* ImageTemplateView.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -422,7 +423,6 @@
 			files = (
 				68F7D27F2A05001100D7B874 /* YomangImageView.swift in Sources */,
 				68F7D27D2A04FFF100D7B874 /* YomangViewModel.swift in Sources */,
-				AD24FFB82A0C7A340098DCA9 /* ImageTemplateView.swift in Sources */,
 				AD24FFC92A0D34280098DCA9 /* MatchingCodeViewModel.swift in Sources */,
 				4BE70B4C2A0398E000D7D588 /* YourYomangView.swift in Sources */,
 				4B19E0D62A09EEC200CF3F42 /* MyYomangView.swift in Sources */,
@@ -588,7 +588,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Yomang/Preview Content\"";
-				DEVELOPMENT_TEAM = GBQ3ZW8V84;
+				DEVELOPMENT_TEAM = 7D5PZJWQ9T;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Yomang/Info.plist;
@@ -621,7 +621,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Yomang/Preview Content\"";
-				DEVELOPMENT_TEAM = GBQ3ZW8V84;
+				DEVELOPMENT_TEAM = 7D5PZJWQ9T;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Yomang/Info.plist;
@@ -652,7 +652,7 @@
 				CODE_SIGN_ENTITLEMENTS = YomangWidgetExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = GBQ3ZW8V84;
+				DEVELOPMENT_TEAM = 7D5PZJWQ9T;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = YomangWidget/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = YomangWidget;

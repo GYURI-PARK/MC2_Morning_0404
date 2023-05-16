@@ -6,49 +6,67 @@
 //
 
 import SwiftUI
+import PhotosUI
+import Kingfisher
 
 struct MyYomangView: View {
     
-    let user: User?
+    let user: User
     @EnvironmentObject var ani: AnimationViewModel
     @ObservedObject var viewModel: YomangViewModel
+    @Binding var showMatchingCode: Bool
     
     var body: some View {
         ZStack {
             MyYomangBackgroundObject()
             //이미지가 들어있다면 달이 떠있다.
-            if let _ = user {
-                if let renderedImage = viewModel.renderedImage {
-                    MyYomangMoon().environmentObject(ani)
-                    MyYomangImageView(viewModel: viewModel)
-                } else {
-                    MyYomangImageView(viewModel: viewModel)
-                }
-            } else {
-                MyYomangImageView(viewModel: viewModel)
-                    .overlay(
+            
+            
+            MyYomangMoon().environmentObject(ani)
+            MyYomangImageView(user: user, imageUrl: user.imageUrl.isEmpty ? nil : user.imageUrl, viewModel: viewModel)
+                .overlay {
+                    if !user.isConnected {
                         Text("이곳을 눌러\n파트너와 연결해 보세요")
                             .font(.title)
                             .fontWeight(.bold)
                             .multilineTextAlignment(.center)
                             .foregroundColor(.white)
-                    )
-            }
+                    }
+                }
+                .onTapGesture {
+                    if !user.isConnected {
+                        showMatchingCode = true
+                    }
+                }
+                .onAppear() {
+                    showMatchingCode = false
+                }
         }//ZStack
+        .onAppear() {
+            
+            // MARK: 데모용 마이요망뷰에서 파트너 이미지를 fetch해옴
+//                    Task {
+//                        await AuthViewModel.shared.fetchImageUrl()
+//                    }
+        }
     }
 }
 
 struct MyYomangImageView: View {
     
-    @State private var isPressed: Bool = false
-    @State private var isHovering: Bool = false
-    @State private var hoverSpeed: Double = 1.2
+    let user: User
+    let imageUrl: String?
+    
+    @State private var isPressed = false
+    @State private var isHovering = false
+    @State private var hoverSpeed = 1.2
+    @State private var selected = false
     @ObservedObject var viewModel: YomangViewModel
     
     var body: some View {
         
         ZStack {
-            
+
             //뒷배경을 눌렀을 때 다시 작아집니다.
 //            Rectangle()
 //                .foregroundColor(Color.white.opacity(0.001))
@@ -68,10 +86,18 @@ struct MyYomangImageView: View {
                     .fill(LinearGradient(colors: [Color.white.opacity(0.3), Color.clear], startPoint: .top, endPoint: .bottom).opacity(isPressed ? 0 : 1))
                     .frame(width: 338, height: 354)
                     .background(RoundedRectangle(cornerRadius: 22).fill(Color.main500))
-                    .overlay(
+                    .overlay {
+                        if let url = imageUrl {
+                            KFImage(URL(string: url))
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: WIDGET_WIDTH, height: WIDGET_HEIGHT)
+                                .clipShape(RoundedRectangle(cornerRadius: 22))
+                        }
+                        
                         RoundedRectangle(cornerRadius: 22)
                             .stroke(Color.white, lineWidth: 1)
-                    )
+                    }
                     .scaleEffect(isPressed ? 1 : 0.8)
                     .offset(y: isHovering ? 10 : -10)
                     .rotation3DEffect(
@@ -82,9 +108,10 @@ struct MyYomangImageView: View {
                     )
                 //나타날 때 부터 떠다니는 애니메이션 실행됩니다.
                     .onAppear {
-                        isPressed = false
-                        withAnimation(.easeInOut(duration: hoverSpeed).repeatForever()) {
-                            isHovering = true
+                        if !isPressed {
+                            withAnimation(.easeInOut(duration: hoverSpeed).repeatForever()) {
+                                isHovering = true
+                            }
                         }
                     }
                 //탭했을 때 작은 상태면 커지면서 애니메이션 중지, 큰 상태라면 작아지면서 애니메이션 실행
@@ -105,23 +132,32 @@ struct MyYomangImageView: View {
                     }
                 
                 //이미지 눌렀을 때 편집버튼 생성
-                if isPressed {
-                    Button(action: {
-                    }) {
-                        HStack {
-                            Spacer()
+                if user.isConnected, isPressed {
+                    HStack {
+                        Spacer()
+                        ZStack {
                             
-                            RoundedRectangle(cornerRadius: 16)
-                                .fill(Color.main500)
-                                .frame(width: 100, height: 50)
-                                .padding(.horizontal)
-                                .overlay(
-                                    Text("편집")
-                                        .font(.body)
-                                        .foregroundColor(.white.opacity(1))
-                                        .padding()
-                                )
-                        }.padding(.horizontal)
+                            PhotosPicker(selection: $viewModel.imageSelection,
+                                         matching: .images,
+                                         photoLibrary: .shared()) {
+                                
+                                RoundedRectangle(cornerRadius: 16)
+                                    .fill(Color.main500)
+                                    .frame(width: 100, height: 50)
+                                    .padding(.horizontal)
+                                    .overlay(
+                                        Text("편집")
+                                            .font(.body)
+                                            .foregroundColor(.white.opacity(1))
+                                            .padding()
+                                    )
+                            }
+                             .onChange(of: viewModel.imageSelection){ (imageState) in
+                                 selected = true
+                             }
+                             .photosPicker(isPresented: $viewModel.cancel, selection: $viewModel.imageSelection, matching: .images, photoLibrary: .shared())
+                            NavigationLink("", destination: CropYomangView(viewModel: viewModel, isPressed: $isPressed), isActive: $selected)
+                        }
                     }
                 }
                 Spacer().frame(height: 100)
@@ -129,7 +165,6 @@ struct MyYomangImageView: View {
         }//ZStack
     }
 }
-
 
 //MyYomang 장면 배경오브젝트_우측
 struct MyYomangBackgroundObject: View {
@@ -177,7 +212,7 @@ struct MyYomangMoon: View {
     //TODO: every값 조정해서 받아오는 주기 조절
     let timer = Timer.publish(every: 0.5, on: .main, in: .common).autoconnect()
     @EnvironmentObject var ani: AnimationViewModel
-   
+    
     var body: some View {
         GeometryReader { proxy in
             ZStack {

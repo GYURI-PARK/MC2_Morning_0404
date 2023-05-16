@@ -15,6 +15,8 @@ struct ContentView: View {
     }
     
     @State private var showSplash = true
+    // TODO: 처음에 스플래시보이고 모달이 슥 보임
+    @State private var showMatchingCode = true
     @State private var successFetchUser = false
     @EnvironmentObject var viewModel: AuthViewModel
     @State private var connected: Bool = false
@@ -24,15 +26,16 @@ struct ContentView: View {
             if showSplash {
                 splashView
                     .onAppear {
-                    viewModel.fetchUser { registered in
-                        if !registered {
-                            viewModel.registerUser { _ in
+                        viewModel.fetchUser { registered in
+                            if !registered {
+                                viewModel.registerUser { _ in
+                                    successFetchUser = true
+                                }
+                            } else {
                                 successFetchUser = true
                             }
-                        } else {
-                            successFetchUser = true
                         }
-                    }
+//                        viewModel.signOut()
                 }
             } else { // hide splash
                 if !successFetchUser {
@@ -41,14 +44,10 @@ struct ContentView: View {
                     Text("잠시만 기다려 주세요.")
                 } else {
                     if let user = viewModel.user {
-                        if !user.isConnected {
-                            MatchingCodeView(user: user)
-                                .onChange(of: user.isConnected) { _ in
-                                    connected = true
-                                }
-                        } else {
-                            HomeView(user: user)
-                        }
+                        HomeView(user: user, showMatchingCode: $showMatchingCode)
+                            .fullScreenCover(isPresented: $showMatchingCode, content: {
+                                MatchingCodeView(user: user, showMatchingCode: $showMatchingCode)
+                            })
                     } else {
                         // TODO: 예외처리
                         Text("예외처리")

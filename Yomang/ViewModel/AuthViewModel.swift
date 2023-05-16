@@ -126,35 +126,66 @@ class AuthViewModel: ObservableObject{
         }
     }
     
-    func uploadImage(image: Data?) {
+    func uploadImage(image: UIImage, completion: @escaping() -> Void) {
         guard let uid  = self.user?.userId else { return }
-        let storageRef = Storage.storage().reference().child("Photos/\(uid)")
-        let data = image
+        guard let imageData = image.jpegData(compressionQuality: 0.5) else { return }
+        
+        let ref = Storage.storage().reference().child("Photos/\(uid)")
         let metadata = StorageMetadata()
         metadata.contentType = "image/jpg"
         
-        if let data = data {
-            storageRef.putData(data, metadata: metadata) {(metadata, error) in
-                if let error = error {
-                    print("Error: \(error)")
-                    return
-                }
-                if let metadata = metadata {
-                    print("metadata: \(metadata)")
-                }
+        ref.putData(imageData, metadata: metadata) { metadata, error in
+            if let error = error {
+                print("=== DEBUG: 이미지 업로드 실패 \(error.localizedDescription)")
+                return
+            }
+            
+            ref.downloadURL { url , _ in
+                guard let imageUrl = url?.absoluteString else { return }
+                db.document(uid).updateData(["imageUrl": imageUrl])
+                self.user?.imageUrl = imageUrl
+                completion()
+            }
+        }
+    }
+    
+    func fetchImageUrl() async {
+        
+        guard let _ = UserDefaults.shared.string(forKey: "userId") else { return }
+        guard let partnerId = UserDefaults.shared.string(forKey: "partnerId") else { return }
+        
+        await withCheckedContinuation { continuation in
+            Firestore.firestore().collection("TestCollection").document(partnerId).getDocument{ document, error in
                 
-                storageRef.downloadURL { url, error in
-                    if let error = error {
-                        // Handle any errors
-                    } else {
-                        guard let uid = self.user?.userId else { return }
-                        guard let urlString = url?.absoluteString else {return}
-                        db.document(uid).updateData(["imageUrl": urlString])
+                if let _ = error {
+                    UserDefaults.shared.set("에러가 발생해 이미지를 불러오지 못했습니다. DEBUG #1", forKey: "notiMessage")
+                } else {
+                    
+                    UserDefaults.shared.set("에러가 발생해 이미지를 불러오지 못했습니다. DEBUG #2", forKey: "notiMessage")
+                    if let document = document,
+                       let data = document.data() {
+                        if let partnerImageUrl = data["imageUrl"] as? String {
+                            UserDefaults.shared.set("요망이 업데이트되었습니다. 확인요망!", forKey: "notiMessage")
+                            UserDefaults.shared.set(partnerImageUrl, forKey: "imageUrl")
+                            
+                            /// NSData로 변환해 저장
+                            guard let url = URL(string: partnerImageUrl) else { return }
+                            URLSession.shared.dataTask(with: url) { data, response, error in
+                                guard let data = data, error == nil else { return }
+                                self.setImageInUserDefaults(UIImage: UIImage(data: data) ?? UIImage(), "widgetImage")
+                                continuation.resume()
+                            }.resume()
+                        }
                     }
-                    print("Saved!")
                 }
             }
         }
+    }
+    
+    /// UIImage convert to NSData
+    func setImageInUserDefaults(UIImage value: UIImage, _ key: String) {
+        let imageData = value.jpegData(compressionQuality: 0.5)
+        UserDefaults.shared.set(imageData, forKey: key)
     }
     
     //
@@ -165,6 +196,9 @@ class AuthViewModel: ObservableObject{
     func signOut() {
         do {
             try Auth.auth().signOut()
+            for key in UserDefaults.shared.dictionaryRepresentation().keys {
+                        UserDefaults.shared.removeObject(forKey: key.description)
+                    }
         } catch {
             print("== DEBUG: Error signing out \(error.localizedDescription)")
         }

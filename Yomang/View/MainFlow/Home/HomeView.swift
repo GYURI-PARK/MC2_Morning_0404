@@ -9,19 +9,21 @@ import SwiftUI
 
 struct HomeView: View {
     
-    let user: User?
+    let user: User
     @State var selectedTabTag = 0
+    @Binding var showMatchingCode: Bool
     @StateObject var animationViewModel = AnimationViewModel()
     @ObservedObject var viewModel = YomangViewModel()
     
     var body: some View {
         NavigationView{
             ZStack {
+                HomeBackground().environmentObject(animationViewModel)
                 
                 TabView(selection: $selectedTabTag) {
-                    MyYomangView(user: user ?? nil, viewModel: viewModel).environmentObject(animationViewModel)
+                    MyYomangView(user: user, viewModel: viewModel, showMatchingCode: $showMatchingCode).environmentObject(animationViewModel)
                         .tag(0)
-                    YourYomangView(imageUrl: user?.imageUrl ?? nil).environmentObject(animationViewModel)
+                    YourYomangView().environmentObject(animationViewModel)
                         .tag(1)
                 }
                 .accentColor(Color.white)
