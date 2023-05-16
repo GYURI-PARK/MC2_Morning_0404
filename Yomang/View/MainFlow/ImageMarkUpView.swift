@@ -62,15 +62,15 @@ struct ImageMarkUpView: View {
                     
                     VStack{
                         HStack{
-                            Spacer()
+                            Spacer(minLength: 50)
                             ColorPickerView(selectedColor: $selectedColor)
-                                .padding(.leading, 18)
+                                //.padding(.leading, 18)
                             
                             ColorPicker("", selection: $selectedColor)
                                 .labelsHidden()
-                                .padding(.horizontal, 7)
+                                .padding(.leading, 5)
                             
-                            Spacer()
+//                            Spacer()
                             
                             Image(systemName: "scribble.variable")
                                 .padding()
@@ -92,7 +92,7 @@ struct ImageMarkUpView: View {
                                     }
                                     .padding(5)
                                 }
-                            Spacer()
+                            Spacer(minLength: 50)
                         }
                     }
                     Spacer()

@@ -22,7 +22,7 @@ struct ColorPickerView: View {
                 .onTapGesture {
                     selectedColor = color
                 }
-                .padding(.horizontal, 10)
+                .padding(.horizontal, 5)
             }
         }
     }
