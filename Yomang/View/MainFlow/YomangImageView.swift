@@ -17,7 +17,7 @@ struct YomangImage: View {
     var body: some View {
         switch imageState {
         case .success(let image):
-            Image(uiImage: image).resizable().scaledToFit()
+            Image(uiImage: image).resizable()
         case .loading:
             ProgressView()
         case .empty:
@@ -60,90 +60,140 @@ struct CropYomangView: View {
         GeometryReader { geometry in
             
             let dragGesture = DragGesture()
-                .onChanged { value in
-                    gestureOffset = value.translation
-                }
-                .onEnded { _ in
-                    
-                    
-                    withAnimation {
+                    .onChanged { value in
+                        gestureOffset = value.translation
+                    }
+                    .onEnded { _ in
                         
-                        let tempWidth = (gestureOffset.width + currentOffset.width)
+                        var widthDisable = viewModel.imageDirection
+                                                   
+                        var tempWidth = 0.0
+                        
+                        var tempHeight = 0.0
                         
                         let originSize = viewModel.orgImage!.size
                         
-                        let viewScale: CGFloat = max( originSize.width / UIScreen.main.bounds.width, originSize.height / UIScreen.main.bounds.height)
-                        
+                        let viewScale: CGFloat = widthDisable ? originSize.width / WIDGET_WIDTH : originSize.height / WIDGET_HEIGHT
+
                         let imageReal = CGSize(width: originSize.width / viewScale, height: originSize.height / viewScale)
-                        
-                        
-                        var currentWidth = tempWidth <= -(currentScale - 1.0) * WIDGET_WIDTH / 2 - (imageReal.width - WIDGET_WIDTH ) / 2 * currentScale ?  -(currentScale - 1.0) * WIDGET_WIDTH / 2 - (imageReal.width - WIDGET_WIDTH ) / 2 * currentScale : tempWidth
-                        
-                        currentWidth = currentWidth >= (currentScale - 1.0) * WIDGET_WIDTH / 2 + (imageReal.width - WIDGET_WIDTH ) / 2 * currentScale ? (currentScale - 1.0) * WIDGET_WIDTH / 2 + (imageReal.width - WIDGET_WIDTH ) / 2 * currentScale : currentWidth
-                        
-                        let tempHeight = (gestureOffset.height + currentOffset.height)
-                        
-                        var currentHeight = (tempHeight <= -1 * (currentScale - 1.0) * WIDGET_HEIGHT / 2 - (imageReal.height - WIDGET_HEIGHT ) / 2 * currentScale) ? -1 * (currentScale - 1.0) * WIDGET_HEIGHT / 2 - (imageReal.height - WIDGET_HEIGHT ) / 2 * currentScale : tempHeight
-                        
-                        currentHeight = currentHeight >= (currentScale - 1.0) * WIDGET_HEIGHT / 2 +  (imageReal.height - WIDGET_HEIGHT ) / 2 * currentScale ? (currentScale - 1.0) * WIDGET_HEIGHT / 2 + (imageReal.height - WIDGET_HEIGHT ) / 2 * currentScale : currentHeight
-                        
-                        currentOffset = CGSize(width: currentWidth, height: currentHeight)
-                        
-                        print(currentOffset)
-                        
-                        viewModel.currentOffset = currentOffset
-                        
-                        gestureOffset = .zero
-                        
-                        editted = true
+
+
+                        withAnimation {
+                            
+                            if widthDisable {
+                                
+                                
+                                tempHeight = (gestureOffset.height + currentOffset.height)
+                                
+                                tempHeight = (tempHeight <= -(imageReal.height - WIDGET_HEIGHT ) / 2 * currentScale) ? -(imageReal.height - WIDGET_HEIGHT ) / 2 * currentScale : tempHeight
+
+                                tempHeight = tempHeight >= (imageReal.height - WIDGET_HEIGHT ) / 2 * currentScale ? (currentScale - 1.0) * WIDGET_HEIGHT / 2 + (imageReal.height - WIDGET_HEIGHT ) / 2 * currentScale : tempHeight
+
+                            } else {
+                                
+                                tempWidth = (gestureOffset.width + currentOffset.width)
+                                
+                                tempWidth = (tempWidth <= -(imageReal.width - WIDGET_WIDTH ) / 2 * currentScale) ? -(imageReal.width - WIDGET_WIDTH ) / 2 * currentScale : tempWidth
+
+                                tempWidth = tempWidth >= (imageReal.width - WIDGET_WIDTH ) / 2 * currentScale ? (currentScale - 1.0) * WIDGET_WIDTH / 2 + (imageReal.width - WIDGET_WIDTH ) / 2 * currentScale : tempWidth
+                                
+                            }
+                            
+                        currentOffset = CGSize(width: tempWidth, height: tempHeight)
+                            
+                            viewModel.currentOffset = currentOffset
+                            
+                            gestureOffset = .zero
+                            
+                            editted = true
+                        }
                     }
-                }
+//
+//                    let magnificationGesture = MagnificationGesture()
+//                        .onChanged { val in
+//                            let delta = val / gestureScale
+//                            gestureScale = gestureScale * delta
+//                            editted = true
+//
+//                        }
+//                        .onEnded { val in
+//                                if (gestureScale >= 2.0) {
+//                                    withAnimation{
+//                                        currentScale = 2.0
+//                                        gestureScale = 1.0
+//                                    }
+//                                } else if gestureScale < 1.0 {
+//                                    withAnimation{
+//                                        currentScale = 1.0
+//                                        gestureScale = 1.0
+//                                    }
+//                                }
+//                            else{
+//                                if (currentScale >= 2.0) {
+//                                    withAnimation{
+//                                        currentScale = 2.0
+//                                    }
+//                                } else if currentScale < 1.0 {
+//                                    withAnimation{
+//                                        currentScale = 1.0
+//                                    }
+//                                }
+//                                currentScale = gestureScale * currentScale
+//                                gestureScale = 1.0
+//                            }
+//                        }
+            
             ZStack {
+                Color.clear
                 YomangImage(imageState: viewModel.imageState)
-                //                        .scaleEffect(gestureScale * currentScale)
-                    .frame(width: geometry.size.width, height: geometry.size.height)
+                    .scaledToFill()
+                    .scaleEffect(gestureScale * currentScale)
+                    .frame(width: WIDGET_WIDTH, height: WIDGET_HEIGHT)
+                
                     .offset(CGSize(width: gestureOffset.width + currentOffset.width, height: gestureOffset.height + currentOffset.height))
                     .blur(radius: 10)
                     .gesture(dragGesture)
-                //                        .gesture(magnificationGesture)
-                    .overlay{
-                        Color.black.opacity(0.6)
-                    }
+//                        .gesture(magnificationGesture)
                     .overlay{
                         
                         
                         
                         YomangImage(imageState: viewModel.imageState)
-                            .scaledToFit()
-                        //                                .scaleEffect(gestureScale * currentScale)
-                            .frame(width: geometry.size.width, height: geometry.size.height)
+                            .scaledToFill()
+                            .scaleEffect(gestureScale * currentScale)
+//                                .frame(width: geometry.size.width, height: geometry.size.height)
+                            .frame(width: WIDGET_WIDTH, height: WIDGET_HEIGHT)
                             .offset(CGSize(width: gestureOffset.width + currentOffset.width, height: gestureOffset.height + currentOffset.height))
                             .gesture(dragGesture)
-                        //                                .gesture(magnificationGesture)
+//                                .gesture(magnificationGesture)
                             .mask{
                                 RoundedRectangle(cornerRadius: 22)
                                     .frame(width: WIDGET_WIDTH, height: WIDGET_HEIGHT
-                                    )
+                                )
+                            }.overlay{
+                                RoundedRectangle(cornerRadius: 22) .strokeBorder(.white.opacity(0.5), lineWidth: 1)
+                            .frame(width: WIDGET_WIDTH, height: WIDGET_HEIGHT
+                                )
                             }
                     }
             }
-            .overlay(alignment: .bottom) {
-                bottomButtonsView()
-                    .frame(height: geometry.size.height * self.barHeightFactor)
-            }
-            
-            .overlay(alignment: .center)  {
-                Color.clear
-                    .frame(height: geometry.size.height * (1 - (self.barHeightFactor * 2)))
-                    .accessibilityElement()
-                    .accessibilityLabel("View Finder")
-                    .accessibilityAddTraits([.isImage])
-            }
-            .overlay(alignment: .top) {
-                topButtonsView()
-                    .frame(height: geometry.size.height * self.barHeightFactor)
-            }
-            .background(.black)
+                .overlay(alignment: .bottom) {
+                    bottomButtonsView()
+                        .frame(height: geometry.size.height * self.barHeightFactor)
+                }
+                
+                .overlay(alignment: .center)  {
+                    Color.clear
+                        .frame(height: geometry.size.height * (1 - (self.barHeightFactor * 2)))
+                        .accessibilityElement()
+                        .accessibilityLabel("View Finder")
+                        .accessibilityAddTraits([.isImage])
+                }
+                .overlay(alignment: .top) {
+                    topButtonsView()
+                        .frame(height: geometry.size.height * self.barHeightFactor)
+                }
+                .background(.black)
         }
         .ignoresSafeArea()
         .navigationBarBackButtonHidden(true)
@@ -176,16 +226,20 @@ struct CropYomangView: View {
         let inputImage = inputImage!
         
         let cropZone = CGRect(origin: CGPoint(x: (toRect.origin.x - viewModel.currentOffset.width) * viewScale,
-                                              y: (toRect.origin.y - viewModel.currentOffset.height) * viewScale), size: CGSize(
-                                                width: WIDGET_WIDTH * viewScale,
-                                                height: WIDGET_HEIGHT *  viewScale ))
-        
-        guard let cutImageRef: CGImage = inputImage.cgImage?.cropping(to:cropZone) else { return nil }
-        
+              y: (toRect.origin.y - viewModel.currentOffset.height) * viewScale), size: CGSize(
+              width: WIDGET_WIDTH * viewScale,
+              height: WIDGET_HEIGHT *  viewScale ))
+    
+        guard let cutImageRef: CGImage = inputImage.cgImage?.cropping(to:cropZone)
+                else {
+                    return nil
+                }
+
         let data = UIImage(cgImage: cutImageRef, scale: inputImage.imageRendererFormat.scale, orientation: inputImage.imageOrientation)
         
         return data
-    }
+}
+    
     
     private func fixOrientation(img: UIImage) -> UIImage {
         if (img.imageOrientation == .up)   {
@@ -223,8 +277,9 @@ struct CropYomangView: View {
                     
                     var image = fixOrientation(img: viewModel.orgImage!)
                     
-                    var viewScale: CGFloat = max( image.size.width / UIScreen.main.bounds.width, image.size.height / UIScreen.main.bounds.height)
-                    
+                    let widthDisable = viewModel.imageDirection
+
+                    let viewScale: CGFloat = widthDisable ? image.size.width / WIDGET_WIDTH : image.size.height / WIDGET_HEIGHT
                     
                     image = cropImage(image, toRect: CGRect(
                         origin: CGPoint(x: (image.size.width / viewScale - WIDGET_WIDTH) / 2 ,
