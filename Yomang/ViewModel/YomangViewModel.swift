@@ -13,6 +13,7 @@ class YomangViewModel: ObservableObject {
     @Published var cancel: Bool = false
 
     @Published var currentOffset: CGSize = CGSize.zero
+    @Published var imageDirection:Bool = false
 
     enum ImageState {
         case empty
@@ -76,6 +77,7 @@ class YomangViewModel: ObservableObject {
                     self.imageState = .success(profileImage.image)
                     self.savedImage = profileImage.image
                     self.orgImage = profileImage.image
+                    self.imageDirection = self.orientationUp(img: profileImage.image)
 
                 case .success(nil):
                     self.imageState = .empty
@@ -85,4 +87,14 @@ class YomangViewModel: ObservableObject {
             }
         }
     }
+    
+    
+    private func orientationUp(img: UIImage) -> Bool {
+        if img.size.width < img.size.height {
+            return true
+        } else {
+            return false
+        }
+    }
+    
 }
