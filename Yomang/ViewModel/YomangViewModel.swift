@@ -77,6 +77,7 @@ class YomangViewModel: ObservableObject {
                     self.imageState = .success(profileImage.image)
                     self.savedImage = profileImage.image
                     self.orgImage = profileImage.image
+                    self.imageDirection = self.orientationUp(img: profileImage.image)
 
                 case .success(nil):
                     self.imageState = .empty
