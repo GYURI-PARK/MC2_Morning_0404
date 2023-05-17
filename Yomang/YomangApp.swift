@@ -55,7 +55,7 @@ struct YomangApp: App {
             let content = UNMutableNotificationContent()
             content.title = "확인요망!"
             content.body = UserDefaults.shared.string(forKey: "notiMessage") ?? "확인 요망 !"
-            content.badge = 1
+            content.badge = 0
             content.sound = .default
             let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)
             let req = UNNotificationRequest(identifier: "MSG", content: content, trigger: trigger)
@@ -72,7 +72,7 @@ struct YomangApp: App {
         guard let partnerId = UserDefaults.shared.string(forKey: "partnerId") else { return }
         
         await withCheckedContinuation { continuation in
-            Firestore.firestore().collection("TestCollection").document(partnerId).getDocument{ document, error in
+            db.document(partnerId).getDocument{ document, error in
                 
                 if let _ = error {
                     UserDefaults.shared.set("에러가 발생해 이미지를 불러오지 못했습니다. DEBUG #1", forKey: "notiMessage")

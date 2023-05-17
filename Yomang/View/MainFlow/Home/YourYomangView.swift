@@ -21,9 +21,9 @@ struct YourYomangView: View {
             
             //이미지가 들어있다면 달이 떠있다.
             if let _ = imageUrl {
-                YourYomangImageView(isPressed: $isPressed, imageUrl: imageUrl)
+                YourYomangImageView(isPressed: $isPressed, imageUrl: $imageUrl)
             } else {
-                YourYomangImageView(isPressed: $isPressed, imageUrl: nil)
+                YourYomangImageView(isPressed: $isPressed, imageUrl: $imageUrl)
                 VStack (alignment: .center) {
                     
                     Text("상대방의 첫 요망을\n기다리고 있어요!")
@@ -42,9 +42,6 @@ struct YourYomangView: View {
                 }
             }
         }//ZStack
-        .onChange(of: UserDefaults.shared.string(forKey: "imageUrl")) { newUrl in
-            imageUrl = newUrl
-        }
     }
 }
 
@@ -54,7 +51,7 @@ struct YourYomangImageView: View {
     @State private var isHovering: Bool = false
     @State private var hoverSpeed: Double = 1.2
     
-    let imageUrl: String?
+    @Binding var imageUrl: String?
     
     var body: some View {
         
@@ -147,7 +144,9 @@ struct YourYomangImageView: View {
                 Spacer().frame(height: 100)
             }//VStack
             .onAppear {
-                    AuthViewModel.shared.fetchImageUrl()
+                AuthViewModel.shared.fetchImageUrl() { newUrl in
+                    imageUrl = newUrl
+                }
             }
         }//ZStack
     }

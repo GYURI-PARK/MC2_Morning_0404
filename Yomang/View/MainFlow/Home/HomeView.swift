@@ -10,6 +10,7 @@ import SwiftUI
 struct HomeView: View {
     
     let user: User
+    @State var tapToSignOut = 0
     @State var selectedTabTag = 0
     @Binding var showMatchingCode: Bool
     @StateObject var animationViewModel = AnimationViewModel()
@@ -26,6 +27,9 @@ struct HomeView: View {
                     YourYomangView().environmentObject(animationViewModel)
                         .tag(1)
                 }
+                .onAppear() {
+                    tapToSignOut = 0
+                }
                 .accentColor(Color.white)
                 .navigationTitle(selectedTabTag == 0 ? "나의 요망" : "너의 요망")
                 .tabViewStyle(.page(indexDisplayMode:.always))
@@ -33,10 +37,14 @@ struct HomeView: View {
                 .indexViewStyle(.page(backgroundDisplayMode: .always))
                 .navigationViewStyle(.stack)
                 .navigationBarItems(trailing: Button(action: {
-                    AuthViewModel.shared.signOut()
+                    tapToSignOut += 1
+                    if tapToSignOut > 10 {
+                        AuthViewModel.shared.signOut()
+                    }
                 }, label: {
                     Text("hi")
                         .foregroundColor(.clear)
+                        .padding()
                 }))
             }//ZStack
         }//NavigationView

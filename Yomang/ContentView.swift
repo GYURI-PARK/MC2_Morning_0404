@@ -28,7 +28,7 @@ struct ContentView: View {
             Color.black.ignoresSafeArea()
             
             if showSplash {
-                SplashView()
+                    SplashView()
                     .onAppear {
                         viewModel.fetchUser { registered in
                             if !registered {
@@ -42,8 +42,8 @@ struct ContentView: View {
                                 showOnBoarding = !user.isConnected
                             }
                         }
-                        //                        viewModel.signOut()
-                    }
+//                       viewModel.signOut()
+                }
             } else { // hide splash
                 if !successFetchUser {
                     // TODO: 로그인때문에 지연되는 화면 필요해요
@@ -51,7 +51,8 @@ struct ContentView: View {
                     Text("잠시만 기다려 주세요.")
                         .foregroundColor(.white)
                 } else {
-                    if let user = viewModel.user {
+                    if let _ = viewModel.userSession,
+                    let user = viewModel.user {
                         HomeView(user: user, showMatchingCode: $showMatchingCode)
                             .fullScreenCover(isPresented: $showOnBoarding) {
                                 OnBoardingView(showOnBoarding: $showOnBoarding)
@@ -61,14 +62,14 @@ struct ContentView: View {
                             })
                     } else {
                         // TODO: 예외처리
-                        Text("잠시만 기다려 주세요.")
+                        Text("인터넷 연결을 확인해 주세요.")
                             .foregroundColor(.white)
                     }
                 }
             }
         }
         .onAppear {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 3, execute: {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 5, execute: {
                  showSplash.toggle()
             })
             UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { _, _ in }
@@ -86,7 +87,7 @@ struct SplashView: View {
             
             LottieView(name: Constants.Animations.splash, loopMode: .loop, animationSpeed: 1, contentMode: .scaleAspectFill)
         
-            Text("Yomang")
+            Text("YOMANG")
                 .font(.system(size: 48))
                 .bold()
                 .foregroundColor(.white)

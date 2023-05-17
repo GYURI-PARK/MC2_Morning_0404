@@ -44,13 +44,13 @@ struct MyYomangView: View {
                                 }
                         } else {
                             RoundedRectangle(cornerRadius: 20)
-                                .frame(height: 400)
-                                .foregroundColor(.white)
-                                .opacity(0.01)
+                                .frame(height: 380)
+                                .foregroundColor(.black)
+                                .opacity(0.001)
                                 .onTapGesture {
                                     showMatchingCode = true
                                 }
-                                .offset(y: 30)
+                                .offset(y: 40)
                                 .overlay(
                                     Text("아직 상대와 연결되지 않았네요!\n**위젯을 눌러 상대방과 연결해볼까요?**")
                                         .font(.title3)
@@ -70,19 +70,36 @@ struct MyYomangView: View {
                                
                         }
                     } else {
-                        Text("아래 위젯을 눌러서\n상대에게 보낼 **요망을 만들어봐요**")
-                            .font(.title3)
-                            .fontWeight(.light)
-                            .multilineTextAlignment(.center)
-                            .foregroundColor(.white)
-                            .offset(y: -150)
-                            .opacity(isBlinking ? 1 : 0.5)
-                            .opacity(isPressed ? 0 : 1)
-                            .onAppear {
-                                withAnimation(.easeInOut(duration: 1).repeatForever(autoreverses: true)){
-                                    isBlinking.toggle()
+                        
+                        if !ani.isImageUploaded {
+                            Text("아래 위젯을 눌러서\n상대에게 보낼 **요망을 만들어봐요**")
+                                .font(.title3)
+                                .fontWeight(.light)
+                                .multilineTextAlignment(.center)
+                                .foregroundColor(.white)
+                                .offset(y: -150)
+                                .opacity(isBlinking ? 1 : 0.5)
+                                .opacity(isPressed ? 0 : 1)
+                                .onAppear {
+                                    withAnimation(.easeInOut(duration: 1).repeatForever(autoreverses: true)){
+                                        isBlinking.toggle()
+                                    }
                                 }
-                            }
+                        } else {
+                            Text("")
+                                .font(.title3)
+                                .fontWeight(.light)
+                                .multilineTextAlignment(.center)
+                                .foregroundColor(.white)
+                                .offset(y: -150)
+                                .opacity(isBlinking ? 1 : 0.5)
+                                .opacity(isPressed ? 0 : 1)
+                                .onAppear {
+                                    withAnimation(.easeInOut(duration: 1).repeatForever(autoreverses: true)){
+                                        isBlinking.toggle()
+                                    }
+                                }
+                        }
                     }
                 }
                 .onAppear() {
@@ -91,7 +108,7 @@ struct MyYomangView: View {
         }//ZStack
         .onAppear() {
             // MARK: 데모용 마이요망뷰에서 파트너 이미지를 fetch해옴
-            AuthViewModel.shared.fetchImageUrl()
+            AuthViewModel.shared.fetchImageUrl() { _ in }
         }
     }
 }

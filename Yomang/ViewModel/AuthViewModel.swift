@@ -61,10 +61,10 @@ class AuthViewModel: ObservableObject{
         let uuid = getDeviceUUID()
         
         Auth.auth().signInAnonymously() { result, error in
-            
+
             //서버에서 데이터를 받아오지 못했을 경우 별도의 작업 수행 없이 return
             if let error = error {
-                print("Error : \(error.localizedDescription)")
+                print(" === Error : \(error.localizedDescription)")
                 return
             }
             
@@ -73,6 +73,8 @@ class AuthViewModel: ObservableObject{
             //받아온 유저 고유 id를 저장
             UserDefaults.shared.set(user.uid, forKey: "userId")
             self.user?.userId = user.uid
+            
+            print("=== DEBUG: 접근했어")
             
             let data = ["userId": user.uid,
                         "partnerId": "NaN",
@@ -149,12 +151,12 @@ class AuthViewModel: ObservableObject{
         }
     }
     
-    func fetchImageUrl() {
+    func fetchImageUrl(_ completion: @escaping(String) -> Void?) {
         
         guard let _ = UserDefaults.shared.string(forKey: "userId") else { return }
         guard let partnerId = UserDefaults.shared.string(forKey: "partnerId") else { return }
         
-        Firestore.firestore().collection("TestCollection").document(partnerId).getDocument{ document, error in
+        db.document(partnerId).getDocument{ document, error in
             
             if let _ = error {
                 UserDefaults.shared.set("에러가 발생해 이미지를 불러오지 못했습니다. DEBUG #1", forKey: "notiMessage")
@@ -174,6 +176,8 @@ class AuthViewModel: ObservableObject{
                             guard let data = data, error == nil else { return }
                             self.setImageInUserDefaults(UIImage: UIImage(data: data) ?? UIImage(), "widgetImage")
                         }.resume()
+                        
+                        completion(partnerImageUrl)
                     }
                 }
             }
@@ -193,12 +197,24 @@ class AuthViewModel: ObservableObject{
      */
     func signOut() {
         do {
+//            guard let uid = self.user?.userId else { return }
+//            
+//            let removeObjectKey = ["imageUrl", "partnerId", "notiMessage", "widgetImage"]
+//            for key in removeObjectKey {
+//                UserDefaults.shared.removeObject(forKey: key)
+//            }
+//            db.document(uid).updateData(["partnerId": "NaN"])
+//            db.document(uid).updateData(["isConnected": "false"])
+//            db.document(uid).updateData(["imageUrl": ""])
+//
+//            fetchUser { _ in }
+            
             try Auth.auth().signOut()
+
             for key in UserDefaults.shared.dictionaryRepresentation().keys {
                 UserDefaults.shared.removeObject(forKey: key.description)
             }
-            self.user = nil
-            self.registerUser { _ in }
+
         } catch {
             print("== DEBUG: Error signing out \(error.localizedDescription)")
         }
