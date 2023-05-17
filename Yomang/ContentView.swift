@@ -24,8 +24,11 @@ struct ContentView: View {
     
     var body: some View {
         ZStack {
+            
+            Color.black.ignoresSafeArea()
+            
             if showSplash {
-                splashView
+                SplashView()
                     .onAppear {
                         viewModel.fetchUser { registered in
                             if !registered {
@@ -39,47 +42,63 @@ struct ContentView: View {
                                 showOnBoarding = !user.isConnected
                             }
                         }
-//                        viewModel.signOut()
-                }
+                        //                        viewModel.signOut()
+                    }
             } else { // hide splash
                 if !successFetchUser {
                     // TODO: 로그인때문에 지연되는 화면 필요해요
                     /// 여기서 안넘어간다면 signOut이 필요할 가능성이 높습니다
                     Text("잠시만 기다려 주세요.")
+                        .foregroundColor(.white)
                 } else {
                     if let user = viewModel.user {
                         HomeView(user: user, showMatchingCode: $showMatchingCode)
-                            .fullScreenCover(isPresented: $showMatchingCode, content: {
-                                MatchingCodeView(user: user, showMatchingCode: $showMatchingCode)
-                            })
                             .fullScreenCover(isPresented: $showOnBoarding) {
                                 OnBoardingView(showOnBoarding: $showOnBoarding)
                             }
+                            .sheet(isPresented: $showMatchingCode, content: {
+                                MatchingCodeView(user: user, showMatchingCode: $showMatchingCode)
+                            })
                     } else {
                         // TODO: 예외처리
-                        Text("예외처리")
+                        Text("잠시만 기다려 주세요.")
+                            .foregroundColor(.white)
                     }
                 }
             }
         }
         .onAppear {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
-                withAnimation(Animation.easeOut(duration: 1)) { showSplash.toggle() }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 3, execute: {
+                 showSplash.toggle()
             })
             UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { _, _ in }
         }
     }
 }
 
-extension ContentView {
-    var splashView: some View {
+struct SplashView: View {
+    
+    var body: some View {
         ZStack {
-            Color(hex: 0x18181C)
-                .edgesIgnoringSafeArea(.all)
+            
+            Rectangle()
+                .fill(LinearGradient(colors: [Color.black, Color(hex: 0x2F2745)], startPoint: .top, endPoint: .bottom))
+            
+            LottieView(name: Constants.Animations.splash, loopMode: .loop, animationSpeed: 1, contentMode: .scaleAspectFill)
+        
+            Text("Yomang")
+                .font(.system(size: 48))
+                .bold()
+                .foregroundColor(.white)
+                .offset(y: -200)
+            
             Image("Moon2")
                 .resizable()
                 .scaledToFit()
-                .frame(width: 120, height: 120)
-        }
+                .frame(width: 130, height: 130)
+                .offset(y: -50)
+                
+        }.ignoresSafeArea()
     }
 }
+

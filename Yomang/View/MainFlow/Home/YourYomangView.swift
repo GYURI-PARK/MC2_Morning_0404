@@ -11,6 +11,8 @@ import Kingfisher
 struct YourYomangView: View {
     @EnvironmentObject var ani: AnimationViewModel
     @State var imageUrl: String?
+    @State private var isBlinking: Bool = false
+    @State private var isPressed: Bool = false
     
     var body: some View {
         ZStack {
@@ -19,21 +21,24 @@ struct YourYomangView: View {
             
             //이미지가 들어있다면 달이 떠있다.
             if let _ = imageUrl {
-                YourYomangImageView(imageUrl: imageUrl)
+                YourYomangImageView(isPressed: $isPressed, imageUrl: imageUrl)
             } else {
-                YourYomangImageView(imageUrl: nil)
+                YourYomangImageView(isPressed: $isPressed, imageUrl: nil)
                 VStack (alignment: .center) {
-                    Text("대기 중")
-                        .font(.title)
-                        .fontWeight(.bold)
-                        .frame(height: 36)
-                        .foregroundColor(.white)
                     
-                    Text("상대의 첫 요망을 기다리고 있어요!")
-                        .font(.body)
-                        .fontWeight(.regular)
+                    Text("상대방의 첫 요망을\n기다리고 있어요!")
+                        .font(.title3)
+                        .fontWeight(.light)
                         .multilineTextAlignment(.center)
                         .foregroundColor(.white)
+                        .offset(y: -150)
+                        .opacity(isBlinking ? 1 : 0.5)
+                        .opacity(isPressed ? 0 : 1)
+                        .onAppear {
+                            withAnimation(.easeInOut(duration: 1).repeatForever(autoreverses: true)){
+                                isBlinking = true
+                            }
+                        }
                 }
             }
         }//ZStack
@@ -45,7 +50,7 @@ struct YourYomangView: View {
 
 struct YourYomangImageView: View {
     
-    @State private var isPressed: Bool = false
+    @Binding var isPressed: Bool
     @State private var isHovering: Bool = false
     @State private var hoverSpeed: Double = 1.2
     
@@ -73,7 +78,7 @@ struct YourYomangImageView: View {
                 RoundedRectangle(cornerRadius: 22)
                     .fill(LinearGradient(colors: [Color.white.opacity(0.3), Color.clear], startPoint: .top, endPoint: .bottom).opacity(isPressed ? 0 : 1))
                     .frame(width: WIDGET_WIDTH, height: WIDGET_HEIGHT)
-                    .background(RoundedRectangle(cornerRadius: 22).fill(Color.neu500))
+                    .background(RoundedRectangle(cornerRadius: 22).fill(Color.main200))
                     .overlay {
                         if let imageUrl = imageUrl {
                             KFImage(URL(string: imageUrl))

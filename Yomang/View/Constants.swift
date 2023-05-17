@@ -18,6 +18,8 @@ struct Constants {
     struct Animations {
         static var matchingLoading = "MatchingLoading"
         static var matchingComplete = "MatchingComplete"
+        static var splash = "Splash"
+
     }
 }
 
