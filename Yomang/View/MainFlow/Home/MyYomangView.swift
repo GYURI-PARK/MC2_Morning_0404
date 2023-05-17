@@ -28,22 +28,47 @@ struct MyYomangView: View {
                 .environmentObject(ani)
                 .overlay {
                     if !user.isConnected {
-                            RoundedRectangle(cornerRadius: 20)
-                                .frame(width: 250, height: 80)
-                                .foregroundColor(.white)
-                                .opacity(0.8)
-                                .overlay(
-                            Text("이 버튼을 눌러\n**파트너와 연결해 보세요**")
+                        if !isPressed {
+                            Text("아래 위젯을 눌러서\n상대에게 보낼 **요망을 만들어봐요**")
                                 .font(.title3)
-                                .fontWeight(.bold)
-                                .foregroundColor(.black)
+                                .fontWeight(.light)
                                 .multilineTextAlignment(.center)
-                                )
+                                .foregroundColor(.white)
                                 .offset(y: -150)
+                                .opacity(isBlinking ? 1 : 0.5)
                                 .opacity(isPressed ? 0 : 1)
+                                .onAppear {
+                                    withAnimation(.easeInOut(duration: 1).repeatForever(autoreverses: true)){
+                                        isBlinking.toggle()
+                                    }
+                                }
+                        } else {
+                            RoundedRectangle(cornerRadius: 20)
+                                .frame(height: 400)
+                                .foregroundColor(.white)
+                                .opacity(0.01)
                                 .onTapGesture {
                                     showMatchingCode = true
                                 }
+                                .offset(y: 30)
+                                .overlay(
+                                    Text("아직 상대와 연결되지 않았네요!\n**위젯을 눌러 상대방과 연결해볼까요?**")
+                                        .font(.title3)
+                                        .fontWeight(.light)
+                                        .multilineTextAlignment(.center)
+                                        .foregroundColor(.white)
+                                        .offset(y: -200)
+                                        .opacity(isBlinking ? 1 : 0.8)
+                                        .opacity(isPressed ? 1 : 0)
+                                        .onAppear {
+                                            withAnimation(.easeInOut(duration: 1).repeatForever(autoreverses: true)){
+                                                isBlinking.toggle()
+                                            }
+                                        }
+                                )
+                                .opacity(isPressed ? 1 : 0)
+                               
+                        }
                     } else {
                         Text("아래 위젯을 눌러서\n상대에게 보낼 **요망을 만들어봐요**")
                             .font(.title3)
@@ -55,7 +80,7 @@ struct MyYomangView: View {
                             .opacity(isPressed ? 0 : 1)
                             .onAppear {
                                 withAnimation(.easeInOut(duration: 1).repeatForever(autoreverses: true)){
-                                    isBlinking = true
+                                    isBlinking.toggle()
                                 }
                             }
                     }

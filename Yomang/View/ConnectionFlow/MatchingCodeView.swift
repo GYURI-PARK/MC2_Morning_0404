@@ -195,7 +195,7 @@ struct MatchingCodeBackgroundView: View {
     
     var body: some View {
         Rectangle()
-            .fill(Color.black)
+            .fill(LinearGradient(colors: [Color.neu600, Color.neu700], startPoint: .top, endPoint: .bottom))
             .ignoresSafeArea()
     }
 }
